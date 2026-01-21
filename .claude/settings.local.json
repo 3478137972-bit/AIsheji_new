@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(test:*)",
+      "Bash(npm install:*)",
+      "Bash(if [ -d \"node_modules\" ])",
+      "Bash(then echo \"node_modules exists\")",
+      "Bash(else echo \"node_modules not found\")",
+      "Bash(fi)",
+      "Bash(pnpm --version:*)",
+      "Bash(npm:*)",
+      "Bash(pnpm install:*)",
+      "Bash(git init:*)"
+    ]
+  }
+}
