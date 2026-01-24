@@ -6,7 +6,7 @@ import { ArrowLeft, Sparkles, Download, ChevronDown } from "lucide-react"
 import Link from "next/link"
 
 // 后端 API 地址
-const API_BASE_URL = "http://localhost:3001"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001"
 
 const industries = [
   "科技互联网",
