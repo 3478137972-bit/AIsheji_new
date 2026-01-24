@@ -5,8 +5,8 @@ import { MainLayout } from "@/components/main-layout"
 import { ArrowLeft, Sparkles, Download } from "lucide-react"
 import Link from "next/link"
 
-// 后端 API 地址
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001"
+// API 地址 - 使用相对路径调用 Next.js API Routes
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || ""
 
 const fontTypes = [
   "矩形",
