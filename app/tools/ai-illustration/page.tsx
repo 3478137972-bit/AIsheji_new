@@ -172,7 +172,9 @@ export default function AIIllustrationPage() {
         setGeneratedImages(data.results)
 
         // 检查是否全部完成
-        const successCount = data.results.filter((r: IllustrationResult) => r.status === "success").length
+        const successCount = data.results.filter((r: IllustrationResult) =>
+          r.status === "success" || r.status === "completed"
+        ).length
         const totalCount = data.results.length
 
         setStatusMessage(`已完成 ${successCount}/${totalCount} 个设计`)
@@ -331,7 +333,7 @@ export default function AIIllustrationPage() {
                     }`}
                   >
                     {/* Image */}
-                    {image.status === "success" && image.imageUrl ? (
+                    {(image.status === "success" || image.status === "completed") && image.imageUrl ? (
                       <>
                         <img
                           src={image.imageUrl}
@@ -352,7 +354,7 @@ export default function AIIllustrationPage() {
                           </a>
                         </div>
                       </>
-                    ) : image.status === "error" ? (
+                    ) : image.status === "error" || image.status === "failed" ? (
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="text-center text-red-500 text-sm p-4">
                           生成失败
