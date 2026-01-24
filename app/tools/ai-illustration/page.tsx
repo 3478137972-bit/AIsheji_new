@@ -171,12 +171,26 @@ export default function AIIllustrationPage() {
         // 更新生成的插画列表
         setGeneratedImages(data.results)
 
+        // 调试日志:查看后端返回的数据
+        console.log('【前端调试】后端返回的完整数据:', JSON.stringify(data, null, 2))
+        console.log('【前端调试】结果列表:', data.results)
+        data.results.forEach((r: IllustrationResult, idx: number) => {
+          console.log(`【前端调试】结果${idx}:`, {
+            index: r.index,
+            taskId: r.taskId,
+            status: r.status,
+            imageUrl: r.imageUrl,
+            hasImageUrl: !!r.imageUrl
+          })
+        })
+
         // 检查是否全部完成
         const successCount = data.results.filter((r: IllustrationResult) =>
           r.status === "success" || r.status === "completed"
         ).length
         const totalCount = data.results.length
 
+        console.log(`【前端调试】成功数量: ${successCount}/${totalCount}`)
         setStatusMessage(`已完成 ${successCount}/${totalCount} 个设计`)
 
         if (data.status === "completed") {
