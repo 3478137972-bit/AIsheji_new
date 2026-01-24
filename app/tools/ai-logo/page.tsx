@@ -5,6 +5,9 @@ import { MainLayout } from "@/components/main-layout"
 import { ArrowLeft, Sparkles, Download, ChevronDown } from "lucide-react"
 import Link from "next/link"
 
+// 后端 API 地址
+const API_BASE_URL = "http://localhost:3001"
+
 const industries = [
   "科技互联网",
   "电子商务",
@@ -25,34 +28,105 @@ const styles = [
   "渐变风格",
 ]
 
-// Mock generated logos
-const mockLogos = [
-  { id: 1, color: "bg-gradient-to-br from-blue-500 to-blue-600" },
-  { id: 2, color: "bg-gradient-to-br from-purple-500 to-purple-600" },
-  { id: 3, color: "bg-gradient-to-br from-green-500 to-green-600" },
-  { id: 4, color: "bg-gradient-to-br from-orange-500 to-orange-600" },
-  { id: 5, color: "bg-gradient-to-br from-pink-500 to-pink-600" },
-  { id: 6, color: "bg-gradient-to-br from-cyan-500 to-cyan-600" },
-  { id: 7, color: "bg-gradient-to-br from-red-500 to-red-600" },
-  { id: 8, color: "bg-gradient-to-br from-indigo-500 to-indigo-600" },
-]
+// Logo 结果类型
+interface LogoResult {
+  index: number
+  taskId: string
+  status: string
+  imageUrl?: string
+  error?: string
+}
 
 export default function AILogoPage() {
   const [logoName, setLogoName] = useState("")
   const [selectedIndustry, setSelectedIndustry] = useState(industries[0])
   const [selectedStyle, setSelectedStyle] = useState(styles[0])
   const [slogan, setSlogan] = useState("")
-  const [generatedLogos, setGeneratedLogos] = useState<typeof mockLogos>([])
+  const [generatedLogos, setGeneratedLogos] = useState<LogoResult[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
   const [selectedLogo, setSelectedLogo] = useState<number | null>(null)
+  const [batchId, setBatchId] = useState<string | null>(null)
+  const [statusMessage, setStatusMessage] = useState("")
 
-  const handleGenerate = () => {
+  // 调用后端生成 Logo
+  const handleGenerate = async () => {
     if (!logoName.trim()) return
+
     setIsGenerating(true)
-    setTimeout(() => {
-      setGeneratedLogos(mockLogos)
+    setGeneratedLogos([])
+    setStatusMessage("正在调用 AI 生成设计方案...")
+
+    try {
+      // 步骤1: 调用后端创建任务
+      const response = await fetch(`${API_BASE_URL}/api/generate-logo`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          logoName,
+          industry: selectedIndustry,
+          style: selectedStyle,
+          slogan,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!data.success) {
+        throw new Error(data.error || "生成失败")
+      }
+
+      setBatchId(data.batchId)
+      setStatusMessage(`已创建 ${data.promptCount} 个设计任务，正在生图...`)
+
+      // 步骤2: 轮询查询结果
+      pollTaskStatus(data.batchId)
+    } catch (error) {
+      console.error("生成失败:", error)
+      setStatusMessage("生成失败: " + (error as Error).message)
       setIsGenerating(false)
-    }, 2000)
+    }
+  }
+
+  // 轮询查询任务状态
+  const pollTaskStatus = async (batchId: string) => {
+    const maxRetries = 60 // 最多查询60次
+    const interval = 3000 // 每3秒查询一次
+
+    for (let i = 0; i < maxRetries; i++) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/task-status/${batchId}`)
+        const data = await response.json()
+
+        if (!data.success) {
+          throw new Error(data.error || "查询失败")
+        }
+
+        // 更新生成的 Logo 列表
+        setGeneratedLogos(data.results)
+
+        // 检查是否全部完成
+        const successCount = data.results.filter((r: LogoResult) => r.status === "success").length
+        const totalCount = data.results.length
+
+        setStatusMessage(`已完成 ${successCount}/${totalCount} 个设计`)
+
+        if (data.status === "completed") {
+          setIsGenerating(false)
+          setStatusMessage(`成功生成 ${successCount} 个 Logo 设计`)
+          break
+        }
+
+        // 等待后继续查询
+        await new Promise((resolve) => setTimeout(resolve, interval))
+      } catch (error) {
+        console.error("查询状态失败:", error)
+        setStatusMessage("查询状态失败: " + (error as Error).message)
+        setIsGenerating(false)
+        break
+      }
+    }
   }
 
   return (
@@ -135,6 +209,13 @@ export default function AILogoPage() {
               </div>
             </div>
 
+            {/* Status Message */}
+            {statusMessage && (
+              <div className="text-sm text-muted-foreground text-center py-2">
+                {statusMessage}
+              </div>
+            )}
+
             {/* Generate Button */}
             <button
               onClick={handleGenerate}
@@ -152,27 +233,48 @@ export default function AILogoPage() {
               <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {generatedLogos.map((logo) => (
                   <div
-                    key={logo.id}
-                    onClick={() => setSelectedLogo(logo.id)}
-                    className={`aspect-square rounded-2xl ${logo.color} cursor-pointer transition-all hover:scale-105 relative overflow-hidden group ${
-                      selectedLogo === logo.id ? "ring-4 ring-primary" : ""
+                    key={logo.index}
+                    onClick={() => setSelectedLogo(logo.index)}
+                    className={`aspect-square rounded-2xl cursor-pointer transition-all hover:scale-105 relative overflow-hidden group bg-muted ${
+                      selectedLogo === logo.index ? "ring-4 ring-primary" : ""
                     }`}
                   >
-                    {/* Mock logo content */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-white text-center">
-                        <div className="w-16 h-16 mx-auto mb-2 rounded-xl bg-white/20 flex items-center justify-center">
-                          <span className="text-2xl font-bold">{logoName.charAt(0) || "M"}</span>
+                    {/* Logo 图片 */}
+                    {logo.status === "success" && logo.imageUrl ? (
+                      <>
+                        <img
+                          src={logo.imageUrl}
+                          alt={`Logo ${logo.index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                        {/* Download overlay */}
+                        <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                          <a
+                            href={logo.imageUrl}
+                            download={`logo-${logoName}-${logo.index + 1}.png`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-3 bg-card rounded-full shadow-lg hover:scale-110 transition-transform"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <Download className="w-5 h-5" />
+                          </a>
                         </div>
-                        <span className="text-sm font-medium">{logoName || "秒懂AI"}</span>
+                      </>
+                    ) : logo.status === "error" ? (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-center text-red-500 text-sm p-4">
+                          生成失败
+                        </div>
                       </div>
-                    </div>
-                    {/* Download overlay */}
-                    <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                      <button className="p-3 bg-card rounded-full shadow-lg hover:scale-110 transition-transform">
-                        <Download className="w-5 h-5" />
-                      </button>
-                    </div>
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-center text-muted-foreground">
+                          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+                          <span className="text-sm">生成中...</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

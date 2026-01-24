@@ -7,7 +7,6 @@ import {
   Sparkles,
   Package,
   UserSquare,
-  Presentation,
 } from "lucide-react"
 
 const quickTools = [
@@ -16,7 +15,6 @@ const quickTools = [
   { icon: Sparkles, label: "变清晰", href: "/tools/enhance", gradient: "from-emerald-500 to-teal-500" },
   { icon: Package, label: "商品套图", href: "/tools/product-set", gradient: "from-orange-500 to-amber-500" },
   { icon: UserSquare, label: "证件照", href: "/tools/id-photo", gradient: "from-rose-500 to-pink-500" },
-  { icon: Presentation, label: "LivePPT", href: "/tools/live-ppt", gradient: "from-indigo-500 to-purple-500" },
 ]
 
 export function QuickTools() {

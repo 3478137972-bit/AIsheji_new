@@ -10,7 +10,18 @@
       "Bash(pnpm --version:*)",
       "Bash(npm:*)",
       "Bash(pnpm install:*)",
-      "Bash(git init:*)"
+      "Bash(git init:*)",
+      "Bash(curl:*)",
+      "Bash(node:*)",
+      "Bash(taskkill:*)",
+      "Bash(if [ -d \"ai-logo-backend\" ])",
+      "Bash(then ls -la ai-logo-backend)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(powershell:*)",
+      "Bash(del:*)",
+      "Bash(python:*)",
+      "Bash(dir:*)"
     ]
   }
 }

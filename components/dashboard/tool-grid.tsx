@@ -24,10 +24,18 @@ import {
   Camera,
   Hexagon,
   FileText,
-  Presentation,
   PenTool,
   ImagePlus,
   Cpu,
+  Shield,
+  Brush,
+  Smile,
+  Heart,
+  Box,
+  Type,
+  Mountain,
+  Award,
+  CalendarDays,
 } from "lucide-react"
 
 interface ToolItem {
@@ -43,6 +51,25 @@ interface ToolCategory {
 }
 
 const toolCategories: ToolCategory[] = [
+  {
+    title: "AI设计",
+    tools: [
+      { icon: Hexagon, label: "AI Logo", description: "智能生成Logo设计", href: "/tools/ai-logo" },
+      { icon: Shield, label: "AI Logo 2号员工", description: "更具美学的LOGO", href: "/tools/ai-logo-2" },
+      { icon: Brush, label: "AI插画", description: "多风格的非IP插画", href: "/tools/ai-illustration" },
+      { icon: Smile, label: "AI IP插画 1号员工", description: "用于制作品牌IP插画", href: "/tools/ai-ip-illustration-1" },
+      { icon: Heart, label: "AI IP插画 2号员工", description: "用于制作品牌IP插画", href: "/tools/ai-ip-illustration-2" },
+      { icon: Box, label: "AI平面包装设计", description: "用于制作平面的包装图", href: "/tools/ai-package-design" },
+      { icon: Type, label: "AI字体设计", description: "用于制作商标、logo等字体", href: "/tools/ai-font" },
+      { icon: Mountain, label: "AI场景海报设计", description: "用于制作品牌的场景展示海报", href: "/tools/ai-scene-poster" },
+      { icon: Award, label: "AI品牌海报设计", description: "用于制作品牌海报", href: "/tools/ai-brand-poster" },
+      { icon: CalendarDays, label: "AI活动海报设计", description: "用于制作活动宣传海报", href: "/tools/ai-event-poster" },
+      { icon: FileText, label: "AI图文笔记", description: "一键生成图文笔记", href: "/tools/ai-note" },
+      { icon: PenTool, label: "AI文案", description: "智能生成营销文案", href: "/tools/ai-copy" },
+      { icon: ImagePlus, label: "AI海报", description: "一键生成海报设计", href: "/tools/ai-poster" },
+      { icon: Cpu, label: "AI文生图", description: "文字描述生成图片", href: "/tools/text-to-image" },
+    ],
+  },
   {
     title: "AI商拍",
     tools: [
@@ -70,17 +97,6 @@ const toolCategories: ToolCategory[] = [
       { icon: LayoutGrid, label: "拼图", description: "多图拼接组合", href: "/tools/collage" },
       { icon: Expand, label: "AI扩图", description: "智能扩展图片内容", href: "/tools/expand" },
       { icon: Camera, label: "形象照", description: "一键生成形象照", href: "/tools/portrait" },
-    ],
-  },
-  {
-    title: "AI设计",
-    tools: [
-      { icon: Hexagon, label: "AI Logo", description: "智能生成Logo设计", href: "/tools/ai-logo" },
-      { icon: FileText, label: "AI图文笔记", description: "一键生成图文笔记", href: "/tools/ai-note" },
-      { icon: Presentation, label: "LivePPT", description: "AI生成演示文稿", href: "/tools/live-ppt" },
-      { icon: PenTool, label: "AI文案", description: "智能生成营销文案", href: "/tools/ai-copy" },
-      { icon: ImagePlus, label: "AI海报", description: "一键生成海报设计", href: "/tools/ai-poster" },
-      { icon: Cpu, label: "AI文生图", description: "文字描述生成图片", href: "/tools/text-to-image" },
     ],
   },
 ]
