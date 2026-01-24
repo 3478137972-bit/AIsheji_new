@@ -10,7 +10,7 @@ export async function GET(
 ) {
   try {
     const { batchId } = params
-    const batchData = getTask(batchId)
+    const batchData = await getTask(batchId)
 
     if (!batchData) {
       return NextResponse.json(

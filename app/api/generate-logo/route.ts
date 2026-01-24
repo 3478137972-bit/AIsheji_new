@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
 
     // 生成一个总任务ID
     const batchId = `batch_${Date.now()}`
-    setTask(batchId, {
+    await setTask(batchId, {
       status: 'processing',
       tasks: tasks,
       prompts: promptResult.prompts,
