@@ -2,15 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const { generateIllustrationPrompts } = require('@/lib/backend/deepseek')
 const { uploadImageToKIEAI, createBatchIllustrationTasks } = require('@/lib/backend/kieai-illustration')
-
-// 导入 taskStore
-let taskStore: Map<string, any>
-try {
-  const logoRoute = require('../generate-logo/route')
-  taskStore = logoRoute.taskStore
-} catch {
-  taskStore = new Map()
-}
+const { setTask } = require('@/lib/backend/task-store')
 
 export async function POST(request: NextRequest) {
   try {
@@ -64,7 +56,7 @@ export async function POST(request: NextRequest) {
 
     // 生成一个总任务ID
     const batchId = `batch_${Date.now()}`
-    taskStore.set(batchId, {
+    setTask(batchId, {
       status: 'processing',
       tasks: tasks,
       prompts: promptResult.prompts,

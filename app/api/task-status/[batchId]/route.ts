@@ -2,15 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const { getTaskStatus } = require('@/lib/backend/kieai')
 const { getIllustrationTaskStatus } = require('@/lib/backend/kieai-illustration')
-
-// 导入 taskStore
-let taskStore: Map<string, any>
-try {
-  const logoRoute = require('../../generate-logo/route')
-  taskStore = logoRoute.taskStore
-} catch {
-  taskStore = new Map()
-}
+const { getTask } = require('@/lib/backend/task-store')
 
 export async function GET(
   request: NextRequest,
@@ -18,7 +10,7 @@ export async function GET(
 ) {
   try {
     const { batchId } = params
-    const batchData = taskStore.get(batchId)
+    const batchData = getTask(batchId)
 
     if (!batchData) {
       return NextResponse.json(

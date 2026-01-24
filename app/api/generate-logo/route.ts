@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const { generateLogoPrompts } = require('@/lib/backend/deepseek')
 const { createBatchTasks } = require('@/lib/backend/kieai')
-
-// 存储任务状态（生产环境应使用 Redis 等）
-const taskStore = new Map()
+const { setTask } = require('@/lib/backend/task-store')
 
 export async function POST(request: NextRequest) {
   try {
@@ -43,7 +41,7 @@ export async function POST(request: NextRequest) {
 
     // 生成一个总任务ID
     const batchId = `batch_${Date.now()}`
-    taskStore.set(batchId, {
+    setTask(batchId, {
       status: 'processing',
       tasks: tasks,
       prompts: promptResult.prompts,
@@ -76,6 +74,3 @@ export async function POST(request: NextRequest) {
     )
   }
 }
-
-// 导出 taskStore 供其他路由使用
-export { taskStore }
