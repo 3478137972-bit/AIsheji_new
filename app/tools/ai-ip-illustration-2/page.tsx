@@ -130,8 +130,8 @@ export default function AIIPIllustration2Page() {
     setStatusMessage("正在调用 AI 生成 AIIP 插画...")
 
     try {
-      // 步骤1: 调用后端创建任务
-      const response = await fetch(`${API_BASE_URL}/api/generate-aiip-illustration`, {
+      // 步骤1: 调用后端创建任务 (AIIP2)
+      const response = await fetch(`${API_BASE_URL}/api/generate-aiip-illustration-2`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
