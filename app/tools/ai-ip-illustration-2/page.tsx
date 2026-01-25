@@ -221,105 +221,105 @@ export default function AIIPIllustration2Page() {
 
         <div className="flex gap-6 h-[calc(100vh-140px)]">
           {/* Left Panel - Form */}
-          <div className="w-80 flex-shrink-0 bg-card rounded-2xl border border-border p-6 flex flex-col">
-            <div className="space-y-5 flex-1">
+          <div className="w-80 flex-shrink-0 bg-card rounded-2xl border border-border p-6 flex flex-col overflow-y-auto">
+            <div className="space-y-3 flex-1">
               {/* IP角色 */}
               <div>
-                <label className="block text-sm font-medium mb-2">IP角色</label>
+                <label className="block text-sm font-medium mb-1.5">IP角色</label>
 
                 {/* 物种 */}
-                <div className="mb-3">
-                  <label className="block text-xs text-muted-foreground mb-1">物种 *</label>
+                <div className="mb-2">
+                  <label className="block text-xs text-muted-foreground mb-0.5">物种 *</label>
                   <input
                     type="text"
                     value={species}
                     onChange={(e) => setSpecies(e.target.value)}
                     placeholder="例如：猫、熊猫、兔子等"
-                    className="w-full p-3 bg-muted rounded-xl border-none outline-none"
+                    className="w-full p-2 text-sm bg-muted rounded-xl border-none outline-none"
                   />
                 </div>
 
                 {/* 颜色 */}
-                <div className="mb-3">
-                  <label className="block text-xs text-muted-foreground mb-1">颜色</label>
+                <div className="mb-2">
+                  <label className="block text-xs text-muted-foreground mb-0.5">颜色</label>
                   <input
                     type="text"
                     value={color}
                     onChange={(e) => setColor(e.target.value)}
                     placeholder="例如：橙色、白色、彩色等"
-                    className="w-full p-3 bg-muted rounded-xl border-none outline-none"
+                    className="w-full p-2 text-sm bg-muted rounded-xl border-none outline-none"
                   />
                 </div>
 
                 {/* 体型 */}
                 <div>
-                  <label className="block text-xs text-muted-foreground mb-1">体型</label>
+                  <label className="block text-xs text-muted-foreground mb-0.5">体型</label>
                   <input
                     type="text"
                     value={bodyType}
                     onChange={(e) => setBodyType(e.target.value)}
                     placeholder="例如：圆润、修长、Q版等"
-                    className="w-full p-3 bg-muted rounded-xl border-none outline-none"
+                    className="w-full p-2 text-sm bg-muted rounded-xl border-none outline-none"
                   />
                 </div>
               </div>
 
               {/* 场景与节日 */}
               <div>
-                <label className="block text-sm font-medium mb-2">场景与节日</label>
+                <label className="block text-sm font-medium mb-1.5">场景与节日</label>
 
                 {/* 动作 */}
-                <div className="mb-3">
-                  <label className="block text-xs text-muted-foreground mb-1">做什么动作 *</label>
+                <div className="mb-2">
+                  <label className="block text-xs text-muted-foreground mb-0.5">做什么动作 *</label>
                   <input
                     type="text"
                     value={action}
                     onChange={(e) => setAction(e.target.value)}
                     placeholder="例如：跳舞、玩耍、睡觉等"
-                    className="w-full p-3 bg-muted rounded-xl border-none outline-none"
+                    className="w-full p-2 text-sm bg-muted rounded-xl border-none outline-none"
                   />
                 </div>
 
                 {/* 地点 */}
-                <div className="mb-3">
-                  <label className="block text-xs text-muted-foreground mb-1">在哪里</label>
+                <div className="mb-2">
+                  <label className="block text-xs text-muted-foreground mb-0.5">在哪里</label>
                   <input
                     type="text"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     placeholder="例如：公园、家里、海边等"
-                    className="w-full p-3 bg-muted rounded-xl border-none outline-none"
+                    className="w-full p-2 text-sm bg-muted rounded-xl border-none outline-none"
                   />
                 </div>
 
                 {/* 节日 */}
                 <div>
-                  <label className="block text-xs text-muted-foreground mb-1">什么节日</label>
+                  <label className="block text-xs text-muted-foreground mb-0.5">什么节日</label>
                   <input
                     type="text"
                     value={festival}
                     onChange={(e) => setFestival(e.target.value)}
                     placeholder="例如：春节、圣诞节、中秋节等"
-                    className="w-full p-3 bg-muted rounded-xl border-none outline-none"
+                    className="w-full p-2 text-sm bg-muted rounded-xl border-none outline-none"
                   />
                 </div>
               </div>
 
               {/* Aspect Ratio */}
               <div>
-                <label className="block text-sm font-medium mb-2">比例</label>
+                <label className="block text-sm font-medium mb-1.5">比例</label>
                 <button
                   onClick={() => setShowRatioDialog(true)}
-                  className="w-full p-3 bg-muted rounded-xl border-none outline-none text-left flex items-center justify-between hover:bg-muted/80 transition-colors"
+                  className="w-full p-2 text-sm bg-muted rounded-xl border-none outline-none text-left flex items-center justify-between hover:bg-muted/80 transition-colors"
                 >
                   <span>{selectedRatio}</span>
-                  <span className="text-muted-foreground text-sm">点击选择</span>
+                  <span className="text-muted-foreground text-xs">点击选择</span>
                 </button>
               </div>
 
               {/* Reference Images */}
               <div>
-                <label className="block text-sm font-medium mb-2">
+                <label className="block text-sm font-medium mb-1.5">
                   参考图 ({referenceImages.length}/4)
                 </label>
 
@@ -336,9 +336,9 @@ export default function AIIPIllustration2Page() {
                     />
                     <button
                       onClick={() => fileInputRef.current?.click()}
-                      className="w-full p-3 bg-muted rounded-xl border-2 border-dashed border-border hover:border-primary hover:bg-muted/80 transition-colors flex items-center justify-center gap-2"
+                      className="w-full p-2 text-sm bg-muted rounded-xl border-2 border-dashed border-border hover:border-primary hover:bg-muted/80 transition-colors flex items-center justify-center gap-2"
                     >
-                      <Upload className="w-5 h-5" />
+                      <Upload className="w-4 h-4" />
                       <span>点击上传参考图</span>
                     </button>
                   </div>
