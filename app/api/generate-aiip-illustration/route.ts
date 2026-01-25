@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { generateAIIPPrompt } from '@/lib/api/deepseek'
 import { uploadImageToKIEAI, createKIEAITask } from '@/lib/api/kieai'
-import { createBatchTask } from '@/lib/api/task-store'
+
+const { setTask } = require('@/lib/backend/task-store')
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -93,9 +94,21 @@ export async function POST(request: NextRequest) {
 
     console.log('[AIIP插画] KIEAI 任务创建成功:', taskIds)
 
-    // 步骤4: 创建批次任务记录
+    // 步骤4: 创建批次任务记录(使用Supabase存储)
     const batchId = `batch-${Date.now()}-${Math.random().toString(36).substring(7)}`
-    createBatchTask(batchId, taskIds, variantCount)
+
+    const batchData = {
+      tasks: taskIds.map((taskId, index) => ({
+        index,
+        taskId,
+        success: true,
+      })),
+      promptCount: variantCount,
+      prompt,
+      createdAt: Date.now(),
+    }
+
+    await setTask(batchId, batchData)
 
     console.log('[AIIP插画] 批次任务创建成功:', batchId)
 
