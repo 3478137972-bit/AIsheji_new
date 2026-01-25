@@ -75,15 +75,15 @@ export async function POST(request: NextRequest) {
       console.log('[AIIP插画] 步骤2: 无参考图片,跳过上传')
     }
 
-    // 步骤3: 创建多个生成任务(生成3个变体)
-    const variantCount = 3
+    // 步骤3: 创建生成任务(生成1张图)
+    const variantCount = 1
     console.log(`[AIIP插画] 步骤3: 创建 ${variantCount} 个生成任务...`)
 
     const createTaskPromises = Array.from({ length: variantCount }, () =>
       createKIEAITask({
         prompt,
         aspectRatio: body.aspectRatio || '1:1',
-        resolution: '1K',
+        resolution: '2K',
         outputFormat: 'png',
         imageInputUrls,
       })
