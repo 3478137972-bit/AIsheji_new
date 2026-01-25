@@ -23,15 +23,6 @@ const aspectRatios = [
   { value: "auto", label: "auto" },
 ]
 
-// 插画风格选项
-const styleOptions = [
-  { value: "flat", label: "扁平风格" },
-  { value: "realistic", label: "写实风格" },
-  { value: "cartoon", label: "卡通风格" },
-  { value: "minimal", label: "极简风格" },
-  { value: "watercolor", label: "水彩风格" },
-  { value: "line-art", label: "线条艺术" },
-]
 
 // 插画结果类型
 interface IllustrationResult {
@@ -43,18 +34,22 @@ interface IllustrationResult {
 }
 
 export default function AIIPIllustrationPage() {
-  const [theme, setTheme] = useState("")
-  const [scene, setScene] = useState("")
-  const [selectedStyle, setSelectedStyle] = useState("")
-  const [customStyle, setCustomStyle] = useState("")
-  const [showStyleDialog, setShowStyleDialog] = useState(false)
+  // IP角色相关
+  const [species, setSpecies] = useState("")
+  const [color, setColor] = useState("")
+  const [bodyType, setBodyType] = useState("")
+
+  // 场景与节日相关
+  const [action, setAction] = useState("")
+  const [location, setLocation] = useState("")
+  const [festival, setFestival] = useState("")
+
   const [selectedRatio, setSelectedRatio] = useState("1:1")
   const [showRatioDialog, setShowRatioDialog] = useState(false)
   const [referenceImages, setReferenceImages] = useState<string[]>([])
   const [generatedImages, setGeneratedImages] = useState<IllustrationResult[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
   const [selectedImage, setSelectedImage] = useState<number | null>(null)
-  const [batchId, setBatchId] = useState<string | null>(null)
   const [statusMessage, setStatusMessage] = useState("")
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -128,16 +123,13 @@ export default function AIIPIllustrationPage() {
 
   // 调用后端生成插画
   const handleGenerate = async () => {
-    if (!theme.trim() || !scene.trim()) return
+    if (!species.trim() || !action.trim()) return
 
     setIsGenerating(true)
     setGeneratedImages([])
     setStatusMessage("正在调用 AI 生成 AIIP 插画...")
 
     try {
-      // 获取最终风格
-      const finalStyle = customStyle.trim() || selectedStyle
-
       // 步骤1: 调用后端创建任务
       const response = await fetch(`${API_BASE_URL}/api/generate-aiip-illustration`, {
         method: "POST",
@@ -145,9 +137,12 @@ export default function AIIPIllustrationPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          theme,
-          scene,
-          style: finalStyle,
+          species,
+          color,
+          bodyType,
+          action,
+          location,
+          festival,
           aspectRatio: selectedRatio,
           referenceImages: referenceImages,
         }),
@@ -159,7 +154,6 @@ export default function AIIPIllustrationPage() {
         throw new Error(data.error || "生成失败")
       }
 
-      setBatchId(data.batchId)
       setStatusMessage(`已创建 ${data.promptCount} 个设计任务，正在生图...`)
 
       // 步骤2: 轮询查询结果
@@ -229,48 +223,86 @@ export default function AIIPIllustrationPage() {
           {/* Left Panel - Form */}
           <div className="w-80 flex-shrink-0 bg-card rounded-2xl border border-border p-6 flex flex-col">
             <div className="space-y-5 flex-1">
-              {/* Theme */}
+              {/* IP角色 */}
               <div>
-                <label className="block text-sm font-medium mb-2">主题 *</label>
-                <input
-                  type="text"
-                  value={theme}
-                  onChange={(e) => setTheme(e.target.value)}
-                  placeholder="例如：科技、自然、商务等"
-                  className="w-full p-3 bg-muted rounded-xl border-none outline-none"
-                />
+                <label className="block text-sm font-medium mb-2">IP角色</label>
+
+                {/* 物种 */}
+                <div className="mb-3">
+                  <label className="block text-xs text-muted-foreground mb-1">物种 *</label>
+                  <input
+                    type="text"
+                    value={species}
+                    onChange={(e) => setSpecies(e.target.value)}
+                    placeholder="例如：猫、熊猫、兔子等"
+                    className="w-full p-3 bg-muted rounded-xl border-none outline-none"
+                  />
+                </div>
+
+                {/* 颜色 */}
+                <div className="mb-3">
+                  <label className="block text-xs text-muted-foreground mb-1">颜色</label>
+                  <input
+                    type="text"
+                    value={color}
+                    onChange={(e) => setColor(e.target.value)}
+                    placeholder="例如：橙色、白色、彩色等"
+                    className="w-full p-3 bg-muted rounded-xl border-none outline-none"
+                  />
+                </div>
+
+                {/* 体型 */}
+                <div>
+                  <label className="block text-xs text-muted-foreground mb-1">体型</label>
+                  <input
+                    type="text"
+                    value={bodyType}
+                    onChange={(e) => setBodyType(e.target.value)}
+                    placeholder="例如：圆润、修长、Q版等"
+                    className="w-full p-3 bg-muted rounded-xl border-none outline-none"
+                  />
+                </div>
               </div>
 
-              {/* Scene */}
+              {/* 场景与节日 */}
               <div>
-                <label className="block text-sm font-medium mb-2">场景描述 *</label>
-                <textarea
-                  value={scene}
-                  onChange={(e) => setScene(e.target.value)}
-                  placeholder="描述你想要的插画场景和细节"
-                  className="w-full p-3 bg-muted rounded-xl border-none outline-none h-32 resize-none"
-                />
-              </div>
+                <label className="block text-sm font-medium mb-2">场景与节日</label>
 
-              {/* Style */}
-              <div>
-                <label className="block text-sm font-medium mb-2">风格</label>
-                <button
-                  onClick={() => setShowStyleDialog(true)}
-                  className="w-full p-3 bg-muted rounded-xl border-none outline-none text-left flex items-center justify-between hover:bg-muted/80 transition-colors mb-2"
-                >
-                  <span className="truncate">
-                    {selectedStyle ? styleOptions.find(s => s.value === selectedStyle)?.label : "选择预设风格"}
-                  </span>
-                  <span className="text-muted-foreground text-sm">点击选择</span>
-                </button>
-                <input
-                  type="text"
-                  value={customStyle}
-                  onChange={(e) => setCustomStyle(e.target.value)}
-                  placeholder="或输入自定义风格"
-                  className="w-full p-3 bg-muted rounded-xl border-none outline-none"
-                />
+                {/* 动作 */}
+                <div className="mb-3">
+                  <label className="block text-xs text-muted-foreground mb-1">做什么动作 *</label>
+                  <input
+                    type="text"
+                    value={action}
+                    onChange={(e) => setAction(e.target.value)}
+                    placeholder="例如：跳舞、玩耍、睡觉等"
+                    className="w-full p-3 bg-muted rounded-xl border-none outline-none"
+                  />
+                </div>
+
+                {/* 地点 */}
+                <div className="mb-3">
+                  <label className="block text-xs text-muted-foreground mb-1">在哪里</label>
+                  <input
+                    type="text"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="例如：公园、家里、海边等"
+                    className="w-full p-3 bg-muted rounded-xl border-none outline-none"
+                  />
+                </div>
+
+                {/* 节日 */}
+                <div>
+                  <label className="block text-xs text-muted-foreground mb-1">什么节日</label>
+                  <input
+                    type="text"
+                    value={festival}
+                    onChange={(e) => setFestival(e.target.value)}
+                    placeholder="例如：春节、圣诞节、中秋节等"
+                    className="w-full p-3 bg-muted rounded-xl border-none outline-none"
+                  />
+                </div>
               </div>
 
               {/* Aspect Ratio */}
@@ -348,7 +380,7 @@ export default function AIIPIllustrationPage() {
             {/* Generate Button */}
             <button
               onClick={handleGenerate}
-              disabled={!theme.trim() || !scene.trim() || isGenerating}
+              disabled={!species.trim() || !action.trim() || isGenerating}
               className="w-full py-3 bg-primary text-primary-foreground rounded-full font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-6"
             >
               <Sparkles className="w-5 h-5" />
@@ -380,7 +412,7 @@ export default function AIIPIllustrationPage() {
                         <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
                           <a
                             href={image.imageUrl}
-                            download={`aiip-illustration-${theme}-${image.index + 1}.png`}
+                            download={`aiip-illustration-${species}-${image.index + 1}.png`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-3 bg-card rounded-full shadow-lg hover:scale-110 transition-transform"
@@ -417,51 +449,6 @@ export default function AIIPIllustrationPage() {
             )}
           </div>
         </div>
-
-        {/* Style Dialog */}
-        {showStyleDialog && (
-          <div
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-            onClick={() => setShowStyleDialog(false)}
-          >
-            <div
-              className="bg-card rounded-2xl p-6 w-96 max-h-[80vh] overflow-y-auto"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <h3 className="text-lg font-semibold mb-4">选择风格</h3>
-              <div className="grid grid-cols-2 gap-3">
-                {styleOptions.map((style) => (
-                  <button
-                    key={style.value}
-                    onClick={() => {
-                      setSelectedStyle(style.value)
-                      setCustomStyle("")
-                      setShowStyleDialog(false)
-                    }}
-                    className={`p-4 rounded-xl border-2 transition-all hover:scale-105 relative ${
-                      selectedStyle === style.value
-                        ? "border-primary bg-primary/10"
-                        : "border-border bg-muted hover:border-primary/50"
-                    }`}
-                  >
-                    <div className="text-center font-medium">{style.label}</div>
-                    {selectedStyle === style.value && (
-                      <div className="absolute top-2 right-2 w-5 h-5 bg-primary rounded-full flex items-center justify-center">
-                        <Check className="w-3 h-3 text-primary-foreground" />
-                      </div>
-                    )}
-                  </button>
-                ))}
-              </div>
-              <button
-                onClick={() => setShowStyleDialog(false)}
-                className="w-full mt-4 py-2 bg-muted rounded-xl hover:bg-muted/80 transition-colors"
-              >
-                取消
-              </button>
-            </div>
-          </div>
-        )}
 
         {/* Aspect Ratio Dialog */}
         {showRatioDialog && (
