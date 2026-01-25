@@ -15,6 +15,7 @@ interface RequestBody {
   action: string
   location?: string
   festival?: string
+  brandInfo?: string
   aspectRatio?: string
   referenceImages?: string[]
 }
@@ -41,6 +42,7 @@ export async function POST(request: NextRequest) {
       action: body.action,
       location: body.location,
       festival: body.festival,
+      brandInfo: body.brandInfo,
       aspectRatio: body.aspectRatio,
       referenceImagesCount: body.referenceImages?.length || 0,
     })
@@ -54,6 +56,7 @@ export async function POST(request: NextRequest) {
       action: body.action,
       location: body.location,
       festival: body.festival,
+      brandInfo: body.brandInfo,
     })
 
     console.log('[AIIP插画] DeepSeek 生成的提示词:', prompt)

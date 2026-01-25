@@ -44,6 +44,9 @@ export default function AIIPIllustration2Page() {
   const [location, setLocation] = useState("")
   const [festival, setFestival] = useState("")
 
+  // 品牌信息
+  const [brandInfo, setBrandInfo] = useState("")
+
   const [selectedRatio, setSelectedRatio] = useState("1:1")
   const [showRatioDialog, setShowRatioDialog] = useState(false)
   const [referenceImages, setReferenceImages] = useState<string[]>([])
@@ -143,6 +146,7 @@ export default function AIIPIllustration2Page() {
           action,
           location,
           festival,
+          brandInfo,
           aspectRatio: selectedRatio,
           referenceImages: referenceImages,
         }),
@@ -303,6 +307,18 @@ export default function AIIPIllustration2Page() {
                     className="w-full p-2 text-sm bg-muted rounded-xl border-none outline-none"
                   />
                 </div>
+              </div>
+
+              {/* 品牌信息 */}
+              <div>
+                <label className="block text-sm font-medium mb-1.5">品牌信息、理念</label>
+                <input
+                  type="text"
+                  value={brandInfo}
+                  onChange={(e) => setBrandInfo(e.target.value)}
+                  placeholder="例如：环保品牌、科技创新等"
+                  className="w-full p-2 text-sm bg-muted rounded-xl border-none outline-none"
+                />
               </div>
 
               {/* Aspect Ratio */}

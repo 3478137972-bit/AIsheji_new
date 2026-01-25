@@ -301,6 +301,7 @@ interface GeneratePromptParams {
   action: string
   location?: string
   festival?: string
+  brandInfo?: string
 }
 
 /**
@@ -324,6 +325,8 @@ ${params.bodyType ? `- 体型：${params.bodyType}` : ''}
 - 动作：${params.action}
 ${params.location ? `- 地点：${params.location}` : ''}
 ${params.festival ? `- 节日：${params.festival}` : ''}
+
+${params.brandInfo ? `品牌信息、理念：\n- ${params.brandInfo}` : ''}
 
 请生成一个完整的、富有逻辑的中文提示词，确保包含所有必需元素和设计巧思。
   `.trim()
