@@ -6,10 +6,10 @@ const { getTask } = require('@/lib/backend/task-store')
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { batchId: string } }
+  { params }: { params: Promise<{ batchId: string }> }
 ) {
   try {
-    const { batchId } = params
+    const { batchId } = await params
     const batchData = await getTask(batchId)
 
     if (!batchData) {
