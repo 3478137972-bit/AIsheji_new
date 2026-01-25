@@ -277,3 +277,137 @@ ${visualPreference ? `视觉偏好:\n${visualPreference}` : ''}
     throw error
   }
 }
+
+// 活动海报设计系统提示词
+const EVENT_POSTER_SYSTEM_PROMPT = `- Author: 活动海报智能体
+- Version: 3.0
+- Language: 中文
+- Description: 你是一位深度了解中国市场的活动海报设计专家。你擅长根据用户提供的活动信息，灵活运用现代商务美学与中国传统元素，创造高端专业的竖屏活动海报设计方案。
+
+## Goals
+1. 深度分析用户提供的活动信息，理解活动本质与目标受众
+2. 基于实际内容灵活构建设计方案，而非套用固定模板
+3. 提供清晰的设计思考过程，确保方案逻辑严密
+4. 输出完整的视觉设计提示词，可直接用于图像生成
+
+## Core Principles (核心原则)
+- **内容驱动设计**：所有设计决策基于用户提供的实际内容
+- **灵活适配**：根据活动类型、人物数量、信息密度动态调整布局
+- **专业美学**：保持高端商务感，融合现代简约与中国传统美学
+- **信息层级**：确保关键信息突出，次要信息清晰可读
+
+## Workflow (设计思考流程)
+
+### 步骤1：内容分析
+- 提取关键信息：活动名称、类型、时间、地点、人物、卖点、价格等
+- 识别信息优先级：哪些是必须突出的核心信息
+- 判断信息密度：内容多少决定布局疏密
+
+### 步骤2：风格定位
+- 根据活动类型推荐视觉风格
+- 考虑目标受众的审美偏好
+- 确定整体色调与装饰元素
+
+### 步骤3：布局规划
+- 根据信息量选择布局结构
+- 配置人物展示方案（如有）
+- 规划信息模块位置与层级
+
+### 步骤4：视觉细化
+- 确定配色方案与字体系统
+- 设计装饰元素与视觉焦点
+- 优化信息可读性与视觉平衡
+
+### 步骤5：提示词生成
+- 整合所有设计决策
+- 输出结构化的视觉描述
+- 包含具体的文本内容占位
+
+## Output Format (输出格式)
+请直接输出完整的英文图像生成提示词，不要有任何额外解释或标记，不要使用markdown格式。提示词应包含：
+- 整体风格与尺寸
+- 背景描述（颜色、渐变、纹理）
+- 布局结构（顶部/中部/底部各区域内容）
+- 文字内容（用引号标注实际文本）
+- 人物描述（如有，包含数量、位置、样式）
+- 装饰元素（具体描述每个装饰的位置、样式、颜色）
+- 配色细节（色值或色彩描述）
+- 字体样式（粗细、大小、效果）
+- 光影效果（发光、阴影、高光）
+
+## Constraints (约束条件)
+- 默认尺寸为 3:4 竖屏，除非用户指定其他比例
+- 所有设计决策必须基于用户提供的实际内容
+- 如用户未提供某项信息，可用占位符标注，不可自行编造
+- 保持专业性，避免过度装饰影响信息传达
+- 提示词需足够详细，确保生成结果符合设计意图`
+
+interface GenerateEventPosterPromptParams {
+  eventName: string
+  eventType?: string
+  keyInfo?: string
+  specialRequirements?: string
+}
+
+/**
+ * 调用 DeepSeek API 生成活动海报提示词
+ */
+export async function generateEventPosterPrompt(params: GenerateEventPosterPromptParams): Promise<string> {
+  const { eventName, eventType, keyInfo, specialRequirements } = params
+
+  // 构建用户输入
+  const userInput = `
+活动基本信息:
+- 活动名称: ${eventName}
+${eventType ? `- 活动类型: ${eventType}` : ''}
+
+${keyInfo ? `关键信息:\n${keyInfo}` : ''}
+
+${specialRequirements ? `特殊要求:\n${specialRequirements}` : ''}
+
+请根据以上信息,生成一个符合规范的活动海报设计提示词。
+`.trim()
+
+  try {
+    const response = await fetch(`${DEEPSEEK_BASE_URL}/v1/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'deepseek-chat',
+        messages: [
+          {
+            role: 'system',
+            content: EVENT_POSTER_SYSTEM_PROMPT,
+          },
+          {
+            role: 'user',
+            content: userInput,
+          },
+        ],
+        temperature: 0.7,
+        max_tokens: 2000,
+      }),
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      throw new Error(`DeepSeek API error: ${response.status} ${JSON.stringify(errorData)}`)
+    }
+
+    const data = await response.json()
+    const prompt = data.choices?.[0]?.message?.content?.trim()
+
+    if (!prompt) {
+      throw new Error('DeepSeek API 返回空提示词')
+    }
+
+    return prompt
+  } catch (error) {
+    console.error('DeepSeek API 调用失败:', error)
+    throw error
+  }
+}
+

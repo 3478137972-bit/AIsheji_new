@@ -25,7 +25,8 @@
       "Bash(git add:*)",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nConfigure environment variables for Vercel deployment\n\n更新 API 地址配置:\n- 将硬编码的 API_BASE_URL 改为环境变量\n- 支持通过 NEXT_PUBLIC_API_BASE_URL 配置后端地址\n- 本地开发默认使用 http://localhost:3001\n\n修改的文件:\n- app/tools/ai-logo/page.tsx\n- app/tools/ai-illustration/page.tsx\n- app/tools/ai-ip-illustration-1/page.tsx\n- app/tools/ai-font/page.tsx\n\n新增配置文件:\n- .env.example - 前端环境变量模板\n- ai-logo-backend/.env.example - 后端环境变量模板\n- VERCEL_DEPLOYMENT_GUIDE.md - Vercel 部署完整指南\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(git push:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git checkout:*)"
     ]
   }
 }
