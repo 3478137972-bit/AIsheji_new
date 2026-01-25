@@ -2,28 +2,13 @@
 
 import { useState, useRef } from "react"
 import { MainLayout } from "@/components/main-layout"
-import { ArrowLeft, Sparkles, Download, Upload, X, Check } from "lucide-react"
+import { ArrowLeft, Sparkles, Download, Upload, X } from "lucide-react"
 import Link from "next/link"
 
 // API 地址
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || ""
 
-// 比例选项
-const aspectRatios = [
-  { value: "1:1", label: "1:1" },
-  { value: "2:3", label: "2:3" },
-  { value: "3:2", label: "3:2" },
-  { value: "3:4", label: "3:4" },
-  { value: "4:3", label: "4:3" },
-  { value: "4:5", label: "4:5" },
-  { value: "5:4", label: "5:4" },
-  { value: "9:16", label: "9:16" },
-  { value: "16:9", label: "16:9" },
-  { value: "21:9", label: "21:9" },
-  { value: "auto", label: "auto" },
-]
-
-// 活动海报结果类型
+// 场景海报结果类型
 interface ScenePosterResult {
   index: number
   taskId: string
@@ -34,13 +19,11 @@ interface ScenePosterResult {
 
 export default function AIScenePosterPage() {
   // 表单字段
-  const [eventName, setEventName] = useState("")
-  const [eventType, setEventType] = useState("")
-  const [keyInfo, setKeyInfo] = useState("")
-  const [specialRequirements, setSpecialRequirements] = useState("")
+  const [brandInfo, setBrandInfo] = useState("")
+  const [brandMessage, setBrandMessage] = useState("")
+  const [visualStyle, setVisualStyle] = useState("")
+  const [textContent, setTextContent] = useState("")
 
-  const [selectedRatio, setSelectedRatio] = useState("1:1")
-  const [showRatioDialog, setShowRatioDialog] = useState(false)
   const [referenceImages, setReferenceImages] = useState<string[]>([])
   const [generatedImages, setGeneratedImages] = useState<ScenePosterResult[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
@@ -116,27 +99,26 @@ export default function AIScenePosterPage() {
     setReferenceImages(prev => prev.filter((_, i) => i !== index))
   }
 
-  // 调用后端生成活动海报
+  // 调用后端生成场景海报
   const handleGenerate = async () => {
-    if (!eventName.trim()) return
+    if (!brandInfo.trim()) return
 
     setIsGenerating(true)
     setGeneratedImages([])
-    setStatusMessage("正在调用 AI 生成活动海报...")
+    setStatusMessage("正在调用 AI 生成场景海报...")
 
     try {
       // 步骤1: 调用后端创建任务
-      const response = await fetch(`${API_BASE_URL}/api/generate-event-poster`, {
+      const response = await fetch(`${API_BASE_URL}/api/generate-scene-poster`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          eventName,
-          eventType,
-          keyInfo,
-          specialRequirements,
-          aspectRatio: selectedRatio,
+          brandInfo,
+          brandMessage,
+          visualStyle,
+          textContent,
           referenceImages: referenceImages,
         }),
       })
@@ -183,7 +165,7 @@ export default function AIScenePosterPage() {
 
         if (data.status === "completed") {
           setIsGenerating(false)
-          setStatusMessage(`成功生成 ${successCount} 个活动海报`)
+          setStatusMessage(`成功生成 ${successCount} 个场景海报`)
           break
         }
 
@@ -209,71 +191,59 @@ export default function AIScenePosterPage() {
           >
             <ArrowLeft className="w-5 h-5" />
           </Link>
-          <h1 className="text-xl font-semibold">AI 活动海报设计</h1>
+          <h1 className="text-xl font-semibold">AI 场景海报设计</h1>
         </div>
 
         <div className="flex gap-6 h-[calc(100vh-140px)]">
           {/* Left Panel - Form */}
           <div className="w-80 flex-shrink-0 bg-card rounded-2xl border border-border p-6 flex flex-col overflow-y-auto">
             <div className="space-y-3 flex-1">
-              {/* 活动名称 */}
+              {/* 品牌名称和行业 */}
               <div>
-                <label className="block text-sm font-medium mb-1.5">活动名称 *</label>
+                <label className="block text-sm font-medium mb-1.5">品牌名称和行业 *</label>
                 <input
                   type="text"
-                  value={eventName}
-                  onChange={(e) => setEventName(e.target.value)}
-                  placeholder="请输入活动名称"
+                  value={brandInfo}
+                  onChange={(e) => setBrandInfo(e.target.value)}
+                  placeholder="请输入品牌名称和所属行业"
                   className="w-full p-2 text-sm bg-muted rounded-xl border-none outline-none"
                 />
               </div>
 
-              {/* 活动类型 */}
+              {/* 希望传达的品牌信息 */}
               <div>
-                <label className="block text-sm font-medium mb-1.5">活动类型</label>
-                <input
-                  type="text"
-                  value={eventType}
-                  onChange={(e) => setEventType(e.target.value)}
-                  placeholder="如：培训课程/商务峰会/产品发布等"
-                  className="w-full p-2 text-sm bg-muted rounded-xl border-none outline-none"
-                />
-              </div>
-
-              {/* 关键信息 */}
-              <div>
-                <label className="block text-sm font-medium mb-1.5">关键信息</label>
+                <label className="block text-sm font-medium mb-1.5">希望传达的品牌信息</label>
                 <textarea
-                  value={keyInfo}
-                  onChange={(e) => setKeyInfo(e.target.value)}
-                  placeholder="时间/地点/人物/卖点/价格等，提供越详细越好"
-                  rows={4}
-                  className="w-full p-2 text-sm bg-muted rounded-xl border-none outline-none resize-none"
-                />
-              </div>
-
-              {/* 特殊要求 */}
-              <div>
-                <label className="block text-sm font-medium mb-1.5">特殊要求</label>
-                <textarea
-                  value={specialRequirements}
-                  onChange={(e) => setSpecialRequirements(e.target.value)}
-                  placeholder="如有特定风格偏好、配色要求、必须包含的元素等"
+                  value={brandMessage}
+                  onChange={(e) => setBrandMessage(e.target.value)}
+                  placeholder="请输入品牌信息(如slogan、价值观等)"
                   rows={3}
                   className="w-full p-2 text-sm bg-muted rounded-xl border-none outline-none resize-none"
                 />
               </div>
 
-              {/* 比例 */}
+              {/* 视觉风格偏好 */}
               <div>
-                <label className="block text-sm font-medium mb-1.5">比例</label>
-                <button
-                  onClick={() => setShowRatioDialog(true)}
-                  className="w-full p-2 text-sm bg-muted rounded-xl border-none outline-none text-left flex items-center justify-between hover:bg-muted/80 transition-colors"
-                >
-                  <span>{selectedRatio}</span>
-                  <span className="text-muted-foreground text-xs">点击选择</span>
-                </button>
+                <label className="block text-sm font-medium mb-1.5">视觉风格偏好</label>
+                <input
+                  type="text"
+                  value={visualStyle}
+                  onChange={(e) => setVisualStyle(e.target.value)}
+                  placeholder="现代简约/复古怀旧/极简主义等"
+                  className="w-full p-2 text-sm bg-muted rounded-xl border-none outline-none"
+                />
+              </div>
+
+              {/* 文字内容 */}
+              <div>
+                <label className="block text-sm font-medium mb-1.5">文字内容</label>
+                <textarea
+                  value={textContent}
+                  onChange={(e) => setTextContent(e.target.value)}
+                  placeholder="请输入文字内容(可留空让AI自拟)"
+                  rows={3}
+                  className="w-full p-2 text-sm bg-muted rounded-xl border-none outline-none resize-none"
+                />
               </div>
 
               {/* Reference Images */}
@@ -339,7 +309,7 @@ export default function AIScenePosterPage() {
             {/* Generate Button */}
             <button
               onClick={handleGenerate}
-              disabled={!eventName.trim() || isGenerating}
+              disabled={!brandInfo.trim() || isGenerating}
               className="w-full py-3 bg-primary text-primary-foreground rounded-full font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-6"
             >
               <Sparkles className="w-5 h-5" />
@@ -364,14 +334,14 @@ export default function AIScenePosterPage() {
                       <>
                         <img
                           src={image.imageUrl}
-                          alt={`活动海报 ${image.index + 1}`}
+                          alt={`场景海报 ${image.index + 1}`}
                           className="w-full h-full object-cover"
                         />
                         {/* Download overlay */}
                         <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
                           <a
                             href={image.imageUrl}
-                            download={`event-poster-${image.index + 1}.png`}
+                            download={`scene-poster-${image.index + 1}.png`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-3 bg-card rounded-full shadow-lg hover:scale-110 transition-transform"
@@ -402,56 +372,12 @@ export default function AIScenePosterPage() {
               <div className="h-full flex items-center justify-center text-muted-foreground">
                 <div className="text-center">
                   <Sparkles className="w-16 h-16 mx-auto mb-4 opacity-30" />
-                  <p>输入活动信息并点击生成</p>
+                  <p>输入品牌信息并点击生成</p>
                 </div>
               </div>
             )}
           </div>
         </div>
-
-        {/* Aspect Ratio Dialog */}
-        {showRatioDialog && (
-          <div
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-            onClick={() => setShowRatioDialog(false)}
-          >
-            <div
-              className="bg-card rounded-2xl p-6 w-96 max-h-[80vh] overflow-y-auto"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <h3 className="text-lg font-semibold mb-4">选择比例</h3>
-              <div className="grid grid-cols-3 gap-3">
-                {aspectRatios.map((ratio) => (
-                  <button
-                    key={ratio.value}
-                    onClick={() => {
-                      setSelectedRatio(ratio.value)
-                      setShowRatioDialog(false)
-                    }}
-                    className={`p-4 rounded-xl border-2 transition-all hover:scale-105 relative ${
-                      selectedRatio === ratio.value
-                        ? "border-primary bg-primary/10"
-                        : "border-border bg-muted hover:border-primary/50"
-                    }`}
-                  >
-                    <div className="text-center font-medium">{ratio.label}</div>
-                    {selectedRatio === ratio.value && (
-                      <div className="absolute top-2 right-2 w-5 h-5 bg-primary rounded-full flex items-center justify-center">
-                        <Check className="w-3 h-3 text-primary-foreground" />
-                      </div>
-                    )}
-                  </button>
-                ))}
-              </div>
-              <button
-                onClick={() => setShowRatioDialog(false)}
-                className="w-full mt-4 py-2 bg-muted rounded-xl hover:bg-muted/80 transition-colors"
-              >
-                取消
-              </button>
-            </div>
-          </div>
-        )}
       </div>
     </MainLayout>
   )
