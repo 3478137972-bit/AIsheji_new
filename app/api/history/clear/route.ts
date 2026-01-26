@@ -4,12 +4,15 @@ const { clearHistory } = require('@/lib/backend/history-store')
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { olderThan } = body
+    const { olderThan, user_id } = body
 
     // 清空历史记录
     const options: any = {}
     if (olderThan) {
       options.olderThan = new Date(olderThan)
+    }
+    if (user_id) {
+      options.user_id = user_id
     }
 
     await clearHistory(options)

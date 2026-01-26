@@ -2,21 +2,28 @@
 
 import * as React from 'react'
 import type { CreateOperationHistory } from '@/types/operation-history'
+import { getOrCreateSessionId } from '@/lib/utils/session'
 
 /**
  * 操作历史记录 Hook
- * 参考 use-toast.ts 的全局状态管理模式
+ * 使用 Session ID 隔离不同用户的历史记录
  */
 
 // 记录操作到服务器
 async function recordOperationToServer(operation: CreateOperationHistory) {
   try {
+    // 获取或创建 session ID
+    const sessionId = getOrCreateSessionId()
+
     const response = await fetch('/api/history/record', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(operation),
+      body: JSON.stringify({
+        ...operation,
+        user_id: sessionId, // 使用 session ID 作为 user_id
+      }),
     })
 
     if (!response.ok) {
@@ -39,10 +46,14 @@ async function fetchHistory(options: {
   tool_name?: string
 } = {}) {
   try {
+    // 获取当前 session ID
+    const sessionId = getOrCreateSessionId()
+
     const params = new URLSearchParams()
     if (options.limit) params.append('limit', options.limit.toString())
     if (options.offset) params.append('offset', options.offset.toString())
     if (options.tool_name) params.append('tool_name', options.tool_name)
+    params.append('user_id', sessionId) // 添加 session ID 参数
 
     const response = await fetch(`/api/history/list?${params.toString()}`)
 
@@ -61,12 +72,18 @@ async function fetchHistory(options: {
 // 清空历史记录
 async function clearHistoryOnServer(olderThan?: Date) {
   try {
+    // 获取当前 session ID
+    const sessionId = getOrCreateSessionId()
+
     const response = await fetch('/api/history/clear', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ olderThan: olderThan?.toISOString() }),
+      body: JSON.stringify({
+        olderThan: olderThan?.toISOString(),
+        user_id: sessionId, // 添加 session ID
+      }),
     })
 
     if (!response.ok) {
