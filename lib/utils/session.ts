@@ -3,6 +3,8 @@
  * 用于在没有登录系统的情况下识别不同用户
  */
 
+import { getCurrentUser } from './supabase-client'
+
 const SESSION_ID_KEY = 'user_session_id'
 const SESSION_ID_COOKIE_MAX_AGE = 365 * 24 * 60 * 60 // 1年
 
@@ -68,4 +70,26 @@ export function getCurrentSessionId(): string | null {
   }
 
   return null
+}
+
+/**
+ * 获取用户标识
+ * 优先使用 Supabase 用户 ID，未登录时使用 Session ID
+ */
+export async function getUserIdentifier(): Promise<string> {
+  try {
+    // 尝试获取 Supabase 用户
+    const user = await getCurrentUser()
+    if (user?.id) {
+      console.log('[SessionManager] 使用 Supabase 用户 ID:', user.id)
+      return user.id
+    }
+  } catch (error) {
+    console.warn('[SessionManager] 获取 Supabase 用户失败，使用 Session ID')
+  }
+
+  // 回退到 Session ID
+  const sessionId = getOrCreateSessionId()
+  console.log('[SessionManager] 使用 Session ID:', sessionId)
+  return sessionId
 }
