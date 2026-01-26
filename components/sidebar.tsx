@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 import {
   Home,
   Sparkles,
-  Clock,
+  History,
   FolderOpen,
   Layers,
   Users,
@@ -17,7 +17,7 @@ import {
 const menuItems = [
   { icon: Home, label: "首页", href: "/" },
   { icon: Sparkles, label: "AI 工具", href: "/ai-tools" },
-  { icon: Clock, label: "最近打开", href: "/recent" },
+  { icon: History, label: "历史记录", href: "/history" },
   { icon: FolderOpen, label: "项目空间", href: "/projects" },
   { icon: Layers, label: "套图配方", href: "/batch-recipes" },
   { icon: Users, label: "团队协作", href: "/team", badge: "Pro" },
