@@ -13,7 +13,6 @@ import {
   Settings,
   HelpCircle,
 } from "lucide-react"
-import { UserMenu } from "./user-menu"
 
 const menuItems = [
   { icon: Home, label: "首页", href: "/" },
@@ -95,11 +94,6 @@ export function Sidebar() {
           ))}
         </ul>
       </nav>
-
-      {/* User Menu */}
-      <div className="p-4 border-t border-sidebar-border">
-        <UserMenu />
-      </div>
     </aside>
   )
 }
