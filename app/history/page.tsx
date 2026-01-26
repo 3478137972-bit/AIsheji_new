@@ -23,6 +23,13 @@ const toolDisplayNames: Record<string, string> = {
   'ai-scene-poster': 'AI场景海报',
 }
 
+// 筛选类型
+const filterTypes = [
+  { key: 'all', label: '全部' },
+  { key: 'images', label: '图片记录' },
+  { key: 'projects', label: '项目' },
+]
+
 // 操作类型图标映射
 const actionIcons: Record<string, any> = {
   generate_success: Sparkles,
@@ -81,12 +88,25 @@ export default function HistoryPage() {
   const loadHistory = async () => {
     setLoading(true)
     try {
-      const options: any = { limit: 50 }
-      if (filter !== 'all') {
-        options.tool_name = filter
+      const data = await getHistory({ limit: 50 })
+
+      // 根据筛选类型过滤数据
+      let filteredData = data
+      if (filter === 'images') {
+        // 图片记录：所有 AI 工具生成的记录
+        filteredData = data.filter((item: OperationHistory) =>
+          item.operation_type === 'generate' ||
+          item.operation_type === 'download' ||
+          item.operation_type === 'upload'
+        )
+      } else if (filter === 'projects') {
+        // 项目：对话功能的记录（暂时为空，未来扩展）
+        filteredData = data.filter((item: OperationHistory) =>
+          item.operation_type === 'page_visit' // 示例，未来可以添加对话类型
+        )
       }
-      const data = await getHistory(options)
-      setHistory(data)
+
+      setHistory(filteredData)
     } catch (error) {
       console.error('加载历史记录失败:', error)
     } finally {
@@ -130,27 +150,17 @@ export default function HistoryPage() {
 
           {/* 筛选器 */}
           <div className="mb-6 flex gap-2 flex-wrap">
-            <button
-              onClick={() => setFilter('all')}
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-                filter === 'all'
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted text-muted-foreground hover:bg-muted/80'
-              }`}
-            >
-              全部
-            </button>
-            {Object.entries(toolDisplayNames).map(([key, name]) => (
+            {filterTypes.map((type) => (
               <button
-                key={key}
-                onClick={() => setFilter(key)}
+                key={type.key}
+                onClick={() => setFilter(type.key)}
                 className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-                  filter === key
+                  filter === type.key
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-muted text-muted-foreground hover:bg-muted/80'
                 }`}
               >
-                {name}
+                {type.label}
               </button>
             ))}
           </div>
