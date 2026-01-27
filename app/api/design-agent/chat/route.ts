@@ -187,10 +187,10 @@ export async function POST(request: NextRequest) {
         }
 
         // 如果没有答案，抛出一个特殊错误，让外层捕获并返回问题
-        throw {
-          type: 'NEED_ANSWERS',
-          questions: questions
-        };
+        const error: any = new Error('需要收集更多信息');
+        error.type = 'NEED_ANSWERS';
+        error.questions = questions;
+        throw error;
       };
 
       const result = await agent.generateInteractive(message, onQuestion);
