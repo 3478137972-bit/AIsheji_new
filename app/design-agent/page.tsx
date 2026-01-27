@@ -114,21 +114,63 @@ export default function DesignAgentPage() {
     }
 
     setMessages(prev => [...prev, userMessage])
+    const userInput = input
     setInput("")
     setIsLoading(true)
 
-    // TODO: 调用设计智能体 API
-    // 暂时模拟回复
-    setTimeout(() => {
-      const assistantMessage: Message = {
+    try {
+      // 调用设计智能体 API
+      const response = await fetch('/api/design-agent/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: userInput,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || '请求失败')
+      }
+
+      // 根据响应类型处理
+      if (data.type === 'result') {
+        // 成功生成提示词
+        const assistantMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          role: "assistant",
+          content: data.message + '\n\n📝 提示词：\n' + data.result.prompt,
+          timestamp: new Date()
+        }
+        setMessages(prev => [...prev, assistantMessage])
+
+        // TODO: 在画布区域显示生成的图片
+        console.log('生成结果:', data.result)
+      } else if (data.type === 'error') {
+        // 错误
+        const assistantMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          role: "assistant",
+          content: data.message,
+          timestamp: new Date()
+        }
+        setMessages(prev => [...prev, assistantMessage])
+      }
+    } catch (error: any) {
+      console.error('发送消息失败:', error)
+      const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: "我是设计智能体，正在处理您的需求...",
+        content: "❌ 抱歉，发生了错误：" + error.message,
         timestamp: new Date()
       }
-      setMessages(prev => [...prev, assistantMessage])
+      setMessages(prev => [...prev, errorMessage])
+    } finally {
       setIsLoading(false)
-    }, 1000)
+    }
   }
 
   return (
