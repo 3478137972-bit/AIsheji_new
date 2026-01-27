@@ -110,6 +110,87 @@ export default function DesignAgentPage() {
   }
 
   const handleSend = async () => {
+    // 如果正在提交答案
+    if (pendingQuestions && Object.keys(answers).length > 0) {
+      if (isLoading) return
+
+      // 添加用户答案消息到对话中
+      const answersText = Object.entries(answers)
+        .map(([key, value]) => {
+          const question = pendingQuestions.find(q => q.key === key)
+          return `${question?.question} ${value}`
+        })
+        .join('\n')
+
+      const answerMessage: Message = {
+        id: Date.now().toString(),
+        role: "user",
+        content: `我的回答：\n${answersText}`,
+        timestamp: new Date()
+      }
+
+      setMessages(prev => [...prev, answerMessage])
+      setIsLoading(true)
+
+      try {
+        const requestBody: any = {
+          message: originalMessage,
+          answers: answers
+        }
+
+        const response = await fetch('/api/design-agent/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestBody),
+        })
+
+        const data = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data.message || '请求失败')
+        }
+
+        // 处理响应
+        if (data.type === 'result') {
+          const assistantMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            role: "assistant",
+            content: data.message + '\n\n📝 提示词：\n' + data.result.prompt,
+            timestamp: new Date()
+          }
+          setMessages(prev => [...prev, assistantMessage])
+
+          // 清除问答状态
+          setPendingQuestions(null)
+          setAnswers({})
+          setOriginalMessage("")
+        } else if (data.type === 'error') {
+          const assistantMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            role: "assistant",
+            content: data.message,
+            timestamp: new Date()
+          }
+          setMessages(prev => [...prev, assistantMessage])
+        }
+      } catch (error: any) {
+        console.error('发送答案失败:', error)
+        const errorMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          role: "assistant",
+          content: "❌ 抱歉，发生了错误：" + error.message,
+          timestamp: new Date()
+        }
+        setMessages(prev => [...prev, errorMessage])
+      } finally {
+        setIsLoading(false)
+      }
+      return
+    }
+
+    // 正常发送新消息
     if (!input.trim() || isLoading) return
 
     const userMessage: Message = {
@@ -128,12 +209,6 @@ export default function DesignAgentPage() {
       // 调用设计智能体 API
       const requestBody: any = {
         message: userInput,
-      }
-
-      // 如果有待回答的问题，添加答案
-      if (pendingQuestions && Object.keys(answers).length > 0) {
-        requestBody.answers = answers
-        requestBody.message = originalMessage // 使用原始消息
       }
 
       const response = await fetch('/api/design-agent/chat', {
@@ -308,6 +383,62 @@ export default function DesignAgentPage() {
                           <p className="text-xs opacity-70 mt-1">
                             {message.timestamp.toLocaleTimeString()}
                           </p>
+
+                          {/* 问答 UI */}
+                          {message.questions && message.questions.length > 0 && (
+                            <div className="mt-4 space-y-3">
+                              {message.questions.map((q) => (
+                                <div key={q.key} className="bg-background/50 p-3 rounded-lg border border-border">
+                                  <p className="font-medium text-sm mb-2">{q.question}</p>
+                                  {q.options && q.options.length > 0 ? (
+                                    // 单选按钮组
+                                    <div className="space-y-2">
+                                      {q.options.map((option) => (
+                                        <label key={option} className="flex items-center gap-2 cursor-pointer hover:bg-muted/50 p-2 rounded">
+                                          <input
+                                            type="radio"
+                                            name={q.key}
+                                            value={option}
+                                            checked={answers[q.key] === option}
+                                            onChange={(e) => setAnswers({...answers, [q.key]: e.target.value})}
+                                            className="w-4 h-4 text-primary"
+                                          />
+                                          <span className="text-sm">{option}</span>
+                                        </label>
+                                      ))}
+                                    </div>
+                                  ) : (
+                                    // 文本输入框
+                                    <input
+                                      type="text"
+                                      value={answers[q.key] || ''}
+                                      onChange={(e) => setAnswers({...answers, [q.key]: e.target.value})}
+                                      className="w-full p-2 border border-border rounded bg-background text-sm"
+                                      placeholder="请输入..."
+                                    />
+                                  )}
+                                </div>
+                              ))}
+
+                              {/* 提交答案按钮 */}
+                              <Button
+                                onClick={() => {
+                                  // 验证所有问题都已回答
+                                  const allAnswered = message.questions!.every(q => answers[q.key]?.trim())
+                                  if (!allAnswered) {
+                                    alert('请回答所有问题')
+                                    return
+                                  }
+                                  // 发送答案
+                                  handleSend()
+                                }}
+                                disabled={isLoading}
+                                className="w-full bg-primary hover:bg-primary/90"
+                              >
+                                提交答案
+                              </Button>
+                            </div>
+                          )}
                         </div>
                       </div>
                     ))
@@ -339,8 +470,8 @@ export default function DesignAgentPage() {
                         handleSend()
                       }
                     }}
-                    placeholder="描述你想要的设计..."
-                    disabled={isLoading}
+                    placeholder={pendingQuestions ? "请先回答上面的问题..." : "描述你想要的设计..."}
+                    disabled={isLoading || pendingQuestions !== null}
                     className="w-full min-h-[80px] max-h-[200px] resize-none bg-transparent border-none outline-none text-sm placeholder:text-muted-foreground"
                     style={{ scrollbarWidth: 'thin' }}
                   />
@@ -397,7 +528,7 @@ export default function DesignAgentPage() {
                     {/* 右侧：发送按钮 */}
                     <Button
                       onClick={handleSend}
-                      disabled={isLoading || !input.trim()}
+                      disabled={isLoading || !input.trim() || pendingQuestions !== null}
                       size="icon"
                       className="h-9 w-9 bg-gradient-to-br from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 rounded-full shadow-md hover:shadow-lg transition-all"
                     >
