@@ -1,0 +1,141 @@
+{
+  "version": "1.0.0",
+  "categories": {
+    "logo_design": {
+      "name": "Logo设计",
+      "keywords": ["logo", "标志", "商标", "品牌标识", "图标"],
+      "templates": [
+        {
+          "name": "科技公司Logo",
+          "tags": ["科技", "现代", "简约"],
+          "base_prompt": "modern minimalist tech company logo, clean lines, geometric shapes, professional, vector style, simple color palette",
+          "style_modifiers": ["flat design", "gradient", "3D effect"],
+          "color_schemes": ["blue and white", "black and silver", "purple gradient"],
+          "requirements": ["white background", "high resolution", "scalable vector"]
+        },
+        {
+          "name": "餐饮品牌Logo",
+          "tags": ["餐饮", "食品", "美食"],
+          "base_prompt": "restaurant brand logo, appetizing, warm colors, food elements, friendly and inviting",
+          "style_modifiers": ["hand-drawn", "vintage", "modern"],
+          "color_schemes": ["red and yellow", "green and brown", "orange and cream"],
+          "requirements": ["memorable", "versatile", "appetite appeal"]
+        }
+      ],
+      "common_rules": [
+        "保持简洁，避免过于复杂的细节",
+        "确保在不同尺寸下都清晰可辨",
+        "颜色不超过3种主色",
+        "考虑黑白版本的可用性"
+      ]
+    },
+    "product_image": {
+      "name": "商品图设计",
+      "keywords": ["商品", "产品", "电商", "主图", "详情页"],
+      "templates": [
+        {
+          "name": "商品白底图",
+          "tags": ["白底", "电商", "主图"],
+          "base_prompt": "product photography, pure white background, centered composition, professional lighting, high detail, commercial quality",
+          "style_modifiers": ["studio lighting", "soft shadows", "clean edges"],
+          "color_schemes": ["pure white #FFFFFF"],
+          "requirements": ["no shadows on background", "product centered", "high resolution 4K"]
+        },
+        {
+          "name": "商品场景图",
+          "tags": ["场景", "生活化", "氛围"],
+          "base_prompt": "product in lifestyle scene, natural lighting, realistic environment, appealing composition, commercial photography",
+          "style_modifiers": ["lifestyle", "minimalist scene", "luxury setting"],
+          "color_schemes": ["natural tones", "warm atmosphere", "cool modern"],
+          "requirements": ["product as focus", "contextual relevance", "high quality"]
+        }
+      ],
+      "common_rules": [
+        "产品必须清晰可见，占据画面主要位置",
+        "光线均匀，避免过曝或欠曝",
+        "背景不能喧宾夺主",
+        "符合电商平台规范"
+      ]
+    },
+    "id_photo": {
+      "name": "证件照",
+      "keywords": ["证件照", "证件", "照片", "一寸", "二寸", "签证照"],
+      "templates": [
+        {
+          "name": "标准证件照",
+          "tags": ["正式", "标准", "证件"],
+          "base_prompt": "professional ID photo, frontal face, neutral expression, proper lighting, clean background, formal attire",
+          "style_modifiers": ["studio lighting", "even illumination", "sharp focus"],
+          "color_schemes": ["white background", "blue background", "red background"],
+          "requirements": ["face centered", "eyes level", "no shadows", "high clarity"]
+        }
+      ],
+      "common_rules": [
+        "人脸必须正面朝向镜头",
+        "表情自然，不能有夸张表情",
+        "背景纯色，无杂物",
+        "光线均匀，面部无阴影",
+        "符合证件照标准尺寸"
+      ]
+    },
+    "poster_design": {
+      "name": "海报设计",
+      "keywords": ["海报", "宣传", "广告", "banner", "活动"],
+      "templates": [
+        {
+          "name": "促销海报",
+          "tags": ["促销", "活动", "电商"],
+          "base_prompt": "promotional poster design, eye-catching, bold typography, vibrant colors, clear hierarchy, commercial style",
+          "style_modifiers": ["modern", "festive", "minimalist"],
+          "color_schemes": ["red and gold", "bright gradients", "high contrast"],
+          "requirements": ["clear message", "visual impact", "brand consistency"]
+        }
+      ],
+      "common_rules": [
+        "信息层级清晰，主次分明",
+        "色彩搭配和谐，有视觉冲击力",
+        "字体易读，大小合适",
+        "留白适当，不过于拥挤"
+      ]
+    },
+    "illustration": {
+      "name": "插画设计",
+      "keywords": ["插画", "插图", "配图", "手绘", "卡通"],
+      "templates": [
+        {
+          "name": "扁平插画",
+          "tags": ["扁平", "现代", "简约"],
+          "base_prompt": "flat illustration, simple shapes, solid colors, modern style, clean design, vector art",
+          "style_modifiers": ["geometric", "organic", "minimalist"],
+          "color_schemes": ["pastel colors", "bold colors", "monochromatic"],
+          "requirements": ["scalable", "clear concept", "consistent style"]
+        }
+      ],
+      "common_rules": [
+        "风格统一，保持一致性",
+        "色彩和谐，符合主题",
+        "构图平衡，视觉舒适",
+        "细节适度，不过于复杂"
+      ]
+    }
+  },
+  "general_rules": {
+    "quality_standards": [
+      "分辨率至少1920x1080或更高",
+      "色彩模式：RGB用于屏幕显示，CMYK用于印刷",
+      "文件格式：PNG用于透明背景，JPG用于照片，SVG用于矢量图",
+      "避免模糊、噪点、失真"
+    ],
+    "design_principles": [
+      "对比：通过大小、颜色、形状创造视觉层次",
+      "对齐：保持元素整齐排列",
+      "重复：统一的视觉元素增强一致性",
+      "亲密性：相关元素靠近放置"
+    ],
+    "prompt_optimization": {
+      "positive_keywords": ["high quality", "professional", "detailed", "8k", "masterpiece", "best quality"],
+      "negative_keywords": ["blurry", "low quality", "distorted", "watermark", "text", "signature"],
+      "structure": "主体描述 + 风格修饰 + 技术参数 + 质量要求"
+    }
+  }
+}
