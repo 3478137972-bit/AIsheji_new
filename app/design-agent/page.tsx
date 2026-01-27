@@ -260,7 +260,7 @@ export default function DesignAgentPage() {
                     <div className="flex items-center gap-2">
                       {/* 模型选择 */}
                       <Select value={selectedModel} onValueChange={handleModelChange}>
-                        <SelectTrigger className="h-8 px-3 text-xs rounded-full bg-purple-50 text-purple-700 border-0 hover:bg-purple-100">
+                        <SelectTrigger className="h-8 px-3 text-xs rounded-full bg-purple-200 text-purple-800 border-0 hover:bg-purple-300">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -274,7 +274,7 @@ export default function DesignAgentPage() {
 
                       {/* 尺寸选择 */}
                       <Select value={selectedAspectRatio} onValueChange={setSelectedAspectRatio}>
-                        <SelectTrigger className="h-8 px-3 text-xs rounded-full bg-purple-50 text-purple-700 border-0 hover:bg-purple-100">
+                        <SelectTrigger className="h-8 px-3 text-xs rounded-full bg-purple-200 text-purple-800 border-0 hover:bg-purple-300">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -289,7 +289,7 @@ export default function DesignAgentPage() {
                       {/* 分辨率选择 */}
                       {RESOLUTION_OPTIONS[selectedModel as keyof typeof RESOLUTION_OPTIONS]?.length > 0 && (
                         <Select value={selectedResolution} onValueChange={setSelectedResolution}>
-                          <SelectTrigger className="h-8 px-3 text-xs rounded-full bg-purple-50 text-purple-700 border-0 hover:bg-purple-100">
+                          <SelectTrigger className="h-8 px-3 text-xs rounded-full bg-purple-200 text-purple-800 border-0 hover:bg-purple-300">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
@@ -332,7 +332,13 @@ export default function DesignAgentPage() {
         )}
 
         {/* 右侧画布区域 */}
-        <div className="flex-1 flex items-center justify-center bg-muted/20 overflow-auto">
+        <div
+          className="flex-1 flex items-center justify-center bg-muted/20 overflow-auto relative"
+          style={{
+            backgroundImage: 'radial-gradient(circle, rgba(168, 85, 247, 0.15) 1px, transparent 1px)',
+            backgroundSize: '30px 30px'
+          }}
+        >
           <div className="text-center p-8">
             <div className="w-96 h-96 border-2 border-dashed border-muted-foreground/25 rounded-lg flex items-center justify-center mb-4">
               <p className="text-muted-foreground">画布区域</p>
