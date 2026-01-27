@@ -243,7 +243,7 @@ export default function DesignAgentPage() {
                 <div className="flex items-center gap-2">
                   {/* 模型选择 */}
                   <Select value={selectedModel} onValueChange={handleModelChange}>
-                    <SelectTrigger className="h-8 px-3 text-xs rounded-full bg-background border-0 hover:bg-muted">
+                    <SelectTrigger className="h-8 px-3 text-xs rounded-full bg-purple-50 text-purple-700 border-0 hover:bg-purple-100">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -257,7 +257,7 @@ export default function DesignAgentPage() {
 
                   {/* 尺寸选择 */}
                   <Select value={selectedAspectRatio} onValueChange={setSelectedAspectRatio}>
-                    <SelectTrigger className="h-8 px-3 text-xs rounded-full bg-background border-0 hover:bg-muted">
+                    <SelectTrigger className="h-8 px-3 text-xs rounded-full bg-purple-50 text-purple-700 border-0 hover:bg-purple-100">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -272,7 +272,7 @@ export default function DesignAgentPage() {
                   {/* 分辨率选择 */}
                   {RESOLUTION_OPTIONS[selectedModel as keyof typeof RESOLUTION_OPTIONS]?.length > 0 && (
                     <Select value={selectedResolution} onValueChange={setSelectedResolution}>
-                      <SelectTrigger className="h-8 px-3 text-xs rounded-full bg-background border-0 hover:bg-muted">
+                      <SelectTrigger className="h-8 px-3 text-xs rounded-full bg-purple-50 text-purple-700 border-0 hover:bg-purple-100">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
