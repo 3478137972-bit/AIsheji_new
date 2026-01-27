@@ -304,6 +304,13 @@ export class DesignAgent {
         }
       };
     } catch (error: any) {
+      // 如果是非设计需求或不支持的类别，直接向上抛出，让调用方处理
+      if (error.message === 'NOT_DESIGN_REQUEST' ||
+          error.message === 'CATEGORY_NOT_SUPPORTED') {
+        throw error;
+      }
+
+      // 其他错误返回失败结果
       console.error('❌ 处理失败:', error.message);
       return {
         success: false,

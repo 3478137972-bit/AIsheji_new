@@ -1,0 +1,90 @@
+{
+  "product_name": "秒懂AI超级员工",
+  "product_slogan": "AI 驱动的设计工具平台",
+  "description": "秒懂AI超级员工是一个专业的 AI 设计工具平台，为用户提供智能化的设计解决方案。",
+
+  "core_features": {
+    "design_agent": {
+      "name": "设计智能体",
+      "description": "基于 DeepSeek AI 的智能对话系统，能够理解用户的设计需求，自动生成专业的设计提示词",
+      "capabilities": [
+        "智能意图识别",
+        "自动分类设计需求",
+        "生成专业提示词",
+        "质量检查和优化"
+      ]
+    },
+    "design_tools": {
+      "name": "AI 设计工具",
+      "tools": [
+        {
+          "name": "AI Logo 设计",
+          "description": "智能生成 Logo 设计，支持多种风格"
+        },
+        {
+          "name": "AI 插画设计",
+          "description": "多风格插画生成，包括扁平、写实等风格"
+        },
+        {
+          "name": "AI 海报设计",
+          "description": "活动海报、宣传海报智能生成"
+        },
+        {
+          "name": "AI 包装设计",
+          "description": "产品包装设计，提升货架识别度"
+        },
+        {
+          "name": "AI IP 形象设计",
+          "description": "卡通 IP、吉祥物形象创作"
+        }
+      ]
+    }
+  },
+
+  "supported_design_categories": [
+    {
+      "name": "Logo 设计",
+      "keywords": ["logo", "标志", "品牌", "商标", "标识"],
+      "description": "专业的品牌标志设计，支持现代简约、科技感等多种风格"
+    },
+    {
+      "name": "插画设计",
+      "keywords": ["插画", "illustration", "绘画", "艺术"],
+      "description": "多风格插画创作，包括扁平风格、写实风格等"
+    },
+    {
+      "name": "海报设计",
+      "keywords": ["海报", "poster", "宣传", "广告"],
+      "description": "活动海报、宣传海报设计，视觉冲击力强"
+    },
+    {
+      "name": "包装设计",
+      "keywords": ["包装", "packaging", "产品", "盒子"],
+      "description": "产品包装设计，提升品牌识别度和货架吸引力"
+    },
+    {
+      "name": "IP 形象设计",
+      "keywords": ["IP", "形象", "吉祥物", "角色", "卡通"],
+      "description": "卡通 IP、品牌吉祥物设计，形象鲜明易记"
+    }
+  ],
+
+  "usage_guide": {
+    "how_to_use": "只需描述您的设计需求，我会帮您生成专业的设计提示词",
+    "examples": [
+      "帮我设计一个科技公司的 Logo，名字叫'未来科技'，要体现创新和专业",
+      "我需要一个扁平风格的插画，主题是环保",
+      "设计一张音乐节的海报，要有活力和年轻感",
+      "为咖啡产品设计包装，要体现高端品质",
+      "创作一个可爱的熊猫 IP 形象，用于儿童品牌"
+    ]
+  },
+
+  "advantages": [
+    "AI 智能识别设计意图",
+    "专业的设计知识库支持",
+    "自动质量检查和优化",
+    "多种设计类别全覆盖",
+    "简单易用的对话交互"
+  ]
+}

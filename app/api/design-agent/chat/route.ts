@@ -1,18 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
 import path from 'path';
+import fs from 'fs';
 import { DesignAgent } from '@/design-agent/design-agent';
 
 // 初始化设计智能体
 const deepseekApiKey = process.env.DEEPSEEK_API_KEY || '';
 const skillsPath = path.join(process.cwd(), 'design-agent', 'design-skills.json');
+const productInfoPath = path.join(process.cwd(), 'design-agent', 'product-info.json');
 
 let designAgent: DesignAgent | null = null;
+let productInfo: any = null;
 
 function getDesignAgent() {
   if (!designAgent) {
     designAgent = new DesignAgent(deepseekApiKey, skillsPath);
   }
   return designAgent;
+}
+
+function getProductInfo() {
+  if (!productInfo) {
+    const data = fs.readFileSync(productInfoPath, 'utf-8');
+    productInfo = JSON.parse(data);
+  }
+  return productInfo;
 }
 
 /**
@@ -85,6 +96,35 @@ export async function POST(request: NextRequest) {
 
         console.log('💬 切换到聊天模式...');
 
+        // 加载产品信息
+        const productInfo = getProductInfo();
+
+        // 构建产品信息提示词
+        const productContext = `
+# 产品信息
+
+**产品名称**: ${productInfo.product_name}
+**产品定位**: ${productInfo.product_slogan}
+**产品简介**: ${productInfo.description}
+
+## 核心功能
+
+### 设计智能体
+${productInfo.core_features.design_agent.description}
+
+**能力**:
+${productInfo.core_features.design_agent.capabilities.map((c: string) => `- ${c}`).join('\n')}
+
+### 支持的设计类型
+${productInfo.supported_design_categories.map((cat: any) => `- **${cat.name}**: ${cat.description}`).join('\n')}
+
+## 使用示例
+${productInfo.usage_guide.examples.map((ex: string) => `- "${ex}"`).join('\n')}
+
+## 产品优势
+${productInfo.advantages.map((adv: string) => `- ${adv}`).join('\n')}
+`;
+
         // 使用 DeepSeek 进行普通对话
         const { DeepSeekClient } = await import('@/design-agent/deepseek-client');
         const deepseek = new DeepSeekClient(deepseekApiKey);
@@ -94,15 +134,19 @@ export async function POST(request: NextRequest) {
             role: 'system',
             content: `你是秒懂AI超级员工的设计智能体助手。
 
+${productContext}
+
 你的职责：
 1. 当用户询问与设计无关的问题时，友好地回答
-2. 引导用户使用设计功能
-3. 介绍你支持的设计类型：Logo设计、插画设计、海报设计、包装设计、IP形象设计
+2. 介绍产品功能和优势
+3. 引导用户使用设计功能
+4. 回答关于产品的问题
 
 回答要求：
-- 简洁友好
+- 简洁友好，不要过于冗长
 - 适时引导用户尝试设计功能
-- 体现专业和热情`
+- 体现专业和热情
+- 基于上述产品信息回答问题`
           },
           {
             role: 'user',
