@@ -336,7 +336,7 @@ export default function DesignAgentPage() {
           className="flex-1 flex items-center justify-center bg-muted/20 overflow-auto relative"
           style={{
             backgroundImage: 'radial-gradient(circle, rgba(168, 85, 247, 0.15) 1.5px, transparent 1.5px)',
-            backgroundSize: '30px 30px'
+            backgroundSize: '21px 21px'
           }}
         >
           <div className="text-center p-8">
