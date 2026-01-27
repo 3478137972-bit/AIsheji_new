@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -12,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { UserMenu } from "@/components/user-menu"
 
 interface Message {
   id: string
@@ -131,9 +133,48 @@ export default function DesignAgentPage() {
   }
 
   return (
-    <div className="flex h-screen bg-background">
-      {/* 左侧对话区域 - 35% */}
-      <div className="w-[35%] border-r flex flex-col">
+    <div className="flex flex-col h-screen bg-background">
+      {/* 全局顶部导航栏 */}
+      <div className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="flex h-16 items-center justify-between px-6">
+          {/* 中间：产品图标和名称 */}
+          <div className="flex-1 flex items-center justify-center">
+            <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
+              <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center">
+                <svg
+                  className="w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-sm font-semibold">秒懂AI</h2>
+                <p className="text-xs text-muted-foreground">SUPER EMPLOYEE</p>
+              </div>
+            </Link>
+          </div>
+
+          {/* 右侧：用户菜单 */}
+          <div className="flex items-center gap-4">
+            <UserMenu />
+          </div>
+        </div>
+      </div>
+
+      {/* 主内容区域 */}
+      <div className="flex flex-1 overflow-hidden bg-muted/30">
+        {/* 左侧对话区域容器 */}
+        <div className="w-[35%] p-4">
+          {/* 对话卡片 */}
+          <div className="h-full bg-background rounded-3xl shadow-lg flex flex-col overflow-hidden">
         {/* 对话标题 */}
         <div className="p-4 border-b">
           <h1 className="text-lg font-semibold">设计智能体</h1>
@@ -261,49 +302,11 @@ export default function DesignAgentPage() {
             )}
           </div>
         </div>
-      </div>
+        </div>
+        </div>
 
       {/* 右侧图片展示区域 - 65% */}
       <div className="flex-1 flex flex-col bg-muted/20">
-        {/* 顶部导航栏 */}
-        <div className="h-16 border-b bg-background flex items-center justify-between px-6">
-          {/* 左侧：产品图标和名称 */}
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center">
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
-                />
-              </svg>
-            </div>
-            <div>
-              <h2 className="text-sm font-semibold">秒懂AI</h2>
-              <p className="text-xs text-muted-foreground">SUPER EMPLOYEE</p>
-            </div>
-          </div>
-
-          {/* 右侧：用户账号 */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
-                <span className="text-white text-sm font-medium">王</span>
-              </div>
-              <div className="text-sm">
-                <p className="font-medium">×子王</p>
-                <p className="text-xs text-muted-foreground">3478137972@qq.com</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* 画布区域 */}
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
@@ -313,6 +316,7 @@ export default function DesignAgentPage() {
             <p className="text-sm text-muted-foreground">生成的图片将在这里显示</p>
           </div>
         </div>
+      </div>
       </div>
     </div>
   )
