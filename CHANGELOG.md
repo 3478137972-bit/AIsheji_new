@@ -2,6 +2,149 @@
 
 本文档记录项目的所有重要修改和更新。
 
+## [2026-01-27] 设计智能体页面功能优化
+
+### 新增功能
+
+#### 1. 模型选择系统
+**文件**: `app/design-agent/page.tsx`
+
+**功能描述**:
+- 支持三种模型选择：Nano banana pro、nano banana、seedream4.5
+- 每个模型支持不同的尺寸比例选项（1:1、2:3、3:2、3:4、4:3、4:5、5:4、9:16、16:9、21:9、Auto）
+- Nano banana pro 支持分辨率选择（2K、4K）
+- 模型切换时自动重置尺寸和分辨率选项
+
+**技术实现**:
+```typescript
+const MODEL_OPTIONS = [
+  { value: "nano-banana-pro", label: "Nano banana pro" },
+  { value: "nano-banana", label: "nano banana" },
+  { value: "seedream4.5", label: "seedream4.5" },
+]
+
+const ASPECT_RATIOS = {
+  "nano-banana-pro": [...],
+  "nano-banana": [...],
+  "seedream4.5": [...]
+}
+
+const RESOLUTION_OPTIONS = {
+  "nano-banana-pro": [
+    { value: "2k", label: "2K" },
+    { value: "4k", label: "4K" },
+  ],
+  ...
+}
+```
+
+#### 2. 底部输入框优化
+**文件**: `app/design-agent/page.tsx`
+
+**功能描述**:
+- 使用 `textarea` 替代单行输入框，支持多行文本输入
+- 输入框高度自适应（最小 80px，最大 200px）
+- 支持滚动查看长文本
+- 选项按钮（模型、尺寸、分辨率）嵌入在输入框底部
+- 支持 Enter 发送，Shift+Enter 换行
+
+**UI 设计**:
+- 圆角卡片设计（rounded-2xl）
+- 浅紫色按钮主题（bg-purple-200）
+- 紫色渐变发送按钮
+- 响应式布局
+
+#### 3. 左侧对话栏展开/收缩功能
+**文件**: `app/design-agent/page.tsx`
+
+**功能描述**:
+- 点击对话栏右上角的收缩按钮可隐藏对话栏
+- 收缩后在画布左上角显示展开按钮
+- 平滑的过渡动画（transition-all duration-300）
+- 收缩时宽度变为 0，展开时恢复为 400px
+
+**技术实现**:
+```typescript
+const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+
+// 动态宽度控制
+className={`flex flex-col border-r border-border bg-background transition-all duration-300 ${
+  isSidebarOpen ? "w-[400px]" : "w-0"
+}`}
+```
+
+#### 4. 画布区域视觉优化
+**文件**: `app/design-agent/page.tsx`
+
+**功能描述**:
+- 添加浅紫色圆点背景图案
+- 使用 `radial-gradient` 创建重复的圆点效果
+- 圆点大小：1.5px
+- 圆点间距：21px × 21px
+- 圆点颜色：rgba(168, 85, 247, 0.15)
+
+**技术实现**:
+```typescript
+style={{
+  backgroundImage: 'radial-gradient(circle, rgba(168, 85, 247, 0.15) 1.5px, transparent 1.5px)',
+  backgroundSize: '21px 21px'
+}}
+```
+
+#### 5. 紫色主题统一
+**文件**: `app/design-agent/page.tsx`
+
+**功能描述**:
+- 选项按钮使用统一的紫色主题
+- 背景色：bg-purple-200
+- 文字颜色：text-purple-800
+- 悬停效果：hover:bg-purple-300
+- 发送按钮使用紫色渐变（from-purple-500 to-purple-700）
+
+### 页面布局
+
+**整体结构**:
+```
+┌─────────────────────────────────────────────┐
+│           顶部导航栏（秒懂AI + 用户菜单）        │
+├──────────────┬──────────────────────────────┤
+│              │                              │
+│  左侧对话区   │        右侧画布区域            │
+│  (可展开/收缩) │     (带圆点背景图案)          │
+│              │                              │
+│  - 对话历史   │                              │
+│  - 输入框    │                              │
+│  - 选项按钮   │                              │
+│              │                              │
+└──────────────┴──────────────────────────────┘
+```
+
+### 用户体验改进
+
+1. **更灵活的输入方式**: 多行文本输入支持更复杂的设计描述
+2. **更丰富的选项**: 支持多种模型、尺寸和分辨率选择
+3. **更好的空间利用**: 对话栏可收缩，为画布提供更多空间
+4. **更统一的视觉风格**: 紫色主题贯穿整个界面
+5. **更清晰的视觉层次**: 圆点背景增强画布区域的识别度
+
+### 技术栈
+
+- **框架**: Next.js 16 + React 18
+- **UI 组件**: shadcn/ui (Button, Select, Input)
+- **样式**: Tailwind CSS
+- **图标**: lucide-react (Send, PanelLeftOpen, PanelLeftClose)
+- **状态管理**: React Hooks (useState)
+
+### 后续计划
+
+- [ ] 实现实际的 AI 设计生成功能
+- [ ] 添加对话历史持久化
+- [ ] 支持图片上传和参考图功能
+- [ ] 添加生成历史记录
+- [ ] 优化移动端响应式布局
+
+---
+
 ## [2026-01-25] AI插画功能系统提示词升级
 
 ### 修改内容
