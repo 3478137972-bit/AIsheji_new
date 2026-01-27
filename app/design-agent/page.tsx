@@ -149,6 +149,15 @@ export default function DesignAgentPage() {
 
         // TODO: 在画布区域显示生成的图片
         console.log('生成结果:', data.result)
+      } else if (data.type === 'chat') {
+        // 普通聊天回复
+        const assistantMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          role: "assistant",
+          content: data.message,
+          timestamp: new Date()
+        }
+        setMessages(prev => [...prev, assistantMessage])
       } else if (data.type === 'error') {
         // 错误
         const assistantMessage: Message = {
