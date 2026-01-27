@@ -5,6 +5,13 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Send } from "lucide-react"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface Message {
   id: string
@@ -13,10 +20,87 @@ interface Message {
   timestamp: Date
 }
 
+// 模型配置
+const MODEL_OPTIONS = [
+  { value: "nano-banana-pro", label: "Nano banana pro" },
+  { value: "nano-banana", label: "nano banana" },
+  { value: "seedream4.5", label: "seedream4.5" },
+]
+
+// 尺寸配置
+const ASPECT_RATIOS = {
+  "nano-banana-pro": [
+    { value: "1:1", label: "1:1" },
+    { value: "2:3", label: "2:3" },
+    { value: "3:2", label: "3:2" },
+    { value: "3:4", label: "3:4" },
+    { value: "4:3", label: "4:3" },
+    { value: "4:5", label: "4:5" },
+    { value: "5:4", label: "5:4" },
+    { value: "9:16", label: "9:16" },
+    { value: "16:9", label: "16:9" },
+    { value: "21:9", label: "21:9" },
+    { value: "auto", label: "Auto" },
+  ],
+  "nano-banana": [
+    { value: "1:1", label: "1:1" },
+    { value: "2:3", label: "2:3" },
+    { value: "3:2", label: "3:2" },
+    { value: "3:4", label: "3:4" },
+    { value: "4:3", label: "4:3" },
+    { value: "4:5", label: "4:5" },
+    { value: "5:4", label: "5:4" },
+    { value: "9:16", label: "9:16" },
+    { value: "16:9", label: "16:9" },
+    { value: "21:9", label: "21:9" },
+    { value: "auto", label: "Auto" },
+  ],
+  "seedream4.5": [
+    { value: "1:1", label: "1:1" },
+    { value: "4:3", label: "4:3" },
+    { value: "3:4", label: "3:4" },
+    { value: "16:9", label: "16:9" },
+    { value: "9:16", label: "9:16" },
+    { value: "2:3", label: "2:3" },
+    { value: "3:2", label: "3:2" },
+    { value: "21:9", label: "21:9" },
+  ],
+}
+
+// 分辨率配置
+const RESOLUTION_OPTIONS = {
+  "nano-banana-pro": [
+    { value: "2k", label: "2K" },
+    { value: "4k", label: "4K" },
+  ],
+  "nano-banana": [],
+  "seedream4.5": [],
+}
+
 export default function DesignAgentPage() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+
+  // 模型选择状态
+  const [selectedModel, setSelectedModel] = useState("nano-banana-pro")
+  const [selectedAspectRatio, setSelectedAspectRatio] = useState("1:1")
+  const [selectedResolution, setSelectedResolution] = useState("2k")
+
+  // 处理模型切换
+  const handleModelChange = (model: string) => {
+    setSelectedModel(model)
+    // 重置为该模型的第一个尺寸选项
+    const aspectRatios = ASPECT_RATIOS[model as keyof typeof ASPECT_RATIOS]
+    if (aspectRatios && aspectRatios.length > 0) {
+      setSelectedAspectRatio(aspectRatios[0].value)
+    }
+    // 重置为该模型的第一个分辨率选项
+    const resolutions = RESOLUTION_OPTIONS[model as keyof typeof RESOLUTION_OPTIONS]
+    if (resolutions && resolutions.length > 0) {
+      setSelectedResolution(resolutions[0].value)
+    }
+  }
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return
@@ -100,7 +184,64 @@ export default function DesignAgentPage() {
         </ScrollArea>
 
         {/* 输入框 */}
-        <div className="p-4 border-t">
+        <div className="p-4 border-t space-y-3">
+          {/* 选项区域 */}
+          <div className="grid grid-cols-3 gap-2">
+            {/* 模型选择 */}
+            <div className="space-y-1">
+              <label className="text-xs text-muted-foreground">模型</label>
+              <Select value={selectedModel} onValueChange={handleModelChange}>
+                <SelectTrigger className="h-8 text-xs">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {MODEL_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* 尺寸选择 */}
+            <div className="space-y-1">
+              <label className="text-xs text-muted-foreground">尺寸</label>
+              <Select value={selectedAspectRatio} onValueChange={setSelectedAspectRatio}>
+                <SelectTrigger className="h-8 text-xs">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {ASPECT_RATIOS[selectedModel as keyof typeof ASPECT_RATIOS]?.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* 分辨率选择 */}
+            {RESOLUTION_OPTIONS[selectedModel as keyof typeof RESOLUTION_OPTIONS]?.length > 0 && (
+              <div className="space-y-1">
+                <label className="text-xs text-muted-foreground">分辨率</label>
+                <Select value={selectedResolution} onValueChange={setSelectedResolution}>
+                  <SelectTrigger className="h-8 text-xs">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {RESOLUTION_OPTIONS[selectedModel as keyof typeof RESOLUTION_OPTIONS]?.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+          </div>
+
+          {/* 输入框 */}
           <div className="flex gap-2">
             <Input
               value={input}
