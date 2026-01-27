@@ -18,6 +18,7 @@ interface Message {
   role: "user" | "assistant"
   content: string
   timestamp: Date
+  questions?: Array<{ key: string; question: string; options?: string[] }>
 }
 
 // 模型配置
@@ -83,6 +84,11 @@ export default function DesignAgentPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
 
+  // 问答状态
+  const [pendingQuestions, setPendingQuestions] = useState<Array<{ key: string; question: string; options?: string[] }> | null>(null)
+  const [answers, setAnswers] = useState<Record<string, string>>({})
+  const [originalMessage, setOriginalMessage] = useState<string>("")
+
   // 模型选择状态
   const [selectedModel, setSelectedModel] = useState("nano-banana-pro")
   const [selectedAspectRatio, setSelectedAspectRatio] = useState("1:1")
@@ -120,14 +126,22 @@ export default function DesignAgentPage() {
 
     try {
       // 调用设计智能体 API
+      const requestBody: any = {
+        message: userInput,
+      }
+
+      // 如果有待回答的问题，添加答案
+      if (pendingQuestions && Object.keys(answers).length > 0) {
+        requestBody.answers = answers
+        requestBody.message = originalMessage // 使用原始消息
+      }
+
       const response = await fetch('/api/design-agent/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          message: userInput,
-        }),
+        body: JSON.stringify(requestBody),
       })
 
       const data = await response.json()
@@ -147,8 +161,34 @@ export default function DesignAgentPage() {
         }
         setMessages(prev => [...prev, assistantMessage])
 
+        // 清除问答状态
+        setPendingQuestions(null)
+        setAnswers({})
+        setOriginalMessage("")
+
         // TODO: 在画布区域显示生成的图片
         console.log('生成结果:', data.result)
+      } else if (data.type === 'questions') {
+        // 需要回答问题
+        const assistantMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          role: "assistant",
+          content: data.message,
+          timestamp: new Date(),
+          questions: data.questions
+        }
+        setMessages(prev => [...prev, assistantMessage])
+
+        // 保存问题和原始消息
+        setPendingQuestions(data.questions)
+        setOriginalMessage(userInput)
+
+        // 初始化答案对象
+        const initialAnswers: Record<string, string> = {}
+        data.questions.forEach((q: any) => {
+          initialAnswers[q.key] = ''
+        })
+        setAnswers(initialAnswers)
       } else if (data.type === 'chat') {
         // 普通聊天回复
         const assistantMessage: Message = {
