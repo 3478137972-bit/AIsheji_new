@@ -55,16 +55,130 @@ export async function POST(request: NextRequest) {
       console.log('📝 收到用户回答:', answers);
     }
 
-    // 获取设计智能体实例
+    // 如果有答案，说明是第二次请求，直接进入设计流程
+    if (answers) {
+      console.log('🎨 检测到用户回答，直接进入设计流程...');
+      const agent = getDesignAgent();
+
+      try {
+        const onQuestion = async (questions: Array<{ key: string; question: string; options?: string[] }>) => {
+          return answers;
+        };
+
+        const result = await agent.generateInteractive(message, onQuestion);
+
+        console.log('✅ DeepSeek 处理完成');
+        console.log('📊 结果:', {
+          success: result.success,
+          category: result.metadata.category,
+          confidence: result.metadata.confidence,
+          qualityScore: result.metadata.qualityScore
+        });
+
+        if (result.success) {
+          return NextResponse.json({
+            type: 'result',
+            message: `✅ 已为您生成专业的${result.metadata.category}提示词！`,
+            result: {
+              prompt: result.prompt,
+              negativePrompt: result.negativePrompt,
+              parameters: result.parameters,
+              metadata: {
+                category: result.metadata.category
+              }
+            }
+          });
+        } else {
+          return NextResponse.json({
+            type: 'error',
+            message: '❌ 生成失败：' + result.metadata.reasoning
+          }, { status: 500 });
+        }
+      } catch (designError: any) {
+        console.error('❌ 设计流程错误:', designError);
+        return NextResponse.json({
+          type: 'error',
+          message: '❌ 生成失败：' + (designError.message || '未知错误')
+        }, { status: 500 });
+      }
+    }
+
+    // 第一步：快速意图识别（判断是否为设计需求）
+    console.log('🔍 快速识别用户意图...');
+
+    const { DeepSeekClient } = await import('@/design-agent/deepseek-client');
+    const deepseek = new DeepSeekClient(deepseekApiKey);
+
+    // 快速意图识别
+    const intentPrompt = `分析用户消息，判断是否为设计需求。
+
+用户消息："${message}"
+
+判断标准：
+- 设计需求：包含设计、制作、生成、创作等词汇，或明确提到 Logo、插画、海报、包装、IP 形象等设计类别
+- 非设计需求：问候、闲聊、询问产品信息、其他与设计无关的内容
+
+请只回答"设计"或"聊天"，不要有其他内容。`;
+
+    const intentResult = await deepseek.chat([
+      {
+        role: 'user',
+        content: intentPrompt
+      }
+    ], 0.3);
+
+    const isDesignRequest = intentResult.trim().includes('设计');
+    console.log('📊 意图识别结果:', isDesignRequest ? '设计需求' : '普通聊天');
+
+    // 第二步：根据意图分流处理
+    if (!isDesignRequest) {
+      // 非设计需求，直接进入聊天模式
+      console.log('💬 进入聊天模式...');
+
+      const productInfo = getProductInfo();
+
+      const chatResponse = await deepseek.chat([
+        {
+          role: 'system',
+          content: `你是秒懂AI超级员工的设计智能体助手。
+
+产品信息：
+- 产品名称：${productInfo.product_name}
+- 产品定位：${productInfo.product_slogan}
+- 核心功能：${productInfo.core_features.design_agent.description}
+- 支持的设计类型：${productInfo.supported_design_categories.map((cat: any) => cat.name).join('、')}
+
+你的职责：
+1. 当用户询问与设计无关的问题时，友好地回答
+2. 介绍产品功能和优势
+3. 引导用户使用设计功能
+4. 回答关于产品的问题
+
+回答要求：
+- 简洁友好，2-3句话即可，不要过于冗长
+- 使用 emoji 让回复更生动（如 👋 🎨 ✨ 等）
+- 适时引导用户尝试设计功能
+- 体现专业和热情
+- 不要使用 markdown 格式（如 ** ## - 等）
+- 直接用自然语言回答，像朋友聊天一样`
+        },
+        {
+          role: 'user',
+          content: message
+        }
+      ], 0.7);
+
+      return NextResponse.json({
+        type: 'chat',
+        message: chatResponse
+      });
+    }
+
+    // 设计需求，进入设计流程
+    console.log('🎨 进入设计流程...');
     const agent = getDesignAgent();
 
-    // 先进行意图识别，判断是否为设计需求
-    console.log('🔍 分析用户意图...');
-
     try {
-      // 使用交互式生成方法
-      console.log('🤖 开始调用 DeepSeek 处理...');
-
       // 定义问答回调函数
       const onQuestion = async (questions: Array<{ key: string; question: string; options?: string[] }>) => {
         // 如果已经有答案（用户第二次请求），直接返回
@@ -120,58 +234,12 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      // 如果是"无法识别为设计需求"的错误，切换到聊天模式
-      if (designError.message === 'NOT_DESIGN_REQUEST' ||
-          designError.message === 'CATEGORY_NOT_SUPPORTED') {
-
-        console.log('💬 切换到聊天模式...');
-
-        // 加载产品信息
-        const productInfo = getProductInfo();
-
-        // 使用 DeepSeek 进行普通对话
-        const { DeepSeekClient } = await import('@/design-agent/deepseek-client');
-        const deepseek = new DeepSeekClient(deepseekApiKey);
-
-        const chatResponse = await deepseek.chat([
-          {
-            role: 'system',
-            content: `你是秒懂AI超级员工的设计智能体助手。
-
-产品信息：
-- 产品名称：${productInfo.product_name}
-- 产品定位：${productInfo.product_slogan}
-- 核心功能：${productInfo.core_features.design_agent.description}
-- 支持的设计类型：${productInfo.supported_design_categories.map((cat: any) => cat.name).join('、')}
-
-你的职责：
-1. 当用户询问与设计无关的问题时，友好地回答
-2. 介绍产品功能和优势
-3. 引导用户使用设计功能
-4. 回答关于产品的问题
-
-回答要求：
-- 简洁友好，2-3句话即可，不要过于冗长
-- 使用 emoji 让回复更生动（如 👋 🎨 ✨ 等）
-- 适时引导用户尝试设计功能
-- 体现专业和热情
-- 不要使用 markdown 格式（如 ** ## - 等）
-- 直接用自然语言回答，像朋友聊天一样`
-          },
-          {
-            role: 'user',
-            content: message
-          }
-        ], 0.7);
-
-        return NextResponse.json({
-          type: 'chat',
-          message: chatResponse
-        });
-      }
-
-      // 其他错误正常抛出
-      throw designError;
+      // 其他错误
+      console.error('❌ 设计流程错误:', designError);
+      return NextResponse.json({
+        type: 'error',
+        message: '❌ 生成失败：' + (designError.message || '未知错误')
+      }, { status: 500 });
     }
 
   } catch (error: any) {
