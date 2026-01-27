@@ -155,7 +155,7 @@ export default function DesignAgentPage() {
                   className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[80%] rounded-lg p-3 ${
+                    className={`max-w-[80%] rounded-2xl p-3 ${
                       message.role === "user"
                         ? "bg-primary text-primary-foreground"
                         : "bg-muted"
@@ -171,7 +171,7 @@ export default function DesignAgentPage() {
             )}
             {isLoading && (
               <div className="flex justify-start">
-                <div className="bg-muted rounded-lg p-3">
+                <div className="bg-muted rounded-2xl p-3">
                   <div className="flex space-x-2">
                     <div className="w-2 h-2 bg-foreground/50 rounded-full animate-bounce" />
                     <div className="w-2 h-2 bg-foreground/50 rounded-full animate-bounce delay-100" />
@@ -193,13 +193,13 @@ export default function DesignAgentPage() {
               onKeyPress={(e) => e.key === "Enter" && handleSend()}
               placeholder="描述你想要的设计..."
               disabled={isLoading}
-              className="h-10"
+              className="h-10 rounded-full"
             />
             <Button
               onClick={handleSend}
               disabled={isLoading || !input.trim()}
               size="icon"
-              className="h-10 w-10 bg-purple-600 hover:bg-purple-700"
+              className="h-10 w-10 bg-purple-600 hover:bg-purple-700 rounded-full"
             >
               <Send className="h-4 w-4" />
             </Button>
@@ -211,7 +211,7 @@ export default function DesignAgentPage() {
             <div className="space-y-1">
               <label className="text-xs text-muted-foreground">模型</label>
               <Select value={selectedModel} onValueChange={handleModelChange}>
-                <SelectTrigger className="h-8 text-xs">
+                <SelectTrigger className="h-8 text-xs rounded-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -228,7 +228,7 @@ export default function DesignAgentPage() {
             <div className="space-y-1">
               <label className="text-xs text-muted-foreground">尺寸</label>
               <Select value={selectedAspectRatio} onValueChange={setSelectedAspectRatio}>
-                <SelectTrigger className="h-8 text-xs">
+                <SelectTrigger className="h-8 text-xs rounded-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -246,7 +246,7 @@ export default function DesignAgentPage() {
               <div className="space-y-1">
                 <label className="text-xs text-muted-foreground">分辨率</label>
                 <Select value={selectedResolution} onValueChange={setSelectedResolution}>
-                  <SelectTrigger className="h-8 text-xs">
+                  <SelectTrigger className="h-8 text-xs rounded-full">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -263,13 +263,55 @@ export default function DesignAgentPage() {
         </div>
       </div>
 
-      {/* 右侧图片展示区域 - 80% */}
-      <div className="flex-1 flex items-center justify-center bg-muted/20">
-        <div className="text-center">
-          <div className="w-64 h-64 border-2 border-dashed border-muted-foreground/25 rounded-lg flex items-center justify-center mb-4">
-            <p className="text-muted-foreground">画布区域</p>
+      {/* 右侧图片展示区域 - 65% */}
+      <div className="flex-1 flex flex-col bg-muted/20">
+        {/* 顶部导航栏 */}
+        <div className="h-16 border-b bg-background flex items-center justify-between px-6">
+          {/* 左侧：产品图标和名称 */}
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center">
+              <svg
+                className="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+                />
+              </svg>
+            </div>
+            <div>
+              <h2 className="text-sm font-semibold">秒懂AI</h2>
+              <p className="text-xs text-muted-foreground">SUPER EMPLOYEE</p>
+            </div>
           </div>
-          <p className="text-sm text-muted-foreground">生成的图片将在这里显示</p>
+
+          {/* 右侧：用户账号 */}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center">
+                <span className="text-white text-sm font-medium">王</span>
+              </div>
+              <div className="text-sm">
+                <p className="font-medium">×子王</p>
+                <p className="text-xs text-muted-foreground">3478137972@qq.com</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 画布区域 */}
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-64 h-64 border-2 border-dashed border-muted-foreground/25 rounded-lg flex items-center justify-center mb-4">
+              <p className="text-muted-foreground">画布区域</p>
+            </div>
+            <p className="text-sm text-muted-foreground">生成的图片将在这里显示</p>
+          </div>
         </div>
       </div>
     </div>
