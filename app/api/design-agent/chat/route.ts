@@ -4,7 +4,7 @@ import { DesignAgent } from '@/design-agent/design-agent';
 
 // 初始化设计智能体
 const deepseekApiKey = process.env.DEEPSEEK_API_KEY || '';
-const skillsPath = path.join(process.cwd(), 'design-agent', 'omni-design-skills.json');
+const skillsPath = path.join(process.cwd(), 'design-agent', 'design-skills.json');
 
 let designAgent: DesignAgent | null = null;
 

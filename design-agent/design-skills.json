@@ -1,0 +1,155 @@
+{
+  "version": "1.0",
+  "categories": {
+    "logo": {
+      "name": "Logo设计",
+      "keywords": ["logo", "标志", "品牌", "商标", "标识"],
+      "templates": [
+        {
+          "name": "现代简约Logo",
+          "tags": ["简约", "现代", "几何"],
+          "base_prompt": "modern minimalist logo design, clean lines, geometric shapes, professional",
+          "style_modifiers": ["flat design", "negative space", "monochrome"],
+          "color_schemes": ["monochrome", "blue and white", "black and gold"],
+          "requirements": ["vector format", "scalable", "memorable"]
+        },
+        {
+          "name": "科技感Logo",
+          "tags": ["科技", "未来", "创新"],
+          "base_prompt": "tech logo design, futuristic, innovative, digital",
+          "style_modifiers": ["gradient", "3D effect", "neon glow"],
+          "color_schemes": ["blue gradient", "purple and cyan", "electric blue"],
+          "requirements": ["modern", "tech-forward", "dynamic"]
+        }
+      ],
+      "common_rules": [
+        "保持简洁，易于识别",
+        "确保在不同尺寸下都清晰可见",
+        "使用矢量格式",
+        "考虑黑白版本的效果"
+      ]
+    },
+    "illustration": {
+      "name": "插画设计",
+      "keywords": ["插画", "illustration", "绘画", "艺术"],
+      "templates": [
+        {
+          "name": "扁平风格插画",
+          "tags": ["扁平", "简约", "色块"],
+          "base_prompt": "flat illustration, simple shapes, bold colors, clean design",
+          "style_modifiers": ["geometric", "minimalist", "vector art"],
+          "color_schemes": ["vibrant", "pastel", "monochromatic"],
+          "requirements": ["clear composition", "balanced colors", "scalable"]
+        },
+        {
+          "name": "写实风格插画",
+          "tags": ["写实", "细腻", "质感"],
+          "base_prompt": "realistic illustration, detailed, textured, lifelike",
+          "style_modifiers": ["painterly", "detailed shading", "realistic lighting"],
+          "color_schemes": ["natural colors", "warm tones", "cool tones"],
+          "requirements": ["high detail", "realistic proportions", "depth"]
+        }
+      ],
+      "common_rules": [
+        "构图平衡",
+        "色彩和谐",
+        "主题明确",
+        "细节丰富"
+      ]
+    },
+    "poster": {
+      "name": "海报设计",
+      "keywords": ["海报", "poster", "宣传", "广告"],
+      "templates": [
+        {
+          "name": "活动海报",
+          "tags": ["活动", "宣传", "吸引"],
+          "base_prompt": "event poster design, eye-catching, bold typography, dynamic layout",
+          "style_modifiers": ["modern", "energetic", "colorful"],
+          "color_schemes": ["vibrant", "high contrast", "gradient"],
+          "requirements": ["clear hierarchy", "readable text", "attention-grabbing"]
+        }
+      ],
+      "common_rules": [
+        "信息层次清晰",
+        "视觉冲击力强",
+        "文字易读",
+        "主题突出"
+      ]
+    },
+    "packaging": {
+      "name": "包装设计",
+      "keywords": ["包装", "packaging", "产品", "盒子"],
+      "templates": [
+        {
+          "name": "产品包装",
+          "tags": ["产品", "商业", "货架"],
+          "base_prompt": "product packaging design, shelf appeal, brand identity, premium quality",
+          "style_modifiers": ["elegant", "modern", "luxurious"],
+          "color_schemes": ["brand colors", "premium gold", "natural tones"],
+          "requirements": ["shelf visibility", "brand consistency", "product protection"]
+        }
+      ],
+      "common_rules": [
+        "货架识别度高",
+        "品牌一致性",
+        "材质考虑",
+        "实用性"
+      ]
+    },
+    "ip_character": {
+      "name": "IP形象设计",
+      "keywords": ["IP", "形象", "吉祥物", "角色", "卡通"],
+      "templates": [
+        {
+          "name": "卡通IP形象",
+          "tags": ["卡通", "可爱", "亲和"],
+          "base_prompt": "cartoon character design, cute, friendly, memorable, mascot",
+          "style_modifiers": ["rounded shapes", "expressive", "colorful"],
+          "color_schemes": ["bright colors", "warm palette", "playful"],
+          "requirements": ["recognizable", "versatile", "appealing"]
+        }
+      ],
+      "common_rules": [
+        "形象鲜明",
+        "易于记忆",
+        "可延展性强",
+        "情感共鸣"
+      ]
+    }
+  },
+  "general_rules": {
+    "quality_standards": [
+      "高分辨率输出",
+      "色彩准确",
+      "构图平衡",
+      "细节精致"
+    ],
+    "design_principles": [
+      "对比原则",
+      "对齐原则",
+      "重复原则",
+      "亲密性原则"
+    ],
+    "prompt_optimization": {
+      "positive_keywords": [
+        "professional",
+        "high quality",
+        "detailed",
+        "masterpiece",
+        "best quality",
+        "8k",
+        "ultra detailed"
+      ],
+      "negative_keywords": [
+        "low quality",
+        "blurry",
+        "pixelated",
+        "distorted",
+        "ugly",
+        "bad anatomy"
+      ],
+      "structure": "主题描述 + 风格修饰 + 质量要求 + 技术参数"
+    }
+  }
+}
