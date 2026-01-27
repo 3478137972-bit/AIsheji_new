@@ -99,32 +99,6 @@ export async function POST(request: NextRequest) {
         // 加载产品信息
         const productInfo = getProductInfo();
 
-        // 构建产品信息提示词
-        const productContext = `
-# 产品信息
-
-**产品名称**: ${productInfo.product_name}
-**产品定位**: ${productInfo.product_slogan}
-**产品简介**: ${productInfo.description}
-
-## 核心功能
-
-### 设计智能体
-${productInfo.core_features.design_agent.description}
-
-**能力**:
-${productInfo.core_features.design_agent.capabilities.map((c: string) => `- ${c}`).join('\n')}
-
-### 支持的设计类型
-${productInfo.supported_design_categories.map((cat: any) => `- **${cat.name}**: ${cat.description}`).join('\n')}
-
-## 使用示例
-${productInfo.usage_guide.examples.map((ex: string) => `- "${ex}"`).join('\n')}
-
-## 产品优势
-${productInfo.advantages.map((adv: string) => `- ${adv}`).join('\n')}
-`;
-
         // 使用 DeepSeek 进行普通对话
         const { DeepSeekClient } = await import('@/design-agent/deepseek-client');
         const deepseek = new DeepSeekClient(deepseekApiKey);
@@ -134,7 +108,11 @@ ${productInfo.advantages.map((adv: string) => `- ${adv}`).join('\n')}
             role: 'system',
             content: `你是秒懂AI超级员工的设计智能体助手。
 
-${productContext}
+产品信息：
+- 产品名称：${productInfo.product_name}
+- 产品定位：${productInfo.product_slogan}
+- 核心功能：${productInfo.core_features.design_agent.description}
+- 支持的设计类型：${productInfo.supported_design_categories.map((cat: any) => cat.name).join('、')}
 
 你的职责：
 1. 当用户询问与设计无关的问题时，友好地回答
@@ -143,10 +121,12 @@ ${productContext}
 4. 回答关于产品的问题
 
 回答要求：
-- 简洁友好，不要过于冗长
+- 简洁友好，2-3句话即可，不要过于冗长
+- 使用 emoji 让回复更生动（如 👋 🎨 ✨ 等）
 - 适时引导用户尝试设计功能
 - 体现专业和热情
-- 基于上述产品信息回答问题`
+- 不要使用 markdown 格式（如 ** ## - 等）
+- 直接用自然语言回答，像朋友聊天一样`
           },
           {
             role: 'user',
