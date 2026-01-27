@@ -132,8 +132,8 @@ export default function DesignAgentPage() {
 
   return (
     <div className="flex h-screen bg-background">
-      {/* 左侧对话区域 - 20% */}
-      <div className="w-[20%] border-r flex flex-col">
+      {/* 左侧对话区域 - 35% */}
+      <div className="w-[35%] border-r flex flex-col">
         {/* 对话标题 */}
         <div className="p-4 border-b">
           <h1 className="text-lg font-semibold">设计智能体</h1>
@@ -184,7 +184,27 @@ export default function DesignAgentPage() {
         </ScrollArea>
 
         {/* 输入框 */}
-        <div className="p-4 border-t space-y-3">
+        <div className="p-6 border-t space-y-4">
+          {/* 输入框 */}
+          <div className="flex gap-2">
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && handleSend()}
+              placeholder="描述你想要的设计..."
+              disabled={isLoading}
+              className="h-10"
+            />
+            <Button
+              onClick={handleSend}
+              disabled={isLoading || !input.trim()}
+              size="icon"
+              className="h-10 w-10 bg-purple-600 hover:bg-purple-700"
+            >
+              <Send className="h-4 w-4" />
+            </Button>
+          </div>
+
           {/* 选项区域 */}
           <div className="grid grid-cols-3 gap-2">
             {/* 模型选择 */}
@@ -239,24 +259,6 @@ export default function DesignAgentPage() {
                 </Select>
               </div>
             )}
-          </div>
-
-          {/* 输入框 */}
-          <div className="flex gap-2">
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleSend()}
-              placeholder="描述你想要的设计..."
-              disabled={isLoading}
-            />
-            <Button
-              onClick={handleSend}
-              disabled={isLoading || !input.trim()}
-              size="icon"
-            >
-              <Send className="h-4 w-4" />
-            </Button>
           </div>
         </div>
       </div>
