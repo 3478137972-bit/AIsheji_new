@@ -80,9 +80,8 @@ export async function POST(request: NextRequest) {
       }
     } catch (designError: any) {
       // 如果是"无法识别为设计需求"的错误，切换到聊天模式
-      if (designError.message.includes('无法识别为设计需求') ||
-          designError.message.includes('不支持') ||
-          designError.message.includes('未找到类别')) {
+      if (designError.message === 'NOT_DESIGN_REQUEST' ||
+          designError.message === 'CATEGORY_NOT_SUPPORTED') {
 
         console.log('💬 切换到聊天模式...');
 

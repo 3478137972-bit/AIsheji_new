@@ -234,9 +234,9 @@ export class DesignAgent {
       console.log(`💡 理由: ${intent.reasoning}`);
       console.log(`🎨 设计要素: ${intent.designElements.join(', ')}`);
 
-      // 检查置信度
-      if (intent.confidence < 0.3) {
-        throw new Error('无法识别为设计需求，请描述您想要设计的内容（如：Logo、插画、海报等）');
+      // 检查置信度 - 提高阈值到 0.6
+      if (intent.confidence < 0.6) {
+        throw new Error('NOT_DESIGN_REQUEST');
       }
 
       // Step 2: 获取设计指南
@@ -244,8 +244,7 @@ export class DesignAgent {
       const categoryKey = this.skillsManager.getCategoryKeyByName(intent.category);
 
       if (!categoryKey) {
-        const availableCategories = categoryNames.join('、');
-        throw new Error(`抱歉，我暂时不支持"${intent.category}"类型的设计。\n\n我目前支持：${availableCategories}\n\n请描述您想要的设计类型。`);
+        throw new Error('CATEGORY_NOT_SUPPORTED');
       }
 
       const guide = this.skillsManager.getSmartGuide(categoryKey, userInput);
