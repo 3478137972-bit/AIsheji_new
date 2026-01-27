@@ -234,13 +234,13 @@ export default function DesignAgentPage() {
               onKeyPress={(e) => e.key === "Enter" && handleSend()}
               placeholder="描述你想要的设计..."
               disabled={isLoading}
-              className="h-10 rounded-full"
+              className="h-10 rounded-full border-purple-200 focus:border-purple-400 focus:ring-purple-200"
             />
             <Button
               onClick={handleSend}
               disabled={isLoading || !input.trim()}
               size="icon"
-              className="h-10 w-10 bg-purple-600 hover:bg-purple-700 rounded-full"
+              className="h-10 w-10 bg-gradient-to-br from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 rounded-full shadow-md hover:shadow-lg transition-all"
             >
               <Send className="h-4 w-4" />
             </Button>
@@ -252,7 +252,7 @@ export default function DesignAgentPage() {
             <div className="space-y-1">
               <label className="text-xs text-muted-foreground">模型</label>
               <Select value={selectedModel} onValueChange={handleModelChange}>
-                <SelectTrigger className="h-8 text-xs rounded-full">
+                <SelectTrigger className="h-8 text-xs rounded-full border-purple-200 focus:border-purple-400 focus:ring-purple-200">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -269,7 +269,7 @@ export default function DesignAgentPage() {
             <div className="space-y-1">
               <label className="text-xs text-muted-foreground">尺寸</label>
               <Select value={selectedAspectRatio} onValueChange={setSelectedAspectRatio}>
-                <SelectTrigger className="h-8 text-xs rounded-full">
+                <SelectTrigger className="h-8 text-xs rounded-full border-purple-200 focus:border-purple-400 focus:ring-purple-200">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -287,7 +287,7 @@ export default function DesignAgentPage() {
               <div className="space-y-1">
                 <label className="text-xs text-muted-foreground">分辨率</label>
                 <Select value={selectedResolution} onValueChange={setSelectedResolution}>
-                  <SelectTrigger className="h-8 text-xs rounded-full">
+                  <SelectTrigger className="h-8 text-xs rounded-full border-purple-200 focus:border-purple-400 focus:ring-purple-200">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
