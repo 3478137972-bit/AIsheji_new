@@ -40,6 +40,7 @@ http://localhost:3000
 | 文档 | 说明 | 适用场景 |
 |------|------|---------|
 | [📖 开发指南](./DEVELOPMENT_GUIDE.md) | **最重要！** 完整的开发文档 | 修改代码前必读 |
+| [🏗️ 项目结构文档](./docs/PROJECT_STRUCTURE.md) | **新增！** 设计智能体架构详解 | 了解 DeepSeek 集成 |
 | [🐛 故障排除](./TROUBLESHOOTING.md) | 常见问题及解决方案 | 遇到错误时查看 |
 | [🚀 Vercel 部署](./VERCEL_DEPLOYMENT_GUIDE.md) | Vercel 部署完整指南 | 准备部署时阅读 |
 | [📋 迁移报告](./MIGRATION_REPORT.md) | 后端迁移到 API Routes | 了解架构变化 |
@@ -49,6 +50,16 @@ http://localhost:3000
 ---
 
 ## 🎨 功能特性
+
+### 🤖 设计智能体 (新增！)
+
+- **智能对话** - 基于 DeepSeek 的 AI 对话系统
+- **意图识别** - 自动识别设计类别（Logo/插画/海报等）
+- **Skills 系统** - 专业设计指南知识库
+- **提示词生成** - 自动生成专业的出图提示词
+- **质量优化** - 智能检查和优化提示词质量
+
+访问: http://localhost:3000/design-agent
 
 ### AI 设计工具
 
@@ -130,14 +141,26 @@ KIEAI_BASE_URL=https://api.kie.ai
 ```
 app/
 ├── api/                    # API Routes (后端)
+│   ├── design-agent/      # 🆕 设计智能体 API
+│   │   └── chat/          # 对话接口
 │   ├── generate-logo/     # Logo 生成 API
 │   ├── generate-illustration/ # 插画生成 API
 │   └── task-status/       # 任务状态查询 API
+├── design-agent/          # 🆕 设计智能体页面
+│   └── page.tsx           # 对话界面
 ├── tools/                 # 工具页面 (前端)
 │   ├── ai-logo/
 │   ├── ai-illustration/
 │   └── ai-ip-illustration-1/
 └── page.tsx               # 首页
+
+design-agent/              # 🆕 设计智能体核心模块
+├── design-agent.ts        # 主控制器
+├── deepseek-client.ts     # DeepSeek API 客户端
+├── skills-guide-manager.ts # Skills 管理器
+├── quality-checker.ts     # 质量检查器
+├── omni-design-skills.json # 设计知识库
+└── types.ts               # 类型定义
 
 lib/backend/               # 后端工具函数
 ├── config.js              # 环境变量配置
