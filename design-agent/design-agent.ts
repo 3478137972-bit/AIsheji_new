@@ -183,7 +183,8 @@ export class DesignAgent {
         }
       };
     } catch (error: any) {
-      console.error('❌ 处理失败:', error.message);
+      const errorMessage = error.message || error.toString() || '未知错误';
+      console.error('❌ 处理失败:', errorMessage);
       return {
         success: false,
         prompt: '',
@@ -192,10 +193,10 @@ export class DesignAgent {
         metadata: {
           category: '',
           confidence: 0,
-          reasoning: error.message,
+          reasoning: errorMessage,
           designElements: [],
           qualityScore: 0,
-          qualityIssues: [error.message],
+          qualityIssues: [errorMessage],
           qualitySuggestions: []
         }
       };
@@ -311,7 +312,8 @@ export class DesignAgent {
       }
 
       // 其他错误返回失败结果
-      console.error('❌ 处理失败:', error.message);
+      const errorMessage = error.message || error.toString() || '未知错误';
+      console.error('❌ 处理失败:', errorMessage);
       return {
         success: false,
         prompt: '',
@@ -320,10 +322,10 @@ export class DesignAgent {
         metadata: {
           category: '',
           confidence: 0,
-          reasoning: error.message,
+          reasoning: errorMessage,
           designElements: [],
           qualityScore: 0,
-          qualityIssues: [error.message],
+          qualityIssues: [errorMessage],
           qualitySuggestions: []
         }
       };
@@ -409,7 +411,8 @@ export class DesignAgent {
       };
 
     } catch (error: any) {
-      console.error('❌ 处理失败:', error.message);
+      const errorMessage = error.message || error.toString() || '未知错误';
+      console.error('❌ 处理失败:', errorMessage);
       return {
         success: false,
         prompt: '',
@@ -418,10 +421,10 @@ export class DesignAgent {
         metadata: {
           category: '',
           confidence: 0,
-          reasoning: error.message,
+          reasoning: errorMessage,
           designElements: [],
           qualityScore: 0,
-          qualityIssues: [error.message],
+          qualityIssues: [errorMessage],
           qualitySuggestions: []
         }
       };
