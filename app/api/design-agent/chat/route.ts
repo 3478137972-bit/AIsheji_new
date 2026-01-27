@@ -41,7 +41,7 @@ function getProductInfo() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { message } = body;
+    const { message, answers } = body;
 
     if (!message || typeof message !== 'string') {
       return NextResponse.json(
@@ -51,6 +51,9 @@ export async function POST(request: NextRequest) {
     }
 
     console.log('📨 收到用户消息:', message);
+    if (answers) {
+      console.log('📝 收到用户回答:', answers);
+    }
 
     // 获取设计智能体实例
     const agent = getDesignAgent();
@@ -59,9 +62,24 @@ export async function POST(request: NextRequest) {
     console.log('🔍 分析用户意图...');
 
     try {
-      // 调用设计智能体生成
+      // 使用交互式生成方法
       console.log('🤖 开始调用 DeepSeek 处理...');
-      const result = await agent.generate(message);
+
+      // 定义问答回调函数
+      const onQuestion = async (questions: Array<{ key: string; question: string; options?: string[] }>) => {
+        // 如果已经有答案（用户第二次请求），直接返回
+        if (answers) {
+          return answers;
+        }
+
+        // 如果没有答案，抛出一个特殊错误，让外层捕获并返回问题
+        throw {
+          type: 'NEED_ANSWERS',
+          questions: questions
+        };
+      };
+
+      const result = await agent.generateInteractive(message, onQuestion);
 
       console.log('✅ DeepSeek 处理完成');
       console.log('📊 结果:', {
@@ -75,12 +93,14 @@ export async function POST(request: NextRequest) {
       if (result.success) {
         return NextResponse.json({
           type: 'result',
-          message: `✅ 已识别为【${result.metadata.category}】设计，为您生成专业提示词！\n\n📊 置信度: ${(result.metadata.confidence * 100).toFixed(0)}%\n🎨 设计要素: ${result.metadata.designElements.join('、')}\n⭐ 质量评分: ${result.metadata.qualityScore}/100`,
+          message: `✅ 已为您生成专业的${result.metadata.category}提示词！`,
           result: {
             prompt: result.prompt,
             negativePrompt: result.negativePrompt,
             parameters: result.parameters,
-            metadata: result.metadata
+            metadata: {
+              category: result.metadata.category
+            }
           }
         });
       } else {
@@ -90,6 +110,16 @@ export async function POST(request: NextRequest) {
         }, { status: 500 });
       }
     } catch (designError: any) {
+      // 如果需要收集更多信息
+      if (designError.type === 'NEED_ANSWERS') {
+        console.log('❓ 需要收集更多信息');
+        return NextResponse.json({
+          type: 'questions',
+          message: '为了生成更专业的设计，我需要了解一些细节：',
+          questions: designError.questions
+        });
+      }
+
       // 如果是"无法识别为设计需求"的错误，切换到聊天模式
       if (designError.message === 'NOT_DESIGN_REQUEST' ||
           designError.message === 'CATEGORY_NOT_SUPPORTED') {
