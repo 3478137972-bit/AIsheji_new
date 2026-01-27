@@ -3,8 +3,6 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { Send } from "lucide-react"
 import {
   Select,
@@ -134,33 +132,31 @@ export default function DesignAgentPage() {
 
   return (
     <div className="flex flex-col h-screen bg-background">
-      {/* 全局顶部导航栏 */}
+      {/* 顶部导航栏 */}
       <div className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="flex h-16 items-center justify-between px-6">
-          {/* 中间：产品图标和名称 */}
-          <div className="flex-1 flex items-center justify-center">
-            <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
-              <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
-                  />
-                </svg>
-              </div>
-              <div>
-                <h2 className="text-sm font-semibold">秒懂AI</h2>
-                <p className="text-xs text-muted-foreground">SUPER EMPLOYEE</p>
-              </div>
-            </Link>
-          </div>
+          {/* 左侧：产品图标和名称 */}
+          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
+            <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center">
+              <svg
+                className="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+                />
+              </svg>
+            </div>
+            <div>
+              <h2 className="text-sm font-semibold">秒懂AI</h2>
+              <p className="text-xs text-muted-foreground">SUPER EMPLOYEE</p>
+            </div>
+          </Link>
 
           {/* 右侧：用户菜单 */}
           <div className="flex items-center gap-4">
@@ -169,154 +165,97 @@ export default function DesignAgentPage() {
         </div>
       </div>
 
-      {/* 主内容区域 */}
-      <div className="flex flex-1 overflow-hidden bg-muted/30">
-        {/* 左侧对话区域容器 */}
-        <div className="w-[35%] p-4">
-          {/* 对话卡片 */}
-          <div className="h-full bg-background rounded-3xl shadow-lg flex flex-col overflow-hidden">
-        {/* 对话标题 */}
-        <div className="p-4 border-b">
-          <h1 className="text-lg font-semibold">设计智能体</h1>
-          <p className="text-sm text-muted-foreground">AI 驱动的设计工具平台</p>
-        </div>
-
-        {/* 消息列表 */}
-        <ScrollArea className="flex-1 p-4">
-          <div className="space-y-4">
-            {messages.length === 0 ? (
-              <div className="text-center text-muted-foreground py-8">
-                <p>开始对话</p>
-                <p className="text-sm mt-2">描述你想要的设计</p>
-              </div>
-            ) : (
-              messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
-                >
-                  <div
-                    className={`max-w-[80%] rounded-2xl p-3 ${
-                      message.role === "user"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted"
-                    }`}
-                  >
-                    <p className="text-sm">{message.content}</p>
-                    <p className="text-xs opacity-70 mt-1">
-                      {message.timestamp.toLocaleTimeString()}
-                    </p>
-                  </div>
-                </div>
-              ))
-            )}
-            {isLoading && (
-              <div className="flex justify-start">
-                <div className="bg-muted rounded-2xl p-3">
-                  <div className="flex space-x-2">
-                    <div className="w-2 h-2 bg-foreground/50 rounded-full animate-bounce" />
-                    <div className="w-2 h-2 bg-foreground/50 rounded-full animate-bounce delay-100" />
-                    <div className="w-2 h-2 bg-foreground/50 rounded-full animate-bounce delay-200" />
-                  </div>
-                </div>
-              </div>
-            )}
+      {/* 主内容区域 - 画布 */}
+      <div className="flex-1 flex items-center justify-center bg-muted/20 overflow-auto">
+        <div className="text-center p-8">
+          <div className="w-96 h-96 border-2 border-dashed border-muted-foreground/25 rounded-lg flex items-center justify-center mb-4">
+            <p className="text-muted-foreground">画布区域</p>
           </div>
-        </ScrollArea>
+          <p className="text-sm text-muted-foreground">生成的图片将在这里显示</p>
+        </div>
+      </div>
 
-        {/* 输入框 */}
-        <div className="p-6 border-t space-y-4">
-          {/* 输入框 */}
-          <div className="flex gap-2">
-            <Input
+      {/* 底部输入区域 */}
+      <div className="sticky bottom-0 z-40 w-full border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="max-w-4xl mx-auto p-4">
+          <div className="bg-background rounded-2xl border border-border shadow-lg p-4">
+            {/* 多行文本输入框 */}
+            <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleSend()}
+              onKeyPress={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault()
+                  handleSend()
+                }
+              }}
               placeholder="描述你想要的设计..."
               disabled={isLoading}
-              className="h-10 rounded-full border-purple-200 focus:border-purple-400 focus:ring-purple-200"
+              className="w-full min-h-[80px] max-h-[200px] resize-none bg-transparent border-none outline-none text-sm placeholder:text-muted-foreground"
+              style={{ scrollbarWidth: 'thin' }}
             />
-            <Button
-              onClick={handleSend}
-              disabled={isLoading || !input.trim()}
-              size="icon"
-              className="h-10 w-10 bg-gradient-to-br from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 rounded-full shadow-md hover:shadow-lg transition-all"
-            >
-              <Send className="h-4 w-4" />
-            </Button>
-          </div>
 
-          {/* 选项区域 */}
-          <div className="grid grid-cols-3 gap-2">
-            {/* 模型选择 */}
-            <div className="space-y-1">
-              <label className="text-xs text-muted-foreground">模型</label>
-              <Select value={selectedModel} onValueChange={handleModelChange}>
-                <SelectTrigger className="h-8 text-xs rounded-full border-purple-200 focus:border-purple-400 focus:ring-purple-200">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {MODEL_OPTIONS.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* 尺寸选择 */}
-            <div className="space-y-1">
-              <label className="text-xs text-muted-foreground">尺寸</label>
-              <Select value={selectedAspectRatio} onValueChange={setSelectedAspectRatio}>
-                <SelectTrigger className="h-8 text-xs rounded-full border-purple-200 focus:border-purple-400 focus:ring-purple-200">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {ASPECT_RATIOS[selectedModel as keyof typeof ASPECT_RATIOS]?.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* 分辨率选择 */}
-            {RESOLUTION_OPTIONS[selectedModel as keyof typeof RESOLUTION_OPTIONS]?.length > 0 && (
-              <div className="space-y-1">
-                <label className="text-xs text-muted-foreground">分辨率</label>
-                <Select value={selectedResolution} onValueChange={setSelectedResolution}>
-                  <SelectTrigger className="h-8 text-xs rounded-full border-purple-200 focus:border-purple-400 focus:ring-purple-200">
+            {/* 底部选项和发送按钮 */}
+            <div className="flex items-center justify-between mt-3 pt-3 border-t border-border">
+              {/* 左侧：选项按钮 */}
+              <div className="flex items-center gap-2">
+                {/* 模型选择 */}
+                <Select value={selectedModel} onValueChange={handleModelChange}>
+                  <SelectTrigger className="h-9 px-3 text-xs rounded-full bg-muted/50 border-0 hover:bg-muted">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {RESOLUTION_OPTIONS[selectedModel as keyof typeof RESOLUTION_OPTIONS]?.map((option) => (
+                    {MODEL_OPTIONS.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
-              </div>
-            )}
-          </div>
-        </div>
-        </div>
-        </div>
 
-      {/* 右侧图片展示区域 - 65% */}
-      <div className="flex-1 flex flex-col bg-muted/20">
-        {/* 画布区域 */}
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-center">
-            <div className="w-64 h-64 border-2 border-dashed border-muted-foreground/25 rounded-lg flex items-center justify-center mb-4">
-              <p className="text-muted-foreground">画布区域</p>
+                {/* 尺寸选择 */}
+                <Select value={selectedAspectRatio} onValueChange={setSelectedAspectRatio}>
+                  <SelectTrigger className="h-9 px-3 text-xs rounded-full bg-muted/50 border-0 hover:bg-muted">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {ASPECT_RATIOS[selectedModel as keyof typeof ASPECT_RATIOS]?.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                {/* 分辨率选择 */}
+                {RESOLUTION_OPTIONS[selectedModel as keyof typeof RESOLUTION_OPTIONS]?.length > 0 && (
+                  <Select value={selectedResolution} onValueChange={setSelectedResolution}>
+                    <SelectTrigger className="h-9 px-3 text-xs rounded-full bg-muted/50 border-0 hover:bg-muted">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {RESOLUTION_OPTIONS[selectedModel as keyof typeof RESOLUTION_OPTIONS]?.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              </div>
+
+              {/* 右侧：发送按钮 */}
+              <Button
+                onClick={handleSend}
+                disabled={isLoading || !input.trim()}
+                size="icon"
+                className="h-10 w-10 bg-gradient-to-br from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 rounded-full shadow-md hover:shadow-lg transition-all"
+              >
+                <Send className="h-4 w-4" />
+              </Button>
             </div>
-            <p className="text-sm text-muted-foreground">生成的图片将在这里显示</p>
           </div>
         </div>
-      </div>
       </div>
     </div>
   )
