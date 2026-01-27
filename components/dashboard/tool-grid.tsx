@@ -54,6 +54,7 @@ const toolCategories: ToolCategory[] = [
   {
     title: "AI设计",
     tools: [
+      { icon: Sparkles, label: "设计智能体", description: "AI驱动的智能设计助手", href: "/design-agent" },
       { icon: Hexagon, label: "AI Logo", description: "智能生成Logo设计", href: "/tools/ai-logo" },
       { icon: Shield, label: "AI Logo 2号员工", description: "更具美学的LOGO", href: "/tools/ai-logo-2" },
       { icon: Brush, label: "AI插画", description: "多风格的非IP插画", href: "/tools/ai-illustration" },

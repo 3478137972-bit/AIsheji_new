@@ -2,6 +2,7 @@
 
 import React from "react"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { ArrowRight, Sparkles, Zap, Wand2, Camera, Palette } from "lucide-react"
 
 const floatingIcons = [
@@ -14,11 +15,13 @@ const floatingIcons = [
 
 export function HeroSection() {
   const [prompt, setPrompt] = useState("")
+  const router = useRouter()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (prompt.trim()) {
-      console.log("Generating design with prompt:", prompt)
+      // 跳转到设计智能体页面，并传递提示词
+      router.push(`/design-agent?prompt=${encodeURIComponent(prompt)}`)
     }
   }
 
