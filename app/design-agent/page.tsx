@@ -87,6 +87,7 @@ export default function DesignAgentPage() {
   // 问答状态
   const [pendingQuestions, setPendingQuestions] = useState<Array<{ key: string; question: string; options?: string[] }> | null>(null)
   const [answers, setAnswers] = useState<Record<string, string>>({})
+  const [otherInputs, setOtherInputs] = useState<Record<string, string>>({}) // 存储"其他"选项的自定义输入
   const [originalMessage, setOriginalMessage] = useState<string>("")
 
   // 模型选择状态
@@ -388,9 +389,9 @@ export default function DesignAgentPage() {
                           {message.questions && message.questions.length > 0 && (
                             <div className="mt-4 space-y-3">
                               {message.questions.map((q) => {
-                                // 检查是否选择了"其他"选项
+                                // 检查当前选择的选项是否是"其他"
                                 const selectedOption = answers[q.key] || ''
-                                const isOtherOption = selectedOption.includes('其他') || selectedOption.includes('请描述')
+                                const isOtherSelected = selectedOption.includes('其他')
 
                                 return (
                                 <div key={q.key} className="bg-background/50 p-3 rounded-lg border border-border">
@@ -399,35 +400,44 @@ export default function DesignAgentPage() {
                                     <>
                                       {/* 单选按钮组 */}
                                       <div className="space-y-2">
-                                        {q.options.map((option) => (
-                                          <label key={option} className="flex items-center gap-2 cursor-pointer hover:bg-muted/50 p-2 rounded">
-                                            <input
-                                              type="radio"
-                                              name={q.key}
-                                              value={option}
-                                              checked={answers[q.key] === option || (isOtherOption && option.includes('其他'))}
-                                              onChange={(e) => setAnswers({...answers, [q.key]: e.target.value})}
-                                              className="w-4 h-4 text-primary"
-                                            />
-                                            <span className="text-sm">{option}</span>
-                                          </label>
-                                        ))}
+                                        {q.options.map((option) => {
+                                          const isOtherOption = option.includes('其他')
+                                          return (
+                                            <label key={option} className="flex items-center gap-2 cursor-pointer hover:bg-muted/50 p-2 rounded">
+                                              <input
+                                                type="radio"
+                                                name={q.key}
+                                                value={option}
+                                                checked={answers[q.key] === option}
+                                                onChange={(e) => {
+                                                  setAnswers({...answers, [q.key]: e.target.value})
+                                                  // 如果不是"其他"选项，清空自定义输入
+                                                  if (!isOtherOption) {
+                                                    const newOtherInputs = {...otherInputs}
+                                                    delete newOtherInputs[q.key]
+                                                    setOtherInputs(newOtherInputs)
+                                                  }
+                                                }}
+                                                className="w-4 h-4 text-primary"
+                                              />
+                                              <span className="text-sm">{option}</span>
+                                            </label>
+                                          )
+                                        })}
                                       </div>
 
                                       {/* 如果选择了"其他"选项，显示文本输入框 */}
-                                      {isOtherOption && (
+                                      {isOtherSelected && (
                                         <div className="mt-3">
                                           <input
                                             type="text"
-                                            value={selectedOption.includes('其他') ? selectedOption.replace(/其他.*?[）)]/, '').trim() : selectedOption}
+                                            value={otherInputs[q.key] || ''}
                                             onChange={(e) => {
-                                              // 找到"其他"选项的原始文本
-                                              const otherOption = q.options?.find(opt => opt.includes('其他')) || '其他'
-                                              // 保存为"其他选项文本 + 用户输入"的格式，但只保存用户输入的部分
-                                              setAnswers({...answers, [q.key]: e.target.value || otherOption})
+                                              setOtherInputs({...otherInputs, [q.key]: e.target.value})
                                             }}
                                             className="w-full p-2 border border-border rounded bg-background text-sm"
                                             placeholder="请描述您的需求..."
+                                            autoFocus
                                           />
                                         </div>
                                       )}
@@ -443,17 +453,39 @@ export default function DesignAgentPage() {
                                     />
                                   )}
                                 </div>
-                              )}))}
+                              )})}
+
+                              {/* 提交答案按钮 */}
 
                               {/* 提交答案按钮 */}
                               <Button
                                 onClick={() => {
+                                  // 合并答案：如果选择了"其他"选项且有自定义输入，使用自定义输入
+                                  const finalAnswers: Record<string, string> = {}
+                                  message.questions!.forEach(q => {
+                                    const answer = answers[q.key]
+                                    if (answer && answer.includes('其他') && otherInputs[q.key]) {
+                                      // 使用自定义输入
+                                      finalAnswers[q.key] = otherInputs[q.key]
+                                    } else {
+                                      finalAnswers[q.key] = answer
+                                    }
+                                  })
+
                                   // 验证所有问题都已回答
-                                  const allAnswered = message.questions!.every(q => answers[q.key]?.trim())
+                                  const allAnswered = message.questions!.every(q => {
+                                    const answer = finalAnswers[q.key]
+                                    return answer && answer.trim()
+                                  })
+
                                   if (!allAnswered) {
                                     alert('请回答所有问题')
                                     return
                                   }
+
+                                  // 更新 answers 为最终答案
+                                  setAnswers(finalAnswers)
+
                                   // 发送答案
                                   handleSend()
                                 }}
