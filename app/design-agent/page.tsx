@@ -387,26 +387,51 @@ export default function DesignAgentPage() {
                           {/* 问答 UI */}
                           {message.questions && message.questions.length > 0 && (
                             <div className="mt-4 space-y-3">
-                              {message.questions.map((q) => (
+                              {message.questions.map((q) => {
+                                // 检查是否选择了"其他"选项
+                                const selectedOption = answers[q.key] || ''
+                                const isOtherOption = selectedOption.includes('其他') || selectedOption.includes('请描述')
+
+                                return (
                                 <div key={q.key} className="bg-background/50 p-3 rounded-lg border border-border">
                                   <p className="font-medium text-sm mb-2">{q.question}</p>
                                   {q.options && q.options.length > 0 ? (
-                                    // 单选按钮组
-                                    <div className="space-y-2">
-                                      {q.options.map((option) => (
-                                        <label key={option} className="flex items-center gap-2 cursor-pointer hover:bg-muted/50 p-2 rounded">
+                                    <>
+                                      {/* 单选按钮组 */}
+                                      <div className="space-y-2">
+                                        {q.options.map((option) => (
+                                          <label key={option} className="flex items-center gap-2 cursor-pointer hover:bg-muted/50 p-2 rounded">
+                                            <input
+                                              type="radio"
+                                              name={q.key}
+                                              value={option}
+                                              checked={answers[q.key] === option || (isOtherOption && option.includes('其他'))}
+                                              onChange={(e) => setAnswers({...answers, [q.key]: e.target.value})}
+                                              className="w-4 h-4 text-primary"
+                                            />
+                                            <span className="text-sm">{option}</span>
+                                          </label>
+                                        ))}
+                                      </div>
+
+                                      {/* 如果选择了"其他"选项，显示文本输入框 */}
+                                      {isOtherOption && (
+                                        <div className="mt-3">
                                           <input
-                                            type="radio"
-                                            name={q.key}
-                                            value={option}
-                                            checked={answers[q.key] === option}
-                                            onChange={(e) => setAnswers({...answers, [q.key]: e.target.value})}
-                                            className="w-4 h-4 text-primary"
+                                            type="text"
+                                            value={selectedOption.includes('其他') ? selectedOption.replace(/其他.*?[）)]/, '').trim() : selectedOption}
+                                            onChange={(e) => {
+                                              // 找到"其他"选项的原始文本
+                                              const otherOption = q.options?.find(opt => opt.includes('其他')) || '其他'
+                                              // 保存为"其他选项文本 + 用户输入"的格式，但只保存用户输入的部分
+                                              setAnswers({...answers, [q.key]: e.target.value || otherOption})
+                                            }}
+                                            className="w-full p-2 border border-border rounded bg-background text-sm"
+                                            placeholder="请描述您的需求..."
                                           />
-                                          <span className="text-sm">{option}</span>
-                                        </label>
-                                      ))}
-                                    </div>
+                                        </div>
+                                      )}
+                                    </>
                                   ) : (
                                     // 文本输入框
                                     <input
@@ -418,7 +443,7 @@ export default function DesignAgentPage() {
                                     />
                                   )}
                                 </div>
-                              ))}
+                              )}))}
 
                               {/* 提交答案按钮 */}
                               <Button
