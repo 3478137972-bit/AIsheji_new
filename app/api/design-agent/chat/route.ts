@@ -234,20 +234,66 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      // 其他错误
+      // 其他错误：尝试用聊天模式兜底
       console.error('❌ 设计流程错误:', designError);
-      return NextResponse.json({
-        type: 'error',
-        message: '❌ 生成失败：' + (designError.message || '未知错误')
-      }, { status: 500 });
+      console.log('💬 尝试用聊天模式处理...');
+
+      try {
+        const { DeepSeekClient } = await import('@/design-agent/deepseek-client');
+        const deepseek = new DeepSeekClient(deepseekApiKey);
+        const productInfo = getProductInfo();
+
+        const chatResponse = await deepseek.chat([
+          {
+            role: 'system',
+            content: `你是秒懂AI超级员工的设计智能体助手。
+
+产品信息：
+- 产品名称：${productInfo.product_name}
+- 产品定位：${productInfo.product_slogan}
+- 核心功能：${productInfo.core_features.design_agent.description}
+- 支持的设计类型：${productInfo.supported_design_categories.map((cat: any) => cat.name).join('、')}
+
+你的职责：
+1. 友好地回答用户的问题
+2. 如果用户的需求不够清晰，引导用户提供更多信息
+3. 如果遇到技术问题，诚实地告知用户并建议重试
+4. 保持专业和热情
+
+回答要求：
+- 简洁友好，2-3句话即可
+- 使用 emoji 让回复更生动
+- 不要使用 markdown 格式
+- 直接用自然语言回答`
+          },
+          {
+            role: 'user',
+            content: message
+          }
+        ], 0.7);
+
+        return NextResponse.json({
+          type: 'chat',
+          message: chatResponse
+        });
+      } catch (chatError: any) {
+        // 如果聊天模式也失败了，返回友好的错误信息
+        console.error('❌ 聊天模式也失败:', chatError);
+        return NextResponse.json({
+          type: 'error',
+          message: '抱歉，我遇到了一些技术问题 😅 请稍后重试，或者换个方式描述您的需求。'
+        }, { status: 500 });
+      }
     }
 
   } catch (error: any) {
     console.error('❌ 设计智能体 API 错误:', error);
+
+    // 返回友好的错误信息，不暴露技术细节
     return NextResponse.json(
       {
         type: 'error',
-        message: '❌ 服务器错误：' + error.message
+        message: '抱歉，服务暂时遇到了一些问题 😅 请稍后重试，或者刷新页面后再试一次。'
       },
       { status: 500 }
     );
