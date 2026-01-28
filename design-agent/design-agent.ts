@@ -183,6 +183,11 @@ export class DesignAgent {
         }
       };
     } catch (error: any) {
+      // 如果是需要收集更多信息的错误，直接向上抛出，让调用方处理
+      if (error.type === 'NEED_ANSWERS') {
+        throw error;
+      }
+
       const errorMessage = error.message || error.toString() || '未知错误';
       console.error('❌ 处理失败:', errorMessage);
       return {
