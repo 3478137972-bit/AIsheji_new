@@ -111,10 +111,11 @@ export class DeepSeekClient {
 - 缺少核心信息且无法推断 → 需要询问
 
 **询问策略**：
+- **每次只询问一个问题**，避免用户感到压力
 - 优先询问：设计风格（style）、色调偏好（color_preference）
 - 次要询问：目标受众（target_audience）、使用场景（scene）
 - 可选询问：图片比例（aspect_ratio，可以默认 auto）
-- 最多询问 4 个问题，避免用户体验不佳`;
+- 采用渐进式提问，用户回答一个问题后再问下一个`;
 
     const userPrompt = `用户需求：${userInput}
 
@@ -268,10 +269,11 @@ ${skillsCategories.map((cat, idx) => `${idx + 1}. ${cat}`).join('\n')}
 - 缺少核心信息且无法推断 → 需要询问
 
 **询问策略**：
+- **每次只询问一个问题**，避免用户感到压力
 - 优先询问：设计风格（style）、色调偏好（color_preference）
 - 次要询问：目标受众（target_audience）、使用场景（scene）
 - 可选询问：图片比例（aspect_ratio，可以默认 auto）
-- 最多询问 4 个问题，避免用户体验不佳`;
+- 采用渐进式提问，用户回答一个问题后再问下一个`;
 
     const userPrompt = `基于我们之前的对话，请分析这个需求是否完整，缺少哪些关键信息。`;
 
