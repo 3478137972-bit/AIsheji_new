@@ -59,7 +59,6 @@ const toolCategories: ToolCategory[] = [
       { icon: Shield, label: "AI Logo 2号员工", description: "更具美学的LOGO", href: "/tools/ai-logo-2", image: "placeholder" },
       { icon: Brush, label: "AI插画", description: "多风格的非IP插画", href: "/tools/ai-illustration", image: "/tools/ai-illustration.png" },
       { icon: Smile, label: "AI IP插画 1号员工", description: "用于制作品牌IP插画", href: "/tools/ai-ip-illustration-1", image: "/tools/ai-ip-illustration-1.png" },
-      { icon: Heart, label: "AI IP插画 2号员工", description: "用于制作品牌IP插画", href: "/tools/ai-ip-illustration-2", image: "placeholder" },
       { icon: Box, label: "AI平面包装设计", description: "用于制作平面的包装图", href: "/tools/ai-package-design", image: "placeholder" },
       { icon: Type, label: "AI字体设计", description: "用于制作商标、logo等字体", href: "/tools/ai-font", image: "placeholder" },
       { icon: Mountain, label: "AI场景海报设计", description: "用于制作品牌的场景展示海报", href: "/tools/ai-scene-poster", image: "/tools/ai-scene-poster.png" },
