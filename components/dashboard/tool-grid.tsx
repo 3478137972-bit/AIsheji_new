@@ -107,14 +107,14 @@ function ToolCard({ tool }: { tool: ToolItem }) {
   return (
     <Link
       href={tool.href}
-      className="group flex items-center justify-between p-6 bg-card rounded-2xl border border-border hover:shadow-lg hover:-translate-y-1 transition-all"
+      className="group flex items-center justify-between p-4 bg-card rounded-2xl border border-border hover:shadow-lg hover:-translate-y-1 transition-all"
     >
-      <div className="flex-1 pr-4">
-        <h3 className="font-medium text-card-foreground mb-2 text-base">{tool.label}</h3>
-        <p className="text-sm text-muted-foreground">{tool.description}</p>
+      <div className="flex-1 pr-3">
+        <h3 className="font-semibold text-card-foreground mb-1.5 text-lg">{tool.label}</h3>
+        <p className="text-xs text-muted-foreground">{tool.description}</p>
       </div>
       {tool.image ? (
-        <div className="w-32 h-20 rounded-xl bg-muted flex items-center justify-center overflow-hidden flex-shrink-0">
+        <div className="w-[168px] h-[126px] rounded-xl bg-muted flex items-center justify-center overflow-hidden flex-shrink-0">
           {/* 图片占位符 - 后续替换为实际图片 */}
           <div className="w-full h-full bg-gradient-to-br from-muted to-muted-foreground/10" />
         </div>
