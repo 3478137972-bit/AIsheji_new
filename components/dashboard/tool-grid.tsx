@@ -43,6 +43,7 @@ interface ToolItem {
   label: string
   description: string
   href: string
+  image?: string // 可选的图片URL，用于显示图片占位符
 }
 
 interface ToolCategory {
@@ -55,7 +56,7 @@ const toolCategories: ToolCategory[] = [
     title: "AI设计",
     tools: [
       { icon: Sparkles, label: "设计智能体", description: "AI驱动的智能设计助手", href: "/design-agent" },
-      { icon: Hexagon, label: "AI Logo", description: "智能生成Logo设计", href: "/tools/ai-logo" },
+      { icon: Hexagon, label: "AI Logo", description: "智能生成Logo设计", href: "/tools/ai-logo", image: "placeholder" },
       { icon: Shield, label: "AI Logo 2号员工", description: "更具美学的LOGO", href: "/tools/ai-logo-2" },
       { icon: Brush, label: "AI插画", description: "多风格的非IP插画", href: "/tools/ai-illustration" },
       { icon: Smile, label: "AI IP插画 1号员工", description: "用于制作品牌IP插画", href: "/tools/ai-ip-illustration-1" },
@@ -106,15 +107,22 @@ function ToolCard({ tool }: { tool: ToolItem }) {
   return (
     <Link
       href={tool.href}
-      className="group flex items-center justify-between p-4 bg-card rounded-2xl border border-border hover:shadow-lg hover:-translate-y-1 transition-all"
+      className="group flex items-center justify-between p-6 bg-card rounded-2xl border border-border hover:shadow-lg hover:-translate-y-1 transition-all"
     >
-      <div className="flex-1">
-        <h3 className="font-medium text-card-foreground mb-1">{tool.label}</h3>
+      <div className="flex-1 pr-4">
+        <h3 className="font-medium text-card-foreground mb-2 text-base">{tool.label}</h3>
         <p className="text-sm text-muted-foreground">{tool.description}</p>
       </div>
-      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-        <tool.icon className="w-6 h-6" />
-      </div>
+      {tool.image ? (
+        <div className="w-32 h-20 rounded-xl bg-muted flex items-center justify-center overflow-hidden flex-shrink-0">
+          {/* 图片占位符 - 后续替换为实际图片 */}
+          <div className="w-full h-full bg-gradient-to-br from-muted to-muted-foreground/10" />
+        </div>
+      ) : (
+        <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors flex-shrink-0">
+          <tool.icon className="w-6 h-6" />
+        </div>
+      )}
     </Link>
   )
 }
