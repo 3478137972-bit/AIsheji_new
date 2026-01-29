@@ -107,7 +107,7 @@ function ToolCard({ tool }: { tool: ToolItem }) {
   return (
     <Link
       href={tool.href}
-      className="group flex items-center justify-between p-4 bg-card rounded-2xl border border-border hover:shadow-lg hover:-translate-y-1 transition-all"
+      className="group flex items-start justify-between p-4 bg-card rounded-2xl border border-border hover:shadow-lg hover:-translate-y-1 transition-all"
     >
       <div className="flex-1 pr-3">
         <h3 className="font-semibold text-card-foreground mb-1.5 text-lg">{tool.label}</h3>
