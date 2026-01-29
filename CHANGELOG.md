@@ -2,6 +2,154 @@
 
 本文档记录项目的所有重要修改和更新。
 
+## [2026-01-29] AI Logo 卡片 UI 优化
+
+### 🎨 视觉设计优化
+
+#### 1. 功能卡片样式升级
+**文件**: `components/dashboard/tool-grid.tsx`
+
+**修改背景**:
+- 优化首页工具卡片的视觉呈现
+- 为卡片添加图片展示能力
+- 提升用户体验和视觉吸引力
+
+**最终效果**:
+
+**图片占位符**:
+- 尺寸: 168px × 126px
+- 圆角: rounded-xl
+- 背景: 渐变占位符 (from-muted to-muted-foreground/10)
+- 位置: 卡片右侧
+
+**标题样式**:
+- 字体大小: text-lg (18px)
+- 字体粗细: font-semibold (600)
+- 底部间距: mb-1.5
+- 颜色: text-card-foreground
+
+**描述文字**:
+- 字体大小: text-xs (12px)
+- 颜色: text-muted-foreground
+- 自然跟随标题下方
+
+**布局与间距**:
+- 卡片内边距: p-4 (16px)
+- 文字区域右边距: pr-3 (12px)
+- 对齐方式: items-start (顶端对齐)
+- 标题与图片顶端对齐
+
+**交互效果**:
+- 悬停阴影: hover:shadow-lg
+- 悬停位移: hover:-translate-y-1
+- 过渡动画: transition-all
+
+#### 2. 数据结构扩展
+**文件**: `components/dashboard/tool-grid.tsx`
+
+**接口更新**:
+```typescript
+interface ToolItem {
+  icon: React.ComponentType<{ className?: string }>
+  label: string
+  description: string
+  href: string
+  image?: string // 新增：可选的图片URL字段
+}
+```
+
+**应用示例**:
+```typescript
+{
+  icon: Hexagon,
+  label: "AI Logo",
+  description: "智能生成Logo设计",
+  href: "/tools/ai-logo",
+  image: "placeholder" // 标记为带图片的卡片
+}
+```
+
+#### 3. 组件逻辑优化
+**文件**: `components/dashboard/tool-grid.tsx` (第105-127行)
+
+**核心实现**:
+```typescript
+function ToolCard({ tool }: { tool: ToolItem }) {
+  return (
+    <Link
+      href={tool.href}
+      className="group flex items-start justify-between p-4 bg-card rounded-2xl border border-border hover:shadow-lg hover:-translate-y-1 transition-all"
+    >
+      <div className="flex-1 pr-3">
+        <h3 className="font-semibold text-card-foreground mb-1.5 text-lg">
+          {tool.label}
+        </h3>
+        <p className="text-xs text-muted-foreground">
+          {tool.description}
+        </p>
+      </div>
+      {tool.image ? (
+        <div className="w-[168px] h-[126px] rounded-xl bg-muted flex items-center justify-center overflow-hidden flex-shrink-0">
+          {/* 图片占位符 - 后续替换为实际图片 */}
+          <div className="w-full h-full bg-gradient-to-br from-muted to-muted-foreground/10" />
+        </div>
+      ) : (
+        <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors flex-shrink-0">
+          <tool.icon className="w-6 h-6" />
+        </div>
+      )}
+    </Link>
+  )
+}
+```
+
+### 📐 设计规范
+
+**卡片尺寸比例**:
+- 图片宽高比: 4:3 (168:126)
+- 适合展示横向构图的设计作品
+
+**视觉层次**:
+1. 标题 (text-lg, font-semibold) - 最醒目
+2. 图片占位符 (168×126) - 视觉焦点
+3. 描述文字 (text-xs) - 辅助信息
+
+**间距系统**:
+- 卡片内边距: 16px
+- 文字与图片间距: 12px
+- 标题与描述间距: 6px (mb-1.5)
+
+### 🎯 用户体验提升
+
+1. **更清晰的视觉层次**: 标题更大更醒目，描述更小更精简
+2. **更好的内容展示**: 图片占位符为后续添加实际图片预留空间
+3. **更协调的布局**: 文字与图片顶端对齐，视觉更统一
+4. **更紧凑的设计**: 优化间距，提升信息密度
+
+### 📝 文档更新
+
+**新增文档**: `APP_STRUCTURE.md`
+- 详细记录 app/ 目录结构
+- 包含所有页面路由 (20+ 个)
+- 包含所有 API 接口 (11 个)
+- 提供快速查找指南
+
+### 🔄 Git 提交记录
+
+**提交历史**:
+1. `23428a1` - 添加App目录结构文档和功能卡片样式优化
+2. `8d211f8` - 优化AI Logo卡片样式：调整尺寸和间距
+3. `07abe68` - 调整卡片文本对齐方式：title与图片顶端对齐
+
+### 后续计划
+
+- [ ] 为其他工具卡片添加图片
+- [ ] 创建图片资源库
+- [ ] 优化移动端响应式布局
+- [ ] 添加卡片加载骨架屏
+
+---
+
 ## [2026-01-27] 集成 DeepSeek 设计智能体
 
 ### 🎉 重大更新
