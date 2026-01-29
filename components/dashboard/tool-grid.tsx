@@ -55,14 +55,14 @@ const toolCategories: ToolCategory[] = [
   {
     title: "AI设计",
     tools: [
-      { icon: Hexagon, label: "AI Logo", description: "智能生成Logo设计", href: "/tools/ai-logo", image: "placeholder" },
+      { icon: Hexagon, label: "AI Logo", description: "智能生成Logo设计", href: "/tools/ai-logo", image: "/tools/ai-logo.png" },
       { icon: Shield, label: "AI Logo 2号员工", description: "更具美学的LOGO", href: "/tools/ai-logo-2", image: "placeholder" },
       { icon: Brush, label: "AI插画", description: "多风格的非IP插画", href: "/tools/ai-illustration", image: "/tools/ai-illustration.png" },
       { icon: Smile, label: "AI IP插画 1号员工", description: "用于制作品牌IP插画", href: "/tools/ai-ip-illustration-1", image: "/tools/ai-ip-illustration-1.png" },
       { icon: Box, label: "AI平面包装设计", description: "用于制作平面的包装图", href: "/tools/ai-package-design", image: "/tools/ai-package-design.png" },
       { icon: Type, label: "AI字体设计", description: "用于制作商标、logo等字体", href: "/tools/ai-font", image: "/tools/ai-font.png" },
       { icon: Mountain, label: "AI场景海报设计", description: "用于制作品牌的场景展示海报", href: "/tools/ai-scene-poster", image: "/tools/ai-scene-poster.png" },
-      { icon: Award, label: "AI品牌海报设计", description: "用于制作品牌海报", href: "/tools/ai-brand-poster", image: "placeholder" },
+      { icon: Award, label: "AI品牌海报设计", description: "用于制作品牌海报", href: "/tools/ai-brand-poster", image: "/tools/ai-brand-poster.png" },
       { icon: CalendarDays, label: "AI活动海报设计", description: "用于制作活动宣传海报", href: "/tools/ai-event-poster", image: "/tools/ai-event-poster.png" },
       { icon: FileText, label: "AI图文笔记", description: "一键生成图文笔记", href: "/tools/ai-note", image: "placeholder" },
       { icon: PenTool, label: "AI文案", description: "智能生成营销文案", href: "/tools/ai-copy", image: "placeholder" },
