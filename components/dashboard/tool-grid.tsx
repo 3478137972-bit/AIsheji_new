@@ -57,7 +57,7 @@ const toolCategories: ToolCategory[] = [
     tools: [
       { icon: Hexagon, label: "AI Logo", description: "智能生成Logo设计", href: "/tools/ai-logo", image: "placeholder" },
       { icon: Shield, label: "AI Logo 2号员工", description: "更具美学的LOGO", href: "/tools/ai-logo-2", image: "placeholder" },
-      { icon: Brush, label: "AI插画", description: "多风格的非IP插画", href: "/tools/ai-illustration", image: "placeholder" },
+      { icon: Brush, label: "AI插画", description: "多风格的非IP插画", href: "/tools/ai-illustration", image: "/tools/ai-illustration.png" },
       { icon: Smile, label: "AI IP插画 1号员工", description: "用于制作品牌IP插画", href: "/tools/ai-ip-illustration-1", image: "placeholder" },
       { icon: Heart, label: "AI IP插画 2号员工", description: "用于制作品牌IP插画", href: "/tools/ai-ip-illustration-2", image: "placeholder" },
       { icon: Box, label: "AI平面包装设计", description: "用于制作平面的包装图", href: "/tools/ai-package-design", image: "placeholder" },
@@ -114,8 +114,11 @@ function ToolCard({ tool }: { tool: ToolItem }) {
       </div>
       {tool.image ? (
         <div className="w-[168px] h-[126px] rounded-xl bg-muted flex items-center justify-center overflow-hidden flex-shrink-0">
-          {/* 图片占位符 - 后续替换为实际图片 */}
-          <div className="w-full h-full bg-gradient-to-br from-muted to-muted-foreground/10" />
+          {tool.image === "placeholder" ? (
+            <div className="w-full h-full bg-gradient-to-br from-muted to-muted-foreground/10" />
+          ) : (
+            <img src={tool.image} alt={tool.label} className="w-full h-full object-cover" />
+          )}
         </div>
       ) : (
         <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors flex-shrink-0">
