@@ -268,7 +268,7 @@ export default function TemplatesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-beige-50">
       <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-6 max-w-7xl mx-auto">
         {/* 页面标题 - 桌面端显示 */}
         <div className="hidden lg:block mb-6">

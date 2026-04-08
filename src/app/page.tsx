@@ -70,21 +70,21 @@ export default function HomePage() {
       title: '一键成片',
       desc: '输入文案，秒出视频',
       href: '/quick-video',
-      color: 'bg-primary',
+      color: 'bg-primary/90',
     },
     {
       icon: Grid,
       title: '智能工具',
       desc: '100+ AI 工具任选',
       href: '/smart-square',
-      color: 'bg-primary',
+      color: 'bg-primary/80',
     },
     {
       icon: BookOpen,
       title: '模板中心',
       desc: '海量模板直接套用',
       href: '/templates',
-      color: 'bg-primary',
+      color: 'bg-primary/70',
     },
   ];
 
@@ -98,7 +98,7 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-beige-50">
       {/* 主要内容区 */}
       <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-8 max-w-7xl mx-auto">
         {/* 欢迎语 - 桌面端显示 */}
