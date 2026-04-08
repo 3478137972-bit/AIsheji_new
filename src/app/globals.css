@@ -63,15 +63,5 @@ button:hover:not(:disabled) {
 
 /* 底部导航栏样式 */
 .bottom-nav {
-  @apply fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-gray-200 z-50;
-}
-
-/* 卡片悬停效果 */
-.card-hover {
-  @apply transition-all duration-300 hover:shadow-glow hover:-translate-y-1;
-}
-
-/* 渐变文字 */
-.gradient-text {
-  @apply bg-gradient-to-r from-tech-blue to-tech-cyan bg-clip-text text-transparent;
+  @apply fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-neutral-200 z-50;
 }
