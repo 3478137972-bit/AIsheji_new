@@ -269,29 +269,27 @@ export default function TemplatesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* 顶部 Header */}
-      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-lg border-b border-gray-100">
-        <div className="px-4 py-4">
-          <h1 className="text-2xl font-bold text-gray-800">模板中心</h1>
-          <p className="text-sm text-gray-500">海量模板，一键套用</p>
+      <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-6 max-w-7xl mx-auto">
+        {/* 页面标题 - 桌面端显示 */}
+        <div className="hidden lg:block mb-6">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">模板中心</h1>
+          <p className="text-gray-600">海量模板，一键套用</p>
         </div>
-      </header>
 
-      <div className="px-4 py-6 space-y-6">
         {/* 搜索框 */}
-        <div className="relative">
+        <div className="relative max-w-2xl">
           <Search size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="搜索模板名称、标签..."
-            className="w-full pl-10 pr-4 py-3 bg-white rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-tech-blue"
+            className="w-full pl-10 pr-4 py-2.5 bg-white rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-tech-blue transition-all"
           />
         </div>
 
         {/* 分类 Tab */}
-        <div className="flex space-x-2 overflow-x-auto scrollbar-hide">
+        <div className="flex space-x-2 overflow-x-auto scrollbar-hide pb-2">
           {categories.map((cat) => {
             const Icon = cat.icon;
             return (
@@ -308,14 +306,14 @@ export default function TemplatesPage() {
                 }`}
               >
                 <Icon size={18} className="mr-2" />
-                <span className="font-medium">{cat.name}</span>
+                <span className="font-medium text-sm md:text-base">{cat.name}</span>
               </button>
             );
           })}
         </div>
 
         {/* 子分类筛选 */}
-        <div className="flex space-x-2 overflow-x-auto scrollbar-hide">
+        <div className="flex flex-wrap gap-2">
           {subCategories.map((sub) => (
             <button
               key={sub}
@@ -345,14 +343,14 @@ export default function TemplatesPage() {
         </div>
 
         {/* 模板列表 */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4 lg:gap-6">
           {filteredTemplates.map((template) => (
             <Link 
               key={template.id} 
               href={getTargetPath(template)}
               className="group"
             >
-              <div className="bg-white rounded-2xl overflow-hidden shadow-card hover:shadow-lg transition-all group-hover:-translate-y-1">
+              <div className="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-lg transition-all group-hover:-translate-y-1">
                 {/* 封面图 */}
                 <div className="aspect-[3/4] bg-gradient-to-br from-gray-100 to-gray-200 relative">
                   <div className="absolute inset-0 flex items-center justify-center">

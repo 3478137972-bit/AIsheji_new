@@ -99,27 +99,18 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      {/* 顶部 Header */}
-      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-lg border-b border-gray-100">
-        <div className="px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold gradient-text">秒懂 AI 超级员工</h1>
-              <p className="text-sm text-gray-500">让创作更简单</p>
-            </div>
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-tech-blue to-tech-cyan flex items-center justify-center text-white font-semibold">
-              U
-            </div>
-          </div>
-        </div>
-      </header>
-
       {/* 主要内容区 */}
-      <div className="px-4 py-6 space-y-8">
+      <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-8 max-w-7xl mx-auto">
+        {/* 欢迎语 - 桌面端显示 */}
+        <div className="hidden lg:block mb-8">
+          <h1 className="text-3xl font-bold gradient-text mb-2">欢迎来到秒懂 AI 超级员工</h1>
+          <p className="text-gray-600">开始你的 AI 创作之旅</p>
+        </div>
+
         {/* 快捷功能网格 */}
         <section>
           <h2 className="text-lg font-semibold text-gray-800 mb-4">快捷功能</h2>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
             {quickActions.map((action, index) => (
               <QuickActionCard key={index} {...action} />
             ))}
@@ -130,11 +121,11 @@ export default function HomePage() {
         <section>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-800">模板推荐</h2>
-            <Link href="/templates" className="text-sm text-tech-blue font-medium">
+            <Link href="/templates" className="text-sm text-tech-blue font-medium hover:underline">
               查看更多 →
             </Link>
           </div>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4">
             {templates.map((template, index) => (
               <TemplateCard 
                 key={index}
