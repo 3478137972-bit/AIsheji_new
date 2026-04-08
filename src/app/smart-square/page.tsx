@@ -2,228 +2,251 @@
 
 import { useState } from 'react';
 import { 
-  Image, 
-  Video, 
-  FileText, 
-  Palette, 
-  Music, 
-  Type,
-  Sparkles,
-  Zap
+  Zap, 
+  TrendingUp, 
+  Users, 
+  ShoppingBag, 
+  MessageCircle,
+  Video,
+  FileText,
+  Image,
+  Star,
+  ArrowRight
 } from 'lucide-react';
+import Link from 'next/link';
 
+// 分类 Tab - 按业务场景
 const categories = [
-  { id: 'all', name: '全部', icon: Sparkles },
-  { id: 'image', name: '图像', icon: Image },
-  { id: 'video', name: '视频', icon: Video },
-  { id: 'text', name: '文案', icon: FileText },
-  { id: 'design', name: '设计', icon: Palette },
-  { id: 'audio', name: '音频', icon: Music },
-  { id: 'font', name: '字体', icon: Type },
+  { id: 'all', name: '全部' },
+  { id: 'boss', name: '老板必用' },
+  { id: 'private', name: '私域变现' },
+  { id: 'public', name: '公域获客' },
+  { id: 'operation', name: '运营提效' },
+  { id: 'content', name: '内容创作' },
 ];
 
-const tools = [
+// AI 智能体矩阵 - 按业务场景分类
+const aiAgents = [
   {
     id: 1,
-    category: 'image',
-    name: 'AI Logo 设计',
-    desc: '智能生成品牌 Logo',
-    icon: Palette,
-    gradient: 'from-blue-500 to-cyan-500',
-    popular: true,
+    category: 'boss',
+    name: 'IP 账号定位',
+    desc: '帮你找到最适合的 IP 定位方向',
+    icon: Users,
+    color: 'from-blue-500 to-cyan-500',
+    tag: '热门',
+    usageCount: '2.3 万',
+    targetPath: '/create?type=ip-positioning'
   },
   {
     id: 2,
-    category: 'video',
-    name: '一键成片',
-    desc: '文案转视频，秒级生成',
-    icon: Video,
-    gradient: 'from-purple-500 to-pink-500',
-    popular: true,
+    category: 'boss',
+    name: 'AI 商业思维',
+    desc: '提升商业认知，洞察行业趋势',
+    icon: TrendingUp,
+    color: 'from-purple-500 to-pink-500',
+    tag: '热门',
+    usageCount: '1.8 万',
+    targetPath: '/create?type=business'
   },
   {
     id: 3,
-    category: 'image',
-    name: 'AI 插画生成',
-    desc: '文字描述生成精美插画',
-    icon: Image,
-    gradient: 'from-green-500 to-teal-500',
-    popular: false,
+    category: 'private',
+    name: 'AI 卖点提炼',
+    desc: '快速提炼产品核心卖点',
+    icon: Zap,
+    color: 'from-orange-500 to-amber-500',
+    tag: '新品',
+    usageCount: '8956',
+    targetPath: '/copywriting/moment-marketing'
   },
   {
     id: 4,
-    category: 'text',
-    name: '智能文案',
-    desc: '营销文案自动生成',
-    icon: FileText,
-    gradient: 'from-orange-500 to-red-500',
-    popular: true,
+    category: 'private',
+    name: 'AI 营销话术',
+    desc: '生成高转化营销文案',
+    icon: MessageCircle,
+    color: 'from-green-500 to-teal-500',
+    tag: '热门',
+    usageCount: '1.5 万',
+    targetPath: '/copywriting/live-sales'
   },
   {
     id: 5,
-    category: 'design',
-    name: '海报设计',
-    desc: '活动海报快速制作',
-    icon: Palette,
-    gradient: 'from-indigo-500 to-purple-500',
-    popular: false,
+    category: 'public',
+    name: '短视频选题专家',
+    desc: '帮你找到爆款视频选题',
+    icon: Video,
+    color: 'from-indigo-500 to-purple-500',
+    tag: '热门',
+    usageCount: '3.1 万',
+    targetPath: '/quick-video'
   },
   {
     id: 6,
-    category: 'image',
-    name: '商品套图',
-    desc: '电商产品图批量生成',
-    icon: Image,
-    gradient: 'from-pink-500 to-rose-500',
-    popular: true,
+    category: 'public',
+    name: '抖音账号诊断',
+    desc: '深度分析账号问题，给出优化建议',
+    icon: TrendingUp,
+    color: 'from-red-500 to-rose-500',
+    usageCount: '1.2 万',
+    targetPath: '/analysis/douyin'
   },
   {
     id: 7,
-    category: 'font',
-    name: 'AI 字体设计',
-    desc: '创意字体一键生成',
-    icon: Type,
-    gradient: 'from-cyan-500 to-blue-500',
-    popular: false,
+    category: 'operation',
+    name: '朋友圈文案大师',
+    desc: '每日朋友圈文案自动生成',
+    icon: FileText,
+    color: 'from-cyan-500 to-blue-500',
+    tag: '热门',
+    usageCount: '4.5 万',
+    targetPath: '/copywriting/moment-rewrite'
   },
   {
     id: 8,
-    category: 'audio',
-    name: 'AI 配音',
-    desc: '文本转自然语音',
-    icon: Music,
-    gradient: 'from-amber-500 to-orange-500',
-    popular: true,
+    category: 'operation',
+    name: '海报文案生成',
+    desc: '一键生成海报宣传文案',
+    icon: Image,
+    color: 'from-pink-500 to-rose-500',
+    usageCount: '9823',
+    targetPath: '/create?type=poster'
   },
   {
     id: 9,
-    category: 'video',
-    name: '视频剪辑',
-    desc: '智能剪辑与特效',
+    category: 'content',
+    name: '直播脚本生成',
+    desc: '专业直播脚本快速创作',
     icon: Video,
-    gradient: 'from-red-500 to-pink-500',
-    popular: false,
+    color: 'from-amber-500 to-orange-500',
+    tag: '新品',
+    usageCount: '6754',
+    targetPath: '/copywriting/live-sales'
   },
   {
     id: 10,
-    category: 'image',
-    name: 'IP 形象设计',
-    desc: '品牌 IP 角色创作',
-    icon: Image,
-    gradient: 'from-violet-500 to-purple-500',
-    popular: true,
+    category: 'content',
+    name: '小红书笔记助手',
+    desc: '生成小红书爆款笔记',
+    icon: FileText,
+    color: 'from-red-500 to-pink-500',
+    tag: '热门',
+    usageCount: '2.8 万',
+    targetPath: '/analysis/xiaohongshu'
   },
   {
     id: 11,
-    category: 'text',
-    name: '标题生成器',
-    desc: '爆款标题智能创作',
+    category: 'boss',
+    name: '品牌故事创作',
+    desc: '打造动人品牌故事',
     icon: FileText,
-    gradient: 'from-emerald-500 to-green-500',
-    popular: false,
+    color: 'from-violet-500 to-purple-500',
+    usageCount: '7632',
+    targetPath: '/create?type=brand-story'
   },
   {
     id: 12,
-    category: 'design',
-    name: '包装设计',
-    desc: '产品包装智能设计',
-    icon: Palette,
-    gradient: 'from-sky-500 to-blue-500',
-    popular: false,
+    category: 'private',
+    name: '社群运营助手',
+    desc: '社群活跃与转化话术',
+    icon: MessageCircle,
+    color: 'from-emerald-500 to-green-500',
+    usageCount: '1.1 万',
+    targetPath: '/copywriting/moment-duplicate'
   },
 ];
 
 export default function SmartSquarePage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  const filteredTools = selectedCategory === 'all'
-    ? tools
-    : tools.filter(t => t.category === selectedCategory);
+  const filteredAgents = selectedCategory === 'all'
+    ? aiAgents
+    : aiAgents.filter(agent => agent.category === selectedCategory);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-beige-50">
       {/* 顶部 Header */}
-      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-lg border-b border-gray-100">
+      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-lg border-b border-neutral-200">
         <div className="px-4 py-4">
-          <h1 className="text-2xl font-bold text-gray-800">智能广场</h1>
-          <p className="text-sm text-gray-500">100+ AI 工具，赋能创作全流程</p>
+          <h1 className="text-2xl font-bold text-neutral-900">AI 智能体广场</h1>
+          <p className="text-sm text-neutral-600">100+ AI 员工，赋能业务全流程</p>
         </div>
 
         {/* 分类 Tab */}
         <div className="px-4 pb-3">
           <div className="flex space-x-2 overflow-x-auto scrollbar-hide">
-            {categories.map((category) => {
-              const Icon = category.icon;
-              return (
-                <button
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={`flex items-center px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
-                    selectedCategory === category.id
-                      ? 'bg-tech-blue text-white shadow-glow'
-                      : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
-                  }`}
-                >
-                  <Icon size={16} className="mr-2" />
-                  {category.name}
-                </button>
-              );
-            })}
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => setSelectedCategory(category.id)}
+                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                  selectedCategory === category.id
+                    ? 'bg-primary text-white'
+                    : 'bg-white text-neutral-600 border border-neutral-200 hover:bg-neutral-50'
+                }`}
+              >
+                {category.name}
+              </button>
+            ))}
           </div>
         </div>
       </header>
 
-      {/* 工具网格 */}
+      {/* 智能体网格 */}
       <div className="px-4 py-4">
-        {/* 搜索框 */}
-        <div className="mb-4">
-          <input
-            type="text"
-            placeholder="搜索 AI 工具..."
-            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-tech-blue focus:border-transparent"
-          />
+        {/* 统计信息 */}
+        <div className="mb-4 flex items-center justify-between">
+          <p className="text-sm text-neutral-600">
+            共 <span className="font-semibold text-primary">{aiAgents.length}</span> 个 AI 智能体
+          </p>
         </div>
 
-        {/* 工具卡片网格 */}
+        {/* 智能体卡片网格 */}
         <div className="grid grid-cols-2 gap-3">
-          {filteredTools.map((tool) => {
-            const Icon = tool.icon;
+          {filteredAgents.map((agent) => {
+            const Icon = agent.icon;
             return (
-              <div
-                key={tool.id}
-                className="card-hover bg-white rounded-2xl p-4 shadow-card cursor-pointer relative overflow-hidden"
+              <Link 
+                key={agent.id} 
+                href={agent.targetPath}
+                className="card-hover bg-white rounded-xl p-3 shadow-card cursor-pointer relative overflow-hidden border border-neutral-200"
               >
                 {/* 热门标签 */}
-                {tool.popular && (
-                  <div className="absolute top-2 right-2 flex items-center px-2 py-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs rounded-full">
-                    <Zap size={12} className="mr-1" />
-                    热门
+                {agent.tag && (
+                  <div className={`absolute top-2 right-2 flex items-center px-1.5 py-0.5 text-xs rounded-md ${
+                    agent.tag === '热门' 
+                      ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white' 
+                      : 'bg-gradient-to-r from-green-500 to-emerald-500 text-white'
+                  }`}>
+                    <Star size={10} className="mr-0.5" />
+                    {agent.tag}
                   </div>
                 )}
 
                 {/* 图标 */}
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${tool.gradient} flex items-center justify-center mb-3`}>
-                  <Icon size={24} className="text-white" />
+                <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${agent.color} flex items-center justify-center mb-2`}>
+                  <Icon size={20} className="text-white" />
                 </div>
 
                 {/* 名称和描述 */}
-                <h3 className="font-semibold text-gray-800 mb-1">{tool.name}</h3>
-                <p className="text-xs text-gray-500 line-clamp-2">{tool.desc}</p>
+                <h3 className="font-semibold text-neutral-900 text-sm mb-1">{agent.name}</h3>
+                <p className="text-xs text-neutral-500 line-clamp-2 mb-2">{agent.desc}</p>
+
+                {/* 使用数据 */}
+                <div className="flex items-center text-xs text-neutral-400 mb-2">
+                  <Users size={12} className="mr-1" />
+                  {agent.usageCount}人已使用
+                </div>
 
                 {/* 使用按钮 */}
-                <button className="mt-3 w-full py-2 bg-gray-50 hover:bg-tech-blue hover:text-white text-gray-600 text-sm font-medium rounded-lg transition-colors">
+                <button className="w-full py-1.5 bg-primary/10 hover:bg-primary hover:text-white text-primary text-xs font-medium rounded-lg transition-colors flex items-center justify-center">
                   立即使用
+                  <ArrowRight size={12} className="ml-1" />
                 </button>
-              </div>
+              </Link>
             );
           })}
-        </div>
-
-        {/* 加载更多 */}
-        <div className="mt-6 text-center">
-          <button className="px-6 py-3 bg-white border border-gray-200 text-gray-600 rounded-xl font-medium hover:bg-gray-50 transition-colors">
-            加载更多工具
-          </button>
         </div>
       </div>
     </div>
