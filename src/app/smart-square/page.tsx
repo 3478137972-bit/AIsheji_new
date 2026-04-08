@@ -25,8 +25,9 @@ const categories = [
   { id: 'content', name: '内容创作' },
 ];
 
-// AI 智能体矩阵 - 按业务场景分类
+// AI 智能体矩阵 - 按业务场景分类（23 个完整功能）
 const aiAgents = [
+  // ===== 老板必用 (5 个) =====
   {
     id: 1,
     category: 'boss',
@@ -51,6 +52,39 @@ const aiAgents = [
   },
   {
     id: 3,
+    category: 'boss',
+    name: '品牌故事创作',
+    desc: '打造动人品牌故事',
+    icon: FileText,
+    color: 'from-violet-500 to-purple-500',
+    usageCount: '7632',
+    targetPath: '/create?type=brand-story'
+  },
+  {
+    id: 4,
+    category: 'boss',
+    name: '企业 IP 打造',
+    desc: '塑造企业品牌形象',
+    icon: Users,
+    color: 'from-indigo-500 to-blue-500',
+    tag: '新品',
+    usageCount: '5421',
+    targetPath: '/create?type=enterprise-ip'
+  },
+  {
+    id: 5,
+    category: 'boss',
+    name: '商业模式设计',
+    desc: '设计创新商业模式',
+    icon: TrendingUp,
+    color: 'from-cyan-500 to-blue-500',
+    usageCount: '9876',
+    targetPath: '/create?type=business-model'
+  },
+  
+  // ===== 私域变现 (5 个) =====
+  {
+    id: 6,
     category: 'private',
     name: 'AI 卖点提炼',
     desc: '快速提炼产品核心卖点',
@@ -61,7 +95,7 @@ const aiAgents = [
     targetPath: '/copywriting/moment-marketing'
   },
   {
-    id: 4,
+    id: 7,
     category: 'private',
     name: 'AI 营销话术',
     desc: '生成高转化营销文案',
@@ -72,7 +106,40 @@ const aiAgents = [
     targetPath: '/copywriting/live-sales'
   },
   {
-    id: 5,
+    id: 8,
+    category: 'private',
+    name: '社群运营助手',
+    desc: '社群活跃与转化话术',
+    icon: MessageCircle,
+    color: 'from-emerald-500 to-green-500',
+    usageCount: '1.1 万',
+    targetPath: '/copywriting/moment-duplicate'
+  },
+  {
+    id: 9,
+    category: 'private',
+    name: '私域裂变方案',
+    desc: '设计私域裂变活动',
+    icon: Users,
+    color: 'from-pink-500 to-rose-500',
+    tag: '热门',
+    usageCount: '1.3 万',
+    targetPath: '/create?type=private-growth'
+  },
+  {
+    id: 10,
+    category: 'private',
+    name: '客户画像分析',
+    desc: '深度分析目标客户',
+    icon: TrendingUp,
+    color: 'from-amber-500 to-orange-500',
+    usageCount: '8765',
+    targetPath: '/create?type=customer-profile'
+  },
+  
+  // ===== 公域获客 (5 个) =====
+  {
+    id: 11,
     category: 'public',
     name: '短视频选题专家',
     desc: '帮你找到爆款视频选题',
@@ -83,7 +150,7 @@ const aiAgents = [
     targetPath: '/quick-video'
   },
   {
-    id: 6,
+    id: 12,
     category: 'public',
     name: '抖音账号诊断',
     desc: '深度分析账号问题，给出优化建议',
@@ -93,7 +160,41 @@ const aiAgents = [
     targetPath: '/analysis/douyin'
   },
   {
-    id: 7,
+    id: 13,
+    category: 'public',
+    name: '小红书爆款笔记',
+    desc: '生成小红书爆款内容',
+    icon: FileText,
+    color: 'from-red-500 to-pink-500',
+    tag: '热门',
+    usageCount: '2.8 万',
+    targetPath: '/analysis/xiaohongshu'
+  },
+  {
+    id: 14,
+    category: 'public',
+    name: 'B 站视频策划',
+    desc: 'B 站视频内容策划',
+    icon: Video,
+    color: 'from-blue-500 to-cyan-500',
+    usageCount: '9876',
+    targetPath: '/quick-video'
+  },
+  {
+    id: 15,
+    category: 'public',
+    name: '全网热点追踪',
+    desc: '实时追踪全网热点',
+    icon: TrendingUp,
+    color: 'from-purple-500 to-pink-500',
+    tag: '新品',
+    usageCount: '1.5 万',
+    targetPath: '/inspiration'
+  },
+  
+  // ===== 运营提效 (5 个) =====
+  {
+    id: 16,
     category: 'operation',
     name: '朋友圈文案大师',
     desc: '每日朋友圈文案自动生成',
@@ -104,7 +205,7 @@ const aiAgents = [
     targetPath: '/copywriting/moment-rewrite'
   },
   {
-    id: 8,
+    id: 17,
     category: 'operation',
     name: '海报文案生成',
     desc: '一键生成海报宣传文案',
@@ -114,7 +215,41 @@ const aiAgents = [
     targetPath: '/create?type=poster'
   },
   {
-    id: 9,
+    id: 18,
+    category: 'operation',
+    name: '周报总结助手',
+    desc: '智能生成工作周报',
+    icon: FileText,
+    color: 'from-blue-500 to-indigo-500',
+    tag: '热门',
+    usageCount: '2.1 万',
+    targetPath: '/create?type=weekly-report'
+  },
+  {
+    id: 19,
+    category: 'operation',
+    name: 'PPT 大纲生成',
+    desc: '快速生成 PPT 框架',
+    icon: FileText,
+    color: 'from-orange-500 to-red-500',
+    usageCount: '1.6 万',
+    targetPath: '/create?type=ppt-outline'
+  },
+  {
+    id: 20,
+    category: 'operation',
+    name: '活动策划方案',
+    desc: '完整活动策划生成',
+    icon: Zap,
+    color: 'from-green-500 to-emerald-500',
+    tag: '新品',
+    usageCount: '8765',
+    targetPath: '/create?type=event-plan'
+  },
+  
+  // ===== 内容创作 (3 个) =====
+  {
+    id: 21,
     category: 'content',
     name: '直播脚本生成',
     desc: '专业直播脚本快速创作',
@@ -125,35 +260,25 @@ const aiAgents = [
     targetPath: '/copywriting/live-sales'
   },
   {
-    id: 10,
+    id: 22,
     category: 'content',
-    name: '小红书笔记助手',
-    desc: '生成小红书爆款笔记',
-    icon: FileText,
-    color: 'from-red-500 to-pink-500',
-    tag: '热门',
-    usageCount: '2.8 万',
-    targetPath: '/analysis/xiaohongshu'
-  },
-  {
-    id: 11,
-    category: 'boss',
-    name: '品牌故事创作',
-    desc: '打造动人品牌故事',
-    icon: FileText,
+    name: '短视频脚本',
+    desc: '爆款短视频脚本创作',
+    icon: Video,
     color: 'from-violet-500 to-purple-500',
-    usageCount: '7632',
-    targetPath: '/create?type=brand-story'
+    tag: '热门',
+    usageCount: '1.9 万',
+    targetPath: '/create?type=short-video-script'
   },
   {
-    id: 12,
-    category: 'private',
-    name: '社群运营助手',
-    desc: '社群活跃与转化话术',
-    icon: MessageCircle,
-    color: 'from-emerald-500 to-green-500',
-    usageCount: '1.1 万',
-    targetPath: '/copywriting/moment-duplicate'
+    id: 23,
+    category: 'content',
+    name: '文章润色优化',
+    desc: '智能优化文章质量',
+    icon: FileText,
+    color: 'from-teal-500 to-cyan-500',
+    usageCount: '1.2 万',
+    targetPath: '/create?type=article-polish'
   },
 ];
 
