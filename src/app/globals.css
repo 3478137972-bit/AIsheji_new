@@ -80,8 +80,6 @@ body {
     @apply text-sm md:text-base;
   }
 }
-  background: #94a3b8;
-}
 
 /* 底部导航栏样式 */
 .bottom-nav {
