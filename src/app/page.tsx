@@ -3,36 +3,36 @@
 import { PenTool, Zap, Grid, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 
-// 快捷功能卡片组件
+// 快捷功能卡片组件 - 简洁风格
 function QuickActionCard({ 
   icon: Icon, 
   title, 
   desc, 
   href,
-  gradient 
+  color 
 }: { 
   icon: any; 
   title: string; 
   desc: string; 
   href: string;
-  gradient: string;
+  color: string;
 }) {
   return (
     <Link href={href}>
-      <div className={`card-hover p-4 rounded-2xl bg-gradient-to-br ${gradient} text-white cursor-pointer`}>
+      <div className="card-hover p-5 rounded-xl bg-white border border-neutral-200 cursor-pointer hover:border-primary/50">
         <div className="flex items-center space-x-3 mb-3">
-          <div className="p-2 bg-white/20 rounded-xl">
-            <Icon size={24} />
+          <div className={`p-2.5 rounded-lg ${color}`}>
+            <Icon size={22} className="text-white" />
           </div>
-          <h3 className="font-semibold text-lg">{title}</h3>
+          <h3 className="font-semibold text-neutral-900">{title}</h3>
         </div>
-        <p className="text-sm text-white/80">{desc}</p>
+        <p className="text-sm text-neutral-600">{desc}</p>
       </div>
     </Link>
   );
 }
 
-// 模板卡片组件
+// 模板卡片组件 - 简洁风格
 function TemplateCard({ 
   image, 
   title, 
@@ -43,14 +43,14 @@ function TemplateCard({
   tag: string;
 }) {
   return (
-    <div className="card-hover bg-white rounded-2xl overflow-hidden shadow-card cursor-pointer">
-      <div className="aspect-[3/4] bg-gradient-to-br from-gray-100 to-gray-200 relative">
-        <div className="absolute top-2 left-2 px-2 py-1 bg-tech-blue/90 text-white text-xs rounded-full">
+    <div className="card-hover bg-white rounded-xl overflow-hidden shadow-card border border-neutral-200 cursor-pointer">
+      <div className="aspect-[3/4] bg-neutral-100 relative">
+        <div className="absolute top-2 left-2 px-2 py-1 bg-primary text-white text-xs rounded-md">
           {tag}
         </div>
       </div>
       <div className="p-3">
-        <h4 className="font-medium text-sm text-gray-800 truncate">{title}</h4>
+        <h4 className="font-medium text-sm text-neutral-800 truncate">{title}</h4>
       </div>
     </div>
   );
@@ -63,28 +63,28 @@ export default function HomePage() {
       title: '自由创作',
       desc: 'AI 辅助，无限创意',
       href: '/create',
-      gradient: 'from-blue-500 to-cyan-500',
+      color: 'bg-primary',
     },
     {
       icon: Zap,
       title: '一键成片',
       desc: '输入文案，秒出视频',
       href: '/quick-video',
-      gradient: 'from-purple-500 to-pink-500',
+      color: 'bg-primary',
     },
     {
       icon: Grid,
       title: '智能工具',
       desc: '100+ AI 工具任选',
       href: '/smart-square',
-      gradient: 'from-orange-500 to-red-500',
+      color: 'bg-primary',
     },
     {
       icon: BookOpen,
       title: '模板中心',
       desc: '海量模板直接套用',
       href: '/templates',
-      gradient: 'from-green-500 to-teal-500',
+      color: 'bg-primary',
     },
   ];
 
@@ -98,18 +98,18 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="min-h-screen bg-neutral-50">
       {/* 主要内容区 */}
       <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-8 max-w-7xl mx-auto">
         {/* 欢迎语 - 桌面端显示 */}
         <div className="hidden lg:block mb-8">
-          <h1 className="text-3xl font-bold gradient-text mb-2">欢迎来到秒懂 AI 超级员工</h1>
-          <p className="text-gray-600">开始你的 AI 创作之旅</p>
+          <h1 className="text-3xl font-bold text-neutral-900 mb-2">欢迎来到秒懂 AI 超级员工</h1>
+          <p className="text-neutral-600">开始你的 AI 创作之旅</p>
         </div>
 
         {/* 快捷功能网格 */}
         <section>
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">快捷功能</h2>
+          <h2 className="text-lg font-semibold text-neutral-800 mb-4">快捷功能</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
             {quickActions.map((action, index) => (
               <QuickActionCard key={index} {...action} />
@@ -120,8 +120,8 @@ export default function HomePage() {
         {/* 模板推荐 */}
         <section>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-800">模板推荐</h2>
-            <Link href="/templates" className="text-sm text-tech-blue font-medium hover:underline">
+            <h2 className="text-lg font-semibold text-neutral-800">模板推荐</h2>
+            <Link href="/templates" className="text-sm text-primary font-medium hover:underline">
               查看更多 →
             </Link>
           </div>

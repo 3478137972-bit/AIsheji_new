@@ -268,23 +268,23 @@ export default function TemplatesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-neutral-50">
       <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-6 max-w-7xl mx-auto">
         {/* 页面标题 - 桌面端显示 */}
         <div className="hidden lg:block mb-6">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">模板中心</h1>
-          <p className="text-gray-600">海量模板，一键套用</p>
+          <h1 className="text-3xl font-bold text-neutral-900 mb-2">模板中心</h1>
+          <p className="text-neutral-600">海量模板，一键套用</p>
         </div>
 
         {/* 搜索框 */}
         <div className="relative max-w-2xl">
-          <Search size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <Search size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="搜索模板名称、标签..."
-            className="w-full pl-10 pr-4 py-2.5 bg-white rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-tech-blue transition-all"
+            className="w-full pl-10 pr-4 py-2.5 bg-white rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
           />
         </div>
 
@@ -301,8 +301,8 @@ export default function TemplatesPage() {
                 }}
                 className={`flex items-center px-4 py-2 rounded-xl whitespace-nowrap transition-all ${
                   selectedCategory === cat.id
-                    ? 'bg-gradient-to-r from-tech-blue to-tech-cyan text-white shadow-glow'
-                    : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-300'
+                    ? 'bg-primary text-white'
+                    : 'bg-white text-neutral-600 border border-neutral-200 hover:border-neutral-300'
                 }`}
               >
                 <Icon size={18} className="mr-2" />
@@ -320,8 +320,8 @@ export default function TemplatesPage() {
               onClick={() => setSelectedSubCategory(sub)}
               className={`px-3 py-1.5 rounded-full text-sm whitespace-nowrap transition-all ${
                 selectedSubCategory === sub
-                  ? 'bg-tech-blue text-white'
-                  : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-300'
+                  ? 'bg-primary text-white'
+                  : 'bg-white text-neutral-600 border border-neutral-200 hover:border-neutral-300'
               }`}
             >
               {sub}
