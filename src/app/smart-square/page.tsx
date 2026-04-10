@@ -36,7 +36,7 @@ const aiAgents = [
     color: 'from-blue-500 to-cyan-500',
     tag: '热门',
     usageCount: '2.3 万',
-    targetPath: '/create?type=ip-positioning'
+    targetPath: '/smart-square-form?type=ip-positioning'
   },
   {
     id: 2,
@@ -47,7 +47,7 @@ const aiAgents = [
     color: 'from-purple-500 to-pink-500',
     tag: '热门',
     usageCount: '1.8 万',
-    targetPath: '/create?type=business'
+    targetPath: '/smart-square-form?type=business'
   },
   {
     id: 3,
@@ -57,7 +57,7 @@ const aiAgents = [
     icon: FileText,
     color: 'from-violet-500 to-purple-500',
     usageCount: '7632',
-    targetPath: '/create?type=brand-story'
+    targetPath: '/smart-square-form?type=brand-story'
   },
   {
     id: 4,
@@ -68,7 +68,7 @@ const aiAgents = [
     color: 'from-indigo-500 to-blue-500',
     tag: '新品',
     usageCount: '5421',
-    targetPath: '/create?type=enterprise-ip'
+    targetPath: '/smart-square-form?type=enterprise-ip'
   },
   {
     id: 5,
@@ -78,7 +78,7 @@ const aiAgents = [
     icon: TrendingUp,
     color: 'from-cyan-500 to-blue-500',
     usageCount: '9876',
-    targetPath: '/create?type=business-model'
+    targetPath: '/smart-square-form?type=business-model'
   },
   {
     id: 6,
@@ -88,7 +88,7 @@ const aiAgents = [
     icon: TrendingUp,
     color: 'from-slate-500 to-gray-500',
     usageCount: '6543',
-    targetPath: '/create?type=strategy-plan'
+    targetPath: '/smart-square-form?type=strategy-plan'
   },
   
   // ===== 私域变现 (6 个) =====
@@ -101,7 +101,7 @@ const aiAgents = [
     color: 'from-orange-500 to-amber-500',
     tag: '新品',
     usageCount: '8956',
-    targetPath: '/copywriting/moment-marketing'
+    targetPath: '/smart-square-form?type=moment-marketing'
   },
   {
     id: 8,
@@ -112,7 +112,7 @@ const aiAgents = [
     color: 'from-green-500 to-teal-500',
     tag: '热门',
     usageCount: '1.5 万',
-    targetPath: '/copywriting/live-sales'
+    targetPath: '/smart-square-form?type=live-sales'
   },
   {
     id: 9,
@@ -122,7 +122,7 @@ const aiAgents = [
     icon: MessageCircle,
     color: 'from-emerald-500 to-green-500',
     usageCount: '1.1 万',
-    targetPath: '/copywriting/moment-duplicate'
+    targetPath: '/smart-square-form?type=moment-duplicate'
   },
   {
     id: 10,
@@ -133,7 +133,7 @@ const aiAgents = [
     color: 'from-pink-500 to-rose-500',
     tag: '热门',
     usageCount: '1.3 万',
-    targetPath: '/create?type=private-growth'
+    targetPath: '/smart-square-form?type=private-growth'
   },
   {
     id: 11,
@@ -143,7 +143,7 @@ const aiAgents = [
     icon: TrendingUp,
     color: 'from-amber-500 to-orange-500',
     usageCount: '8765',
-    targetPath: '/create?type=customer-profile'
+    targetPath: '/smart-square-form?type=customer-profile'
   },
   {
     id: 12,
@@ -154,7 +154,7 @@ const aiAgents = [
     color: 'from-red-500 to-pink-500',
     tag: '热门',
     usageCount: '1.7 万',
-    targetPath: '/copywriting/live-sales'
+    targetPath: '/smart-square-form?type=live-sales'
   },
   
   // ===== 公域获客 (6 个) =====
@@ -167,7 +167,7 @@ const aiAgents = [
     color: 'from-indigo-500 to-purple-500',
     tag: '热门',
     usageCount: '3.1 万',
-    targetPath: '/quick-video'
+    targetPath: '/smart-square-form?type=quick-video'
   },
   {
     id: 14,
@@ -177,7 +177,7 @@ const aiAgents = [
     icon: TrendingUp,
     color: 'from-red-500 to-rose-500',
     usageCount: '1.2 万',
-    targetPath: '/analysis/douyin'
+    targetPath: '/smart-square-form?type=douyin'
   },
   {
     id: 15,
@@ -188,7 +188,7 @@ const aiAgents = [
     color: 'from-red-500 to-pink-500',
     tag: '热门',
     usageCount: '2.8 万',
-    targetPath: '/analysis/xiaohongshu'
+    targetPath: '/smart-square-form?type=xiaohongshu'
   },
   {
     id: 16,
@@ -198,7 +198,7 @@ const aiAgents = [
     icon: Video,
     color: 'from-blue-500 to-cyan-500',
     usageCount: '9876',
-    targetPath: '/quick-video'
+    targetPath: '/smart-square-form?type=quick-video'
   },
   {
     id: 17,
@@ -209,7 +209,7 @@ const aiAgents = [
     color: 'from-purple-500 to-pink-500',
     tag: '新品',
     usageCount: '1.5 万',
-    targetPath: '/inspiration'
+    targetPath: '/smart-square-form?type=inspiration'
   },
   {
     id: 18,
@@ -219,7 +219,7 @@ const aiAgents = [
     icon: TrendingUp,
     color: 'from-green-500 to-emerald-500',
     usageCount: '7654',
-    targetPath: '/create?type=seo-optimization'
+    targetPath: '/smart-square-form?type=seo-optimization'
   },
   
   // ===== 常用工具 (5 个) =====
@@ -232,7 +232,7 @@ const aiAgents = [
     color: 'from-cyan-500 to-blue-500',
     tag: '热门',
     usageCount: '4.5 万',
-    targetPath: '/copywriting/moment-rewrite'
+    targetPath: '/smart-square-form?type=moment-rewrite'
   },
   {
     id: 20,
@@ -242,7 +242,7 @@ const aiAgents = [
     icon: Image,
     color: 'from-pink-500 to-rose-500',
     usageCount: '9823',
-    targetPath: '/create?type=poster'
+    targetPath: '/smart-square-form?type=poster'
   },
   {
     id: 21,
@@ -253,7 +253,7 @@ const aiAgents = [
     color: 'from-blue-500 to-indigo-500',
     tag: '热门',
     usageCount: '2.1 万',
-    targetPath: '/create?type=weekly-report'
+    targetPath: '/smart-square-form?type=weekly-report'
   },
   {
     id: 22,
@@ -263,7 +263,7 @@ const aiAgents = [
     icon: FileText,
     color: 'from-orange-500 to-red-500',
     usageCount: '1.6 万',
-    targetPath: '/create?type=ppt-outline'
+    targetPath: '/smart-square-form?type=ppt-outline'
   },
   {
     id: 23,
@@ -274,7 +274,7 @@ const aiAgents = [
     color: 'from-green-500 to-emerald-500',
     tag: '新品',
     usageCount: '8765',
-    targetPath: '/create?type=event-plan'
+    targetPath: '/smart-square-form?type=event-plan'
   },
 ];
 
