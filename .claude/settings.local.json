@@ -35,7 +35,8 @@
       "Bash(npx ts-node test-user-input.ts)",
       "Bash(npx ts-node test-interactive.ts)",
       "Bash(timeout:*)",
-      "Bash(npx ts-node test-auto-interactive.ts)"
+      "Bash(npx ts-node test-auto-interactive.ts)",
+      "Bash(tree:*)"
     ]
   }
 }

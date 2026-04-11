@@ -12,11 +12,13 @@ import {
   Users,
   Settings,
   HelpCircle,
+  CreditCard,
 } from "lucide-react"
 
 const menuItems = [
   { icon: Home, label: "首页", href: "/" },
   { icon: Sparkles, label: "AI 工具", href: "/ai-tools" },
+  { icon: CreditCard, label: "定价", href: "/pricing" },
   { icon: History, label: "历史记录", href: "/history" },
   { icon: FolderOpen, label: "项目空间", href: "/projects" },
   { icon: Layers, label: "套图配方", href: "/batch-recipes" },
