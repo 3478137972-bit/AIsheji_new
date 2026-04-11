@@ -1,0 +1,7 @@
+{
+  "framework": "nextjs",
+  "installCommand": "pnpm install --strict-peer-dependencies=false",
+  "buildCommand": "next build",
+  "devCommand": "next dev",
+  "regions": ["iad1"]
+}
