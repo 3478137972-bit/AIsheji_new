@@ -3,6 +3,13 @@
 import { useState } from "react"
 import { MainLayout } from "@/components/main-layout"
 import { Check, Copy, MessageCircle, CreditCard, Sparkles } from "lucide-react"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog"
 
 const packages = [
   {
@@ -70,12 +77,19 @@ const steps = [
 
 export default function PricingPage() {
   const [copied, setCopied] = useState(false)
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [selectedPackage, setSelectedPackage] = useState<typeof packages[0] | null>(null)
   const wechatId = "m347820705"
 
   const handleCopy = () => {
     navigator.clipboard.writeText(wechatId)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  const handleRecharge = (pkg: typeof packages[0]) => {
+    setSelectedPackage(pkg)
+    setDialogOpen(true)
   }
 
   return (
@@ -139,6 +153,7 @@ export default function PricingPage() {
                 </div>
 
                 <button
+                  onClick={() => handleRecharge(pkg)}
                   className={`w-full py-3 rounded-xl font-medium transition-colors ${
                     pkg.popular
                       ? "bg-primary text-primary-foreground hover:bg-primary/90"
@@ -232,6 +247,98 @@ export default function PricingPage() {
           </div>
         </div>
       </div>
+
+      {/* 充值弹窗 */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>充值积分</DialogTitle>
+            <DialogDescription>
+              {selectedPackage && (
+                <span>
+                  您选择了 <strong>{selectedPackage.name}</strong>，
+                  支付 <strong>¥{selectedPackage.price}</strong> 获得 <strong>{selectedPackage.total} 积分</strong>
+                </span>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-6 py-4">
+            {/* 积分信息 */}
+            {selectedPackage && (
+              <div className="rounded-xl bg-primary/5 border border-primary/20 p-4">
+                <div className="text-center">
+                  <div className="text-sm text-muted-foreground mb-1">套餐详情</div>
+                  <div className="text-2xl font-bold text-primary mb-2">
+                    {selectedPackage.name}
+                  </div>
+                  <div className="flex justify-center gap-6 text-sm">
+                    <div>
+                      <span className="text-muted-foreground">基础积分：</span>
+                      <span className="font-medium">{selectedPackage.credits}</span>
+                    </div>
+                    {selectedPackage.bonus > 0 && (
+                      <div>
+                        <span className="text-muted-foreground">赠送积分：</span>
+                        <span className="font-medium text-green-600">+{selectedPackage.bonus}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-primary/10">
+                    <span className="text-muted-foreground">总计获得：</span>
+                    <span className="text-xl font-bold text-primary">{selectedPackage.total} 积分</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* 客服信息 */}
+            <div className="space-y-4">
+              <div className="text-sm font-medium text-center">请添加客服微信完成充值</div>
+              
+              {/* 微信号 */}
+              <div className="flex items-center gap-3 px-4 py-3 bg-muted/50 rounded-xl">
+                <MessageCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                <div className="flex-1">
+                  <div className="text-xs text-muted-foreground">客服微信号</div>
+                  <div className="font-mono font-medium">{wechatId}</div>
+                </div>
+                <button
+                  onClick={handleCopy}
+                  className="p-2 hover:bg-muted rounded-lg transition-colors"
+                >
+                  {copied ? (
+                    <Check className="w-4 h-4 text-green-500" />
+                  ) : (
+                    <Copy className="w-4 h-4 text-muted-foreground" />
+                  )}
+                </button>
+              </div>
+
+              {/* 二维码 */}
+              <div className="flex flex-col items-center gap-3 p-4 bg-muted/50 rounded-xl">
+                <div className="w-48 h-48 bg-white rounded-lg overflow-hidden shadow-sm">
+                  <img
+                    src="/wechat-qr-new.jpg"
+                    alt="微信二维码"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div className="text-sm text-muted-foreground text-center">
+                  微信扫描二维码添加客服
+                </div>
+              </div>
+            </div>
+
+            {/* 充值步骤提示 */}
+            <div className="text-xs text-muted-foreground text-center space-y-1">
+              <div>1. 添加客服微信</div>
+              <div>2. 告知客服您要购买的套餐名称</div>
+              <div>3. 完成支付后积分实时到账</div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </MainLayout>
   )
 }
