@@ -1,30 +1,19 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { User, LogOut, Loader2 } from 'lucide-react'
 import { useAuth } from '@/hooks/use-auth'
-import { signInWithGoogle, signOut } from '@/lib/utils/supabase-client'
+import { signOut } from '@/lib/utils/supabase-client'
 
 /**
  * 用户菜单组件
  * 显示登录按钮或用户信息
  */
 export function UserMenu() {
+  const router = useRouter()
   const { user, loading, isAuthenticated } = useAuth()
-  const [isSigningIn, setIsSigningIn] = useState(false)
   const [isSigningOut, setIsSigningOut] = useState(false)
-
-  const handleSignIn = async () => {
-    try {
-      setIsSigningIn(true)
-      await signInWithGoogle()
-    } catch (error) {
-      console.error('登录失败:', error)
-      alert('登录失败，请重试')
-    } finally {
-      setIsSigningIn(false)
-    }
-  }
 
   const handleSignOut = async () => {
     try {
@@ -51,21 +40,11 @@ export function UserMenu() {
   if (!isAuthenticated) {
     return (
       <button
-        onClick={handleSignIn}
-        disabled={isSigningIn}
-        className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        onClick={() => router.push('/login')}
+        className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
       >
-        {isSigningIn ? (
-          <>
-            <Loader2 className="w-4 h-4 animate-spin" />
-            <span>登录中...</span>
-          </>
-        ) : (
-          <>
-            <User className="w-4 h-4" />
-            <span>Google 登录</span>
-          </>
-        )}
+        <User className="w-4 h-4" />
+        <span>登录</span>
       </button>
     )
   }
