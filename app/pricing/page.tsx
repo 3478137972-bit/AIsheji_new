@@ -250,7 +250,7 @@ export default function PricingPage() {
 
       {/* 充值弹窗 */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>充值积分</DialogTitle>
             <DialogDescription>
@@ -263,13 +263,13 @@ export default function PricingPage() {
             </DialogDescription>
           </DialogHeader>
 
-          <div className="space-y-6 py-4">
+          <div className="space-y-4 py-4">
             {/* 积分信息 */}
             {selectedPackage && (
-              <div className="rounded-xl bg-primary/5 border border-primary/20 p-4">
+              <div className="rounded-xl bg-primary/5 border border-primary/20 p-3">
                 <div className="text-center">
                   <div className="text-sm text-muted-foreground mb-1">套餐详情</div>
-                  <div className="text-2xl font-bold text-primary mb-2">
+                  <div className="text-xl font-bold text-primary mb-2">
                     {selectedPackage.name}
                   </div>
                   <div className="flex justify-center gap-6 text-sm">
@@ -284,57 +284,60 @@ export default function PricingPage() {
                       </div>
                     )}
                   </div>
-                  <div className="mt-3 pt-3 border-t border-primary/10">
+                  <div className="mt-2 pt-2 border-t border-primary/10">
                     <span className="text-muted-foreground">总计获得：</span>
-                    <span className="text-xl font-bold text-primary">{selectedPackage.total} 积分</span>
+                    <span className="text-lg font-bold text-primary">{selectedPackage.total} 积分</span>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* 客服信息 */}
-            <div className="space-y-4">
-              <div className="text-sm font-medium text-center">请添加客服微信完成充值</div>
-              
-              {/* 微信号 */}
-              <div className="flex items-center gap-3 px-4 py-3 bg-muted/50 rounded-xl">
-                <MessageCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                <div className="flex-1">
+            {/* 客服信息 - 横版布局 */}
+            <div className="text-sm font-medium text-center">请添加客服微信完成充值</div>
+            
+            <div className="flex gap-4">
+              {/* 左侧：微信号 */}
+              <div className="flex-1 flex flex-col gap-3 p-4 bg-muted/50 rounded-xl">
+                <div className="flex items-center gap-2">
+                  <MessageCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
                   <div className="text-xs text-muted-foreground">客服微信号</div>
-                  <div className="font-mono font-medium">{wechatId}</div>
                 </div>
-                <button
-                  onClick={handleCopy}
-                  className="p-2 hover:bg-muted rounded-lg transition-colors"
-                >
-                  {copied ? (
-                    <Check className="w-4 h-4 text-green-500" />
-                  ) : (
-                    <Copy className="w-4 h-4 text-muted-foreground" />
-                  )}
-                </button>
+                <div className="flex items-center gap-2">
+                  <span className="font-mono font-medium">{wechatId}</span>
+                  <button
+                    onClick={handleCopy}
+                    className="p-1.5 hover:bg-muted rounded-lg transition-colors"
+                  >
+                    {copied ? (
+                      <Check className="w-4 h-4 text-green-500" />
+                    ) : (
+                      <Copy className="w-4 h-4 text-muted-foreground" />
+                    )}
+                  </button>
+                </div>
+                <div className="text-xs text-muted-foreground mt-auto">
+                  复制微信号添加客服
+                </div>
               </div>
 
-              {/* 二维码 */}
-              <div className="flex flex-col items-center gap-3 p-4 bg-muted/50 rounded-xl">
-                <div className="w-48 h-48 bg-white rounded-lg overflow-hidden shadow-sm">
+              {/* 右侧：二维码 */}
+              <div className="flex flex-col items-center gap-2 p-4 bg-muted/50 rounded-xl">
+                <div className="w-28 h-28 bg-white rounded-lg overflow-hidden shadow-sm">
                   <img
                     src="/wechat-qr-new.jpg"
                     alt="微信二维码"
                     className="w-full h-full object-contain"
                   />
                 </div>
-                <div className="text-sm text-muted-foreground text-center">
-                  微信扫描二维码添加客服
+                <div className="text-xs text-muted-foreground text-center">
+                  微信扫码添加客服
                 </div>
               </div>
             </div>
 
             {/* 充值步骤提示 */}
-            <div className="text-xs text-muted-foreground text-center space-y-1">
-              <div>1. 添加客服微信</div>
-              <div>2. 告知客服您要购买的套餐名称</div>
-              <div>3. 完成支付后积分实时到账</div>
+            <div className="text-xs text-muted-foreground text-center space-y-1 pt-2">
+              <div>1. 添加客服微信 → 2. 告知套餐名称 → 3. 支付后积分实时到账</div>
             </div>
           </div>
         </DialogContent>
