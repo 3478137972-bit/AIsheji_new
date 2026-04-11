@@ -91,7 +91,7 @@ export function HeroSection() {
 
         {/* Quick Suggestions */}
         <div className="flex flex-wrap justify-center gap-2 mt-6">
-          {["商品白底图", "证件照换背景", "Logo设计", "商品套图"].map((suggestion) => (
+          {["证件照换背景", "Logo设计"].map((suggestion) => (
             <button
               key={suggestion}
               type="button"
