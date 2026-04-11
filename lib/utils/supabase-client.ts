@@ -46,29 +46,6 @@ export const supabase = new Proxy({} as SupabaseClient, {
 })
 
 /**
- * Google 登录
- */
-export async function signInWithGoogle() {
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo: `${window.location.origin}/auth/callback`,
-      queryParams: {
-        access_type: 'offline',
-        prompt: 'consent',
-      },
-    },
-  })
-
-  if (error) {
-    console.error('[Supabase] Google 登录失败:', error.message)
-    throw error
-  }
-
-  return data
-}
-
-/**
  * 登出
  */
 export async function signOut() {
