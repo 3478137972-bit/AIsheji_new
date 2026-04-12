@@ -59,7 +59,7 @@ const steps = [
     icon: MessageCircle,
     step: "1",
     title: "添加客服微信",
-    desc: "搜索并添加【妙懂 AI 客服】",
+    desc: "搜索并添加【妙懂客服】",
   },
   {
     icon: CreditCard,

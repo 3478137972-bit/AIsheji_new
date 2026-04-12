@@ -140,7 +140,7 @@ export default function AILogoPage() {
           >
             <ArrowLeft className="w-5 h-5" />
           </Link>
-          <h1 className="text-xl font-semibold">AI Logo</h1>
+          <h1 className="text-xl font-semibold">Logo</h1>
         </div>
 
         <div className="flex gap-6 h-[calc(100vh-140px)]">

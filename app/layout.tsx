@@ -8,8 +8,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: '秒懂AI超级员工 - 智能设计工具平台',
-  description: '秒懂AI超级员工，一站式AI设计工具平台，智能抠图、AI商拍等',
+  title: '秒懂超级员工 - 智能设计工具平台',
+  description: '秒懂超级员工，一站式设计工具平台，智能抠图、商拍等',
   generator: 'v0.app',
   icons: {
     icon: [

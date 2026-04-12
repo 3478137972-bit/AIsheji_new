@@ -221,7 +221,7 @@ export default function AIIllustrationPage() {
           >
             <ArrowLeft className="w-5 h-5" />
           </Link>
-          <h1 className="text-xl font-semibold">AI 插画</h1>
+          <h1 className="text-xl font-semibold">插画</h1>
         </div>
 
         <div className="flex gap-6 h-[calc(100vh-140px)]">

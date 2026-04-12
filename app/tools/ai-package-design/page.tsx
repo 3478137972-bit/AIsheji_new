@@ -191,7 +191,7 @@ export default function AIPackageDesignPage() {
           >
             <ArrowLeft className="w-5 h-5" />
           </Link>
-          <h1 className="text-xl font-semibold">AI 平面包装设计</h1>
+          <h1 className="text-xl font-semibold">平面包装设计</h1>
         </div>
 
         <div className="flex gap-6 h-[calc(100vh-140px)]">

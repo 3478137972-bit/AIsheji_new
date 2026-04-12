@@ -12,7 +12,7 @@ import {
 
 const menuItems = [
   { icon: Home, label: "首页", href: "/" },
-  { icon: Sparkles, label: "AI 工具", href: "/ai-tools" },
+  { icon: Sparkles, label: "工具", href: "/ai-tools" },
   { icon: CreditCard, label: "定价", href: "/pricing" },
   { icon: History, label: "历史记录", href: "/history" },
 ]
@@ -29,7 +29,7 @@ export function Sidebar() {
             <Sparkles className="w-5 h-5 text-primary-foreground" />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold text-lg text-sidebar-foreground tracking-tight">秒懂AI</span>
+            <span className="font-bold text-lg text-sidebar-foreground tracking-tight">秒懂</span>
             <span className="text-[10px] text-muted-foreground font-medium tracking-wider uppercase">Super Employee</span>
           </div>
         </Link>

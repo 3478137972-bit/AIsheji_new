@@ -9,14 +9,14 @@ const recentItems = [
     name: "电商主图设计",
     thumbnail: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=300&fit=crop",
     updatedAt: "10分钟前",
-    tool: "AI商品套图",
+    tool: "商品套图",
   },
   {
     id: "2",
     name: "品牌Logo设计",
     thumbnail: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop",
     updatedAt: "1小时前",
-    tool: "AI Logo",
+    tool: "Logo",
   },
   {
     id: "3",

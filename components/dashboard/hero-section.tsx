@@ -53,15 +53,15 @@ export function HeroSection() {
       <div className="text-center mb-10">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card/50 border border-border/50 backdrop-blur-sm mb-6">
           <Sparkles className="w-4 h-4 text-primary" />
-          <span className="text-sm text-muted-foreground">AI 驱动的设计工具平台</span>
+          <span className="text-sm text-muted-foreground">驱动的设计工具平台</span>
         </div>
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4 tracking-tight text-balance">
-          让 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-cyan-400 to-primary">AI</span> 成为你的
+          让 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-cyan-400 to-primary">设计</span> 成为你的
           <br />
           超级设计员工
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-pretty">
-          输入一句话，秒懂AI帮你完成各种设计工作，释放你的创造力
+          输入一句话，秒懂帮你完成各种设计工作，释放你的创造力
         </p>
       </div>
 

@@ -10,17 +10,17 @@ import { zhCN } from 'date-fns/locale'
 
 // 工具名称映射
 const toolDisplayNames: Record<string, string> = {
-  'ai-logo': 'AI Logo',
-  'ai-event-poster': 'AI活动海报',
-  'ai-illustration': 'AI插画',
-  'ai-package-design': 'AI平面包装',
+  'ai-logo': 'Logo',
+  'ai-event-poster': '活动海报',
+  'ai-illustration': '插画',
+  'ai-package-design': '平面包装',
   'id-photo': '证件照',
-  'product-set': 'AI商品套图',
-  'remove': 'AI消除',
-  'ai-font': 'AI字体',
-  'ai-ip-illustration-1': 'AI IP插画 1',
-  'ai-ip-illustration-2': 'AI IP插画 2',
-  'ai-scene-poster': 'AI场景海报',
+  'product-set': '商品套图',
+  'remove': '消除',
+  'ai-font': '字体',
+  'ai-ip-illustration-1': 'IP插画 1',
+  'ai-ip-illustration-2': 'IP插画 2',
+  'ai-scene-poster': '场景海报',
 }
 
 // 筛选类型
@@ -93,7 +93,7 @@ export default function HistoryPage() {
       // 根据筛选类型过滤数据
       let filteredData = data
       if (filter === 'images') {
-        // 图片记录：所有 AI 工具生成的记录
+        // 图片记录：所有工具生成的记录
         filteredData = data.filter((item: OperationHistory) =>
           item.operation_type === 'generate' ||
           item.operation_type === 'download' ||
