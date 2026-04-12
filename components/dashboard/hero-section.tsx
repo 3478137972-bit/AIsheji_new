@@ -61,7 +61,7 @@ export function HeroSection() {
           超级设计员工
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-pretty">
-          输入一句话，秒懂AI帮你完成商品图、证件照、Logo等设计工作，释放你的创造力
+          输入一句话，秒懂AI帮你完成各种设计工作，释放你的创造力
         </p>
       </div>
 
@@ -89,19 +89,6 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Quick Suggestions */}
-        <div className="flex flex-wrap justify-center gap-2 mt-6">
-          {["证件照换背景", "Logo设计"].map((suggestion) => (
-            <button
-              key={suggestion}
-              type="button"
-              onClick={() => setPrompt(suggestion)}
-              className="px-4 py-2 text-sm text-muted-foreground bg-card/50 border border-border/50 rounded-lg hover:border-primary/50 hover:text-primary transition-all duration-200"
-            >
-              {suggestion}
-            </button>
-          ))}
-        </div>
       </form>
     </section>
   )
