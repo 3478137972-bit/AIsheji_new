@@ -10,40 +10,10 @@ export default function LoginPage() {
   const [mode, setMode] = useState<'login' | 'register'>('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [verificationCode, setVerificationCode] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [isSendingCode, setIsSendingCode] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
-
-  // 发送验证码
-  const handleSendCode = async () => {
-    if (!email) {
-      setError('请输入邮箱地址')
-      return
-    }
-
-    try {
-      setIsSendingCode(true)
-      setError('')
-      
-      const { error } = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          shouldCreateUser: true,
-        },
-      })
-
-      if (error) throw error
-      
-      setSuccess('验证码已发送到您的邮箱，请查收')
-    } catch (err: any) {
-      setError(err.message || '发送验证码失败，请重试')
-    } finally {
-      setIsSendingCode(false)
-    }
-  }
 
   // 邮箱密码登录
   const handleLogin = async (e: React.FormEvent) => {
@@ -74,12 +44,12 @@ export default function LoginPage() {
     }
   }
 
-  // 邮箱验证码注册
+  // 邮箱密码注册
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!email || !verificationCode || !password) {
-      setError('请填写所有必填项')
+    if (!email || !password) {
+      setError('请填写邮箱和密码')
       return
     }
 
@@ -92,27 +62,39 @@ export default function LoginPage() {
       setIsLoading(true)
       setError('')
 
-      // 使用验证码验证邮箱
-      const { error: verifyError } = await supabase.auth.verifyOtp({
+      // 使用邮箱密码注册
+      const { data, error: signUpError } = await supabase.auth.signUp({
         email,
-        token: verificationCode,
-        type: 'signup',
-      })
-
-      if (verifyError) throw verifyError
-
-      // 设置密码
-      const { error: updateError } = await supabase.auth.updateUser({
         password,
+        options: {
+          // 如果需要邮箱确认，可以设置 emailRedirectTo
+          // emailRedirectTo: `${window.location.origin}/auth/callback`,
+        }
       })
 
-      if (updateError) throw updateError
+      if (signUpError) throw signUpError
 
-      setSuccess('注册成功！正在跳转...')
-      setTimeout(() => {
-        router.push('/')
-        router.refresh()
-      }, 1500)
+      // 检查是否需要邮箱确认
+      if (data.user && data.user.identities && data.user.identities.length === 0) {
+        setError('该邮箱已被注册')
+        return
+      }
+
+      if (data.session) {
+        // 已自动登录
+        setSuccess('注册成功！正在跳转...')
+        setTimeout(() => {
+          router.push('/')
+          router.refresh()
+        }, 1500)
+      } else {
+        // 需要邮箱确认
+        setSuccess('注册成功！请查看邮箱完成验证后登录')
+        setTimeout(() => {
+          setMode('login')
+          setSuccess('')
+        }, 3000)
+      }
     } catch (err: any) {
       setError(err.message || '注册失败，请重试')
     } finally {
@@ -175,34 +157,6 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* 注册模式：验证码 */}
-            {mode === 'register' && (
-              <div>
-                <label className="block text-sm font-medium mb-2">验证码</label>
-                <div className="flex gap-3">
-                  <input
-                    type="text"
-                    value={verificationCode}
-                    onChange={(e) => setVerificationCode(e.target.value)}
-                    placeholder="请输入6位验证码"
-                    maxLength={6}
-                    className="flex-1 h-12 px-4 rounded-xl border border-border bg-background focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all"
-                  />
-                  <button
-                    type="button"
-                    onClick={handleSendCode}
-                    disabled={isSendingCode}
-                    className="px-4 h-12 bg-muted text-foreground rounded-xl hover:bg-muted/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
-                  >
-                    {isSendingCode ? (
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                    ) : (
-                      '发送验证码'
-                    )}
-                  </button>
-                </div>
-              </div>
-            )}
 
             {/* 密码 */}
             <div>
