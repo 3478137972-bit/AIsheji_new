@@ -1,8 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI 超级员工 - 秒懂 AI 智能工作平台
 
-## Getting Started
+一个基于 Next.js 14 和 Supabase Auth 构建的现代 Web 应用程序，提供智能自动化解决方案。
 
-First, run the development server:
+## 技术栈
+
+- **前端框架**: Next.js 14 (App Router)
+- **认证系统**: Supabase Auth
+- **语言**: TypeScript
+- **样式**: Tailwind CSS
+
+## 功能特性
+
+- ✅ 用户注册/登录（邮箱密码认证）
+- ✅ 会话管理（AuthContext）
+- ✅ 路由保护（中间件）
+- ✅ 受保护的 dashboard 页面
+- ✅ 退出登录功能
+
+## 项目结构
+
+```
+a-isheji/
+├── src/
+│   ├── app/                  # Next.js App Router 页面
+│   │   ├── dashboard/        # 受保护的 dashboard 页面
+│   │   ├── login/            # 登录页面
+│   │   ├── register/         # 注册页面
+│   │   ├── layout.tsx        # 根布局（包含 AuthProvider）
+│   │   └── page.tsx          # 首页
+│   ├── contexts/             # React Contexts
+│   │   └── AuthContext.tsx   # 认证上下文
+│   ├── lib/
+│   │   └── supabase.ts       # Supabase 客户端配置
+│   ├── types/
+│   │   └── auth.ts           # TypeScript 类型定义
+│   └── proxy.ts              # 路由保护中间件
+├── .env.example              # 环境变量模板
+└── package.json
+```
+
+## 本地开发
+
+### 1. 安装依赖
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+### 2. 配置环境变量
+
+复制 `.env.example` 到 `.env.local` 并填入您的 Supabase 配置：
+
+```bash
+cp .env.example .env.local
+```
+
+编辑 `.env.local`：
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+```
+
+### 3. 启动开发服务器
 
 ```bash
 npm run dev
@@ -14,23 +78,27 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+打开 [http://localhost:3000](http://localhost:3000) 查看结果。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 部署
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Vercel 部署
 
-## Learn More
+最简单的部署方式是使用 Vercel Platform：
 
-To learn more about Next.js, take a look at the following resources:
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 手动部署
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+您也可以手动部署到任何支持 Next.js 的平台。
 
-## Deploy on Vercel
+## Supabase 配置
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. 访问 [Supabase](https://supabase.com) 并创建新项目
+2. 在项目设置中找到 `Project URL` 和 `anon/public key`
+3. 将这些值添加到您的 `.env.local` 文件
+4. 在 Supabase Dashboard 中启用邮箱密码认证
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 许可证
+
+MIT License
