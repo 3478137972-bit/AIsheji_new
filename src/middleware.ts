@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
 // 创建 Supabase 客户端（服务端）
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
@@ -13,13 +14,13 @@ const protectedRoutes = ['/dashboard', '/profile', '/settings'];
 // 定义公开的路由路径
 const publicRoutes = ['/login', '/register', '/'];
 
-export async function proxy(request: Request) {
+export async function middleware(request: NextRequest) {
   const url = new URL(request.url);
   const path = url.pathname;
 
   // 检查是否是公开路由
   const isPublic = publicRoutes.some((route) => path.startsWith(route));
-  
+
   // 检查是否是受保护的路由
   const isProtected = protectedRoutes.some((route) => path.startsWith(route));
 
@@ -43,5 +44,5 @@ export async function proxy(request: Request) {
 }
 
 export const config = {
-  matcher: [...protectedRoutes, ...publicRoutes],
+  matcher: ['/dashboard/:path*', '/profile/:path*', '/settings/:path*', '/login', '/register', '/'],
 };
