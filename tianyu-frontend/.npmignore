@@ -1,4 +1,0 @@
-# TypeScript types (for development)
-@types/
-*.tsbuildinfo
-next-env.d.ts
